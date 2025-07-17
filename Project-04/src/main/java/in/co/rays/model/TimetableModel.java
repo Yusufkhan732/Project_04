@@ -31,7 +31,6 @@ public class TimetableModel {
 			while (rs.next()) {
 
 				pk = rs.getInt(1);
-
 			}
 
 		} catch (Exception e) {
@@ -46,6 +45,7 @@ public class TimetableModel {
 		return pk + 1;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long add(TimetableBean bean) throws Exception {
 
 		int pk = 0;
@@ -103,6 +103,7 @@ public class TimetableModel {
 		return pk;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void update(TimetableBean bean) throws Exception {
 
 		CourseModel courseModel = new CourseModel();
@@ -157,6 +158,7 @@ public class TimetableModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void delete(long id) throws ApplicationException {
 		Connection conn = null;
 
@@ -191,6 +193,7 @@ public class TimetableModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public TimetableBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -231,6 +234,7 @@ public class TimetableModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public List list() throws ApplicationException {
 		return search(null, 0, 0);
 

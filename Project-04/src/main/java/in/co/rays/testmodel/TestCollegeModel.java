@@ -16,12 +16,12 @@ public class TestCollegeModel {
 	public static void main(String[] args) throws DatabaseException, ApplicationException, DuplicateRecordException {
 
 		// nextPk();
-		testadd();
+		// testadd();
 		// testupadte();
 		// testdelete();
 		// testfindByPk();
 		// testfindByName();
-		// testsearch();
+		testsearch();
 
 	}
 
@@ -37,8 +37,8 @@ public class TestCollegeModel {
 
 		CollegeBean bean = new CollegeBean();
 
-		bean.setName("Patel College");
-		bean.setAddress("Ratapani Road");
+		bean.setName("Makhanlal College");
+		bean.setAddress("Sehore Road");
 		bean.setCity("Bhopal");
 		bean.setState("MP");
 		bean.setPhoneNo("8769767794");
@@ -53,9 +53,9 @@ public class TestCollegeModel {
 
 	private static void testupadte() throws ApplicationException, DuplicateRecordException {
 		CollegeBean bean = new CollegeBean();
-		bean.setId(1);
-		bean.setName("CDGI Indore");
-		bean.setAddress(" Khandwa Road");
+		bean.setId(11);
+		bean.setName(" College");
+		bean.setAddress("Khandwa Road");
 		bean.setCity("Indore");
 		bean.setState("MP");
 		bean.setPhoneNo("8769767794");
@@ -70,12 +70,12 @@ public class TestCollegeModel {
 
 	private static void testdelete() throws ApplicationException {
 		CollegeModel model = new CollegeModel();
-		model.delete(2);
+		model.delete(11);
 	}
 
 	private static void testfindByPk() throws ApplicationException {
 		CollegeModel Model = new CollegeModel();
-		CollegeBean bean = Model.findByPk(1);
+		CollegeBean bean = Model.findByPk(10);
 		if (bean != null) {
 			System.out.print(bean.getId());
 			System.out.print("\t" + bean.getName());
@@ -95,7 +95,7 @@ public class TestCollegeModel {
 	private static void testfindByName() throws ApplicationException {
 
 		CollegeModel Model = new CollegeModel();
-		CollegeBean bean = Model.findByName("CDGI Indore");
+		CollegeBean bean = Model.findByName("LNCT");
 		if (bean != null) {
 			System.out.print(bean.getId());
 			System.out.print("\t" + bean.getName());
@@ -117,12 +117,12 @@ public class TestCollegeModel {
 		CollegeModel model = new CollegeModel();
 		CollegeBean bean = new CollegeBean();
 
-		bean.setName("CDGI Indore");
-		List list = model.search(bean, 0, 10);
+		// bean.setName("CDGI Indore");
+		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();
 
-		if (it.hasNext()) {
+		while (it.hasNext()) {
 			bean = (CollegeBean) it.next();
 			System.out.print(bean.getId());
 			System.out.print("\t" + bean.getName());
@@ -134,9 +134,6 @@ public class TestCollegeModel {
 			System.out.print("\t" + bean.getModifiedBy());
 			System.out.print("\t" + bean.getCreatedDatetime());
 			System.out.println("\t" + bean.getModifiedDatetime());
-		} else {
-			System.out.println("list not found");
-
 		}
 	}
 }

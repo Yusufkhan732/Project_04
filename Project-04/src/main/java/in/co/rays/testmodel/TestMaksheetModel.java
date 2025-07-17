@@ -14,9 +14,10 @@ public class TestMaksheetModel {
 		// testNextPk();
 		// testadd();
 		// testupadte();
+		testDelete();
 		// testFindByPk();
 		// testFindByRollNo();
-		testSearch();
+		// testSearch();
 
 	}
 
@@ -31,8 +32,8 @@ public class TestMaksheetModel {
 	private static void testadd() throws Exception {
 		MarksheetBean bean = new MarksheetBean();
 
-		bean.setRollNo("BE102");
-		bean.setStudentId(1);
+		bean.setRollNo("110k");
+		bean.setStudentId(203);
 		bean.setPhysics(67);
 		bean.setChemistry(78);
 		bean.setMaths(77);
@@ -68,7 +69,7 @@ public class TestMaksheetModel {
 
 	public static void testDelete() throws Exception {
 		MarksheetModel model = new MarksheetModel();
-		model.delete(3);
+		model.delete(11);
 	}
 
 	public static void testFindByPk() throws Exception {
@@ -98,7 +99,7 @@ public class TestMaksheetModel {
 
 		MarksheetModel model = new MarksheetModel();
 
-		MarksheetBean bean = model.findByRoll("BE102");
+		MarksheetBean bean = model.findByRoll("103C");
 
 		if (bean != null) {
 			System.out.print(bean.getId());

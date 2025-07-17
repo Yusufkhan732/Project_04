@@ -136,9 +136,9 @@ public class TestStudentModel {
 
 		// bean.setFirstName("Azam");
 
-		//List list = model.search(bean, 0, 4);
+		List list = model.search(bean, 0, 4);
 
-		 List list = model.list();
+		 //List list = model.list();
 
 		Iterator it = list.iterator();
 

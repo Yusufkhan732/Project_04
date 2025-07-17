@@ -14,9 +14,9 @@ public class TestRoleModel {
 		// testadd();
 		// testupdate();
 		// testdelete();
-		// testfindbypk();
-		 testFindByName();
-//		testserch();
+		 testfindbypk();
+		// testFindByName();
+		//testserch();
 	}
 
 	public static void testadd() throws Exception {
@@ -64,7 +64,7 @@ public class TestRoleModel {
 
 		RoleModel model = new RoleModel();
 
-		RoleBean bean = model.findByPk(1);
+		RoleBean bean = model.findByPk(2);
 
 		if (bean != null) {
 
@@ -105,7 +105,7 @@ public class TestRoleModel {
 
 		RoleBean bean = new RoleBean();
 
-		List list = model.search(bean, 0, 4);
+		List list = model.search(bean, 1, 4);
 
 		Iterator it = list.iterator();
 

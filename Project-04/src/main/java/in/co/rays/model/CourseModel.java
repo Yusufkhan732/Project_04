@@ -39,6 +39,7 @@ public class CourseModel {
 		return pk + 1;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long add(CourseBean bean) throws Exception {
 
 		CourseBean exsitbBean = findByName(bean.getName());
@@ -94,6 +95,7 @@ public class CourseModel {
 
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void update(CourseBean bean) throws Exception {
 
 		CourseBean exitbBean = findByName(bean.getName());
@@ -145,6 +147,7 @@ public class CourseModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void delete(long id) throws Exception {
 
 		Connection conn = null;
@@ -183,6 +186,7 @@ public class CourseModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public CourseBean findByPk(long id) throws Exception {
 		Connection conn = null;
 		CourseBean bean = null;
@@ -219,6 +223,7 @@ public class CourseModel {
 
 	}
 
+//------------------------------------------------------------------------------------------------
 	public CourseBean findByName(String name) throws Exception {
 
 		Connection conn = null;
@@ -257,11 +262,13 @@ public class CourseModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public List list() throws Exception {
 		return search(null, 0, 0);
 
 	}
 
+//------------------------------------------------------------------------------------------------
 	public List search(CourseBean bean, int pageNo, int pageSize) throws Exception {
 
 		Connection conn = null;

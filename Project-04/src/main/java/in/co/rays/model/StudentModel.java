@@ -47,6 +47,7 @@ public class StudentModel {
 		return pk + 1;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long add(StudentBean bean) throws ApplicationException, DuplicateRecordException {
 
 		int pk = 0;
@@ -107,6 +108,7 @@ public class StudentModel {
 		return pk;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void upadte(StudentBean bean) throws ApplicationException, DuplicateRecordException {
 
 		Connection conn = null;
@@ -165,6 +167,7 @@ public class StudentModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void delete(long id) throws ApplicationException {
 		Connection conn = null;
 
@@ -199,6 +202,7 @@ public class StudentModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public StudentBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -238,6 +242,7 @@ public class StudentModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public StudentBean findByEmail(String email) throws ApplicationException {
 		Connection conn = null;
 		StudentBean bean = null;
@@ -278,6 +283,7 @@ public class StudentModel {
 
 	}
 
+//------------------------------------------------------------------------------------------------
 	public List list() throws ApplicationException {
 		return search(null, 0, 0);
 
@@ -339,6 +345,7 @@ public class StudentModel {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		
 		return list;
 
 	}

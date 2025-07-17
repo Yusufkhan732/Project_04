@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 public abstract class BaseBean implements DropdownListBean {
 
+	
+	
 	protected long id;
 	protected String createdby;
 	protected String modifiedby;

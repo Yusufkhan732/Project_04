@@ -12,23 +12,23 @@ import in.co.rays.model.TimetableModel;
 public class TestTimetableModel {
 
 	public static void main(String[] args) throws Exception {
-		// testAdd();
+		testAdd();
 		// testUpdate();
 		// testDelete();
 		// testFindByPk();
-		testSearch();
+		// testSearch();
 	}
 
 	public static void testAdd() throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddd");
 		TimetableBean bean = new TimetableBean();
-		bean.setSemester("test");
-		bean.setDescription("3rd");
+		bean.setSemester("BCA");
+		bean.setDescription("first");
 		bean.setExamDate(sdf.parse("2025-07-08"));
-		bean.setExamTime("11:00AM - 12:00PM");
-		bean.setCourseId(3);
-		bean.setSubjectId(2);
+		bean.setExamTime("9:00AM - 12:00PM");
+		bean.setCourseId(2);
+		bean.setSubjectId(1);
 		bean.setCreatedBy("admin@gmail.com");
 		bean.setModifiedBy("admin@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));

@@ -16,10 +16,10 @@ public class TestUserModel {
 	public static void main(String[] args) throws Exception {
 		// testnextPk();
 		//testAdd();
-		// testupdate();
+		 testupdate();
 		// testdelete();
-		// testFindbyPk();
-		testsearch();
+		 //testFindbyPk();
+		//testsearch();
 	}
 
 	public static void testnextPk() throws Exception {
@@ -39,11 +39,11 @@ public class TestUserModel {
 
 		UserBean bean = new UserBean();
 
-		bean.setFirstName("Aaksh");
-		bean.setLastName("Rathor");
-		bean.setLogin("rathor@gmail.com");
-		bean.setPassword("Ak567");
-		bean.setConfirmPassword("Ak567");
+		bean.setFirstName("Anas");
+		bean.setLastName("khan");
+		bean.setLogin("anas@gmail.com");
+		bean.setPassword("pass123");
+	//	bean.setConfirmPassword("Ak567");
 		bean.setDob(sdf.parse("2025-07-07"));
 		bean.setMobileNo("9145678990");
 		bean.setRoleId(3);
@@ -61,12 +61,12 @@ public class TestUserModel {
 		UserModel model = new UserModel();
 
 		UserBean bean = new UserBean();
-		bean.setId(5);
+		bean.setId(11);
 		bean.setFirstName("Mohit");
 		bean.setLastName("meena");
 		bean.setLogin("mohit@gmail.com");
-		bean.setPassword("MH777");
-		bean.setConfirmPassword("MH7777");
+		bean.setPassword("pass123");
+		//bean.setConfirmPassword("MH7777");
 		bean.setDob(new Date());
 		bean.setMobileNo("9145678990");
 		bean.setRoleId(2);
@@ -94,7 +94,7 @@ public class TestUserModel {
 
 		if (bean != null) {
 
-			System.out.print("\t" + bean.getId());
+			System.out.print(bean.getId());
 			System.out.print("\t" + bean.getFirstName());
 			System.out.print("\t" + bean.getLastName());
 			System.out.print("\t" + bean.getLogin());
@@ -157,7 +157,6 @@ public class TestUserModel {
 			System.out.print("\t" + bean.getLastName());
 			System.out.print("\t" + bean.getLogin());
 			System.out.print("\t" + bean.getPassword());
-			System.out.print("\t" + bean.getConfirmPassword());
 			System.out.print("\t" + bean.getDob());
 			System.out.print("\t" + bean.getMobileNo());
 			System.out.print("\t" + bean.getRoleId());

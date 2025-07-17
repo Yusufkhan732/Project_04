@@ -167,7 +167,7 @@ public class MarksheetModel {
 			pstmt.setLong(1, id);
 
 			int i = pstmt.executeUpdate();
-
+			System.out.println("Delete = >" + i);
 			conn.commit();
 
 		} catch (Exception e) {

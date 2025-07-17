@@ -14,25 +14,25 @@ public class TestFacultyModel {
 	public static void main(String[] args) throws Exception {
 
 		// testadd();
-		// testupdate();
+		//testupdate();
 		// testdelete();
 		// testFindByPk();
 		// testFindByEmail();
-		testsearch();
+		// testsearch();
 	}
 
 	private static void testadd() throws Exception {
 		FacultyBean bean = new FacultyBean();
 
-		bean.setFirstName("Anas");
+		bean.setFirstName("Azam");
 		bean.setLastName("khan");
 		bean.setDob(new Date());
 		bean.setGender("male");
 		bean.setMobileNo("9109686959");
-		bean.setEmail("anas@gmail.com");
-		bean.setCollegeId(2);
-		bean.setCourseId(1);
-		bean.setSubjectId(2);
+		bean.setEmail("azam@gmail.com");
+		bean.setCollegeId(5);
+		bean.setCourseId(101);
+		bean.setSubjectId(202);
 		bean.setCreatedBy("admin@gmail.com");
 		bean.setModifiedBy("admin@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
@@ -66,7 +66,7 @@ public class TestFacultyModel {
 
 		FacultyModel model = new FacultyModel();
 
-		FacultyBean bean = model.findByPk(2);
+		FacultyBean bean = model.findByPk(10);
 
 		if (bean != null) {
 			System.out.print(bean.getId());
@@ -97,7 +97,7 @@ public class TestFacultyModel {
 
 		FacultyModel model = new FacultyModel();
 
-		FacultyBean bean = model.findByEmail("anas@gmail.com");
+		FacultyBean bean = model.findByEmail("neha.singh@college.com");
 
 		if (bean != null) {
 			System.out.print(bean.getId());

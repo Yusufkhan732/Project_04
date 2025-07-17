@@ -48,6 +48,7 @@ public class FacultyModel {
 		return pk + 1;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long add(FacultyBean bean) throws Exception {
 
 		CollegeModel collegeModel = new CollegeModel();
@@ -65,6 +66,7 @@ public class FacultyModel {
 		FacultyBean existBean = findByEmail(bean.getEmail());
 
 		if (existBean != null) {
+
 			throw new DuplicateRecordException("email already exist..!!");
 		}
 
@@ -125,6 +127,7 @@ public class FacultyModel {
 		return pk;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long update(FacultyBean bean) throws Exception {
 
 		CollegeModel collegeModel = new CollegeModel();
@@ -203,6 +206,7 @@ public class FacultyModel {
 		return pk;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void delete(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -241,6 +245,7 @@ public class FacultyModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public FacultyBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -287,6 +292,7 @@ public class FacultyModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public FacultyBean findByEmail(String email) throws ApplicationException {
 
 		Connection conn = null;
@@ -333,6 +339,7 @@ public class FacultyModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public List list() throws ApplicationException {
 		return search(null, 0, 0);
 

@@ -43,6 +43,7 @@ public class CollegeModel {
 		return pk + 1;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public long add(CollegeBean bean) throws ApplicationException, DuplicateRecordException {
 
 		int pk = 0;
@@ -96,6 +97,7 @@ public class CollegeModel {
 		return pk;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void update(CollegeBean bean) throws ApplicationException, DuplicateRecordException {
 
 		Connection conn = null;
@@ -144,6 +146,7 @@ public class CollegeModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public void delete(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -178,6 +181,7 @@ public class CollegeModel {
 		}
 	}
 
+//------------------------------------------------------------------------------------------------
 	public CollegeBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -214,6 +218,7 @@ public class CollegeModel {
 		return bean;
 	}
 
+//------------------------------------------------------------------------------------------------
 	public CollegeBean findByName(String name) throws ApplicationException {
 		Connection conn = null;
 		CollegeBean bean = null;
@@ -251,6 +256,7 @@ public class CollegeModel {
 
 	}
 
+//-----------------------------------------------------------------------------------------------
 	public List list() throws ApplicationException {
 		return search(null, 0, 0);
 
@@ -272,8 +278,8 @@ public class CollegeModel {
 				}
 			}
 			if (pageSize > 0) {
-				pageNo = (pageNo) * pageSize;
-				sql.append(" limit " + pageNo + "," + pageSize);
+				pageNo = (pageNo - 1) * pageSize;
+				sql.append(" limit " + pageNo + ", " + pageSize);
 			}
 			System.out.println("sql==>" + sql);
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());

@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.bean.BaseBean;
+import in.co.rays.controller.BaseCtl;
 
 public class ServletUtility {
 
-	
 	public static void forward(String page, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		RequestDispatcher rd = request.getRequestDispatcher(page);
@@ -43,31 +43,31 @@ public class ServletUtility {
 		}
 	}
 
-//	public static void setErrorMessage(String msg, HttpServletRequest request) {
-//		request.setAttribute(BaseCtl.MSG_ERROR, msg);
-//	}
-//
-//	public static String getErrorMessage(HttpServletRequest request) {
-//		String val = (String) request.getAttribute(BaseCtl.MSG_ERROR);
-//		if (val == null) {
-//			return "";
-//		} else {
-//			return val;
-//		}
-//	}
-//
-//	public static void setSuccessMessage(String msg, HttpServletRequest request) {
-//		request.setAttribute(BaseCtl.MSG_SUCCESS, msg);
-//	}
-//
-//	public static String getSuccessMessage(HttpServletRequest request) {
-//		String val = (String) request.getAttribute(BaseCtl.MSG_SUCCESS);
-//		if (val == null) {
-//			return "";
-//		} else {
-//			return val;
-//		}
-//	}
+	public static void setErrorMessage(String msg, HttpServletRequest request) {
+		request.setAttribute(BaseCtl.MSG_ERROR, msg);
+	}
+
+	public static String getErrorMessage(HttpServletRequest request) {
+		String val = (String) request.getAttribute(BaseCtl.MSG_ERROR);
+		if (val == null) {
+			return "";
+		} else {
+			return val;
+		}
+	}
+
+	public static void setSuccessMessage(String msg, HttpServletRequest request) {
+		request.setAttribute(BaseCtl.MSG_SUCCESS, msg);
+	}
+
+	public static String getSuccessMessage(HttpServletRequest request) {
+		String val = (String) request.getAttribute(BaseCtl.MSG_SUCCESS);
+		if (val == null) {
+			return "";
+		} else {
+			return val;
+		}
+	}
 
 	public static void setBean(BaseBean bean, HttpServletRequest request) {
 		request.setAttribute("bean", bean);

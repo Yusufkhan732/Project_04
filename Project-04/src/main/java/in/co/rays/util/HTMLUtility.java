@@ -33,7 +33,6 @@ public class HTMLUtility {
 
 	public static String getList(String name, String selectedVal, List list) {
 
-
 		List<DropdownListBean> dd = (List<DropdownListBean>) list;
 
 		StringBuffer sb = new StringBuffer("<select style=\"width: 170px;text-align-last: center;\"; "
@@ -83,8 +82,11 @@ public class HTMLUtility {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// testGetListByMap();
 
+		// Static Dropdown
+		// testGetListByMap();//
+
+		// Dynamic Dropdown
 		testGetListByList();
 	}
 }

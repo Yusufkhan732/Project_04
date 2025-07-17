@@ -17,7 +17,7 @@ public class TestCourseModel {
 		// testDelete();
 		// testfindByPk();
 		// testfindByName();
-		 testsearch();
+		// testsearch();
 	}
 
 	private static void testNextPK() throws Exception {
@@ -35,7 +35,7 @@ public class TestCourseModel {
 
 		CourseModel model = new CourseModel();
 
-		bean.setName("MCA");
+		bean.setName("CA");
 		bean.setDuration("2 year");
 		bean.setDescription("Economic");
 		bean.setCreatedBy("root");
@@ -49,14 +49,14 @@ public class TestCourseModel {
 	private static void testDelete() throws Exception {
 
 		CourseModel model = new CourseModel();
-		model.delete(1);
+		model.delete(111);
 
 	}
 
 	private static void testfindByPk() throws Exception {
 		CourseModel model = new CourseModel();
 
-		CourseBean bean = model.findByPk(1);
+		CourseBean bean = model.findByPk(103);
 
 		if (bean != null) {
 			System.out.print(bean.getId());
@@ -75,7 +75,7 @@ public class TestCourseModel {
 	private static void testfindByName() throws Exception {
 		CourseModel model = new CourseModel();
 
-		CourseBean bean = model.findByName("B.tech");
+		CourseBean bean = model.findByName("BBA");
 
 		if (bean != null) {
 			System.out.print(bean.getId());
@@ -98,7 +98,7 @@ public class TestCourseModel {
 
 		CourseModel model = new CourseModel();
 
-		List list = model.search(bean, 1, 4);
+		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();
 
