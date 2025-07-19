@@ -6,6 +6,7 @@ import java.util.Set;
 
 import in.co.rays.bean.DropdownListBean;
 import in.co.rays.model.RoleModel;
+import in.co.rays.model.UserModel;
 
 public class HTMLUtility {
 
@@ -33,12 +34,15 @@ public class HTMLUtility {
 
 	public static String getList(String name, String selectedVal, List list) {
 
+		// Collections.sort(list);
+
 		List<DropdownListBean> dd = (List<DropdownListBean>) list;
 
 		StringBuffer sb = new StringBuffer("<select style=\"width: 170px;text-align-last: center;\"; "
 				+ "class='form-control' name='" + name + "'>");
 
 		sb.append("\n<option selected value=''>-------------Select-------------</option>");
+
 		String key = null;
 		String val = null;
 
@@ -70,23 +74,24 @@ public class HTMLUtility {
 
 	public static void testGetListByList() throws Exception {
 
-		RoleModel model = new RoleModel();
+		// RoleModel model = new RoleModel();
 
-		List<DropdownListBean> list = model.list();
+		UserModel model = new UserModel();
+
+		List<DropdownListBean> list = null;
 
 		String selectedValue = null;
 
-		String htmlSelectFromList = HTMLUtility.getList("fname", selectedValue, list);
+		String htmlSelectFromList = HTMLUtility.getList("name", selectedValue, list);
 
 		System.out.println(htmlSelectFromList);
 	}
 
 	public static void main(String[] args) throws Exception {
 
-		// Static Dropdown
-		// testGetListByMap();//
+		// testGetListByMap();
 
-		// Dynamic Dropdown
 		testGetListByList();
+
 	}
 }

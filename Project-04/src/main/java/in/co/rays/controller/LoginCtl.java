@@ -73,7 +73,7 @@ public class LoginCtl extends BaseCtl {
 		if (OP_LOG_OUT.equals(op)) {
 
 			session.invalidate();
-			ServletUtility.setSuccessMessage("Logout Successful", request);
+			ServletUtility.setSuccessMessage("Logout Successful..!!", request);
 			ServletUtility.forward(getView(), request, response);
 		}
 		ServletUtility.forward(getView(), request, response);
@@ -87,34 +87,34 @@ public class LoginCtl extends BaseCtl {
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		UserModel model = new UserModel();
-		
+
 		RoleModel role = new RoleModel();
-		
+
 		if (OP_SIGN_IN.equalsIgnoreCase(op)) {
 
 			UserBean bean = (UserBean) populateBean(request);
 			try {
-				
+
 				bean = model.authenticate(bean.getLogin(), bean.getPassword());
 				if (bean != null) {
-					
+
 					session.setAttribute("user", bean);
 
 					RoleBean roleBean = role.findByPk(bean.getRoleId());
-					
+
 					if (roleBean != null) {
-						
+
 						session.setAttribute("role", roleBean.getName());
 
 					}
 					ServletUtility.redirect(ORSView.WELCOME_CTL, request, response);
+					ServletUtility.setSuccessMessage(" User Login Succesfully...!!", request);
 					return;
 
 				} else {
-					
+
 					bean = (UserBean) populateBean(request);
 					ServletUtility.setBean(bean, request);
-					ServletUtility.setErrorMessage("Invalid LoginId And Password", request);
 				}
 
 			} catch (Exception e) {
@@ -123,7 +123,7 @@ public class LoginCtl extends BaseCtl {
 			}
 
 		} else if (OP_SIGN_UP.equalsIgnoreCase(op)) {
-			
+
 			ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);
 			return;
 
@@ -136,34 +136,15 @@ public class LoginCtl extends BaseCtl {
 
 		return ORSView.LOGIN_VIEW;
 	}
-	
-	/*
-	 *[Login.jsp Form Submit]
-        ↓
-[LoginCtl.service()]
-        ↓
-[get operation param]
-        ↓
-[validate()]
-  ↓     ↘
- fail   pass
-  ↓       ↓
-[forward to login]      [populateBean()]
-                            ↓
-                       [doPost()]
-                            ↓
-             ┌──────────┴────────────┐
-         [Sign In]              [Sign Up]
-            ↓                       ↓
-[UserModel.authenticate()]    [Redirect to]
-            ↓                 [UserRegistrationCtl]
-   ┌────────┴──────┐
-[User == null]   [User Found]
-     ↓                 ↓
-[Set error msg]   [Save user in session]
-[forward]         [Get Role from RoleModel]
-                 [Save role in session]
-                 [Redirect to WelcomeCtl]
 
+	/*
+	 * [Login.jsp Form Submit] ↓ [LoginCtl.service()] ↓ [get operation param] ↓
+	 * [validate()] ↓ ↘ fail pass ↓ ↓ [forward to login] [populateBean()] ↓
+	 * [doPost()] ↓ ┌──────────┴────────────┐ [Sign In] [Sign Up] ↓ ↓
+	 * [UserModel.authenticate()] [Redirect to] ↓ [UserRegistrationCtl]
+	 * ┌────────┴──────┐ [User == null] [User Found] ↓ ↓ [Set error msg] [Save user
+	 * in session] [forward] [Get Role from RoleModel] [Save role in session]
+	 * [Redirect to WelcomeCtl]
+	 * 
 	 */
 }

@@ -43,8 +43,6 @@ public abstract class BaseCtl extends HttpServlet {
 
 	protected void preload(HttpServletRequest request) {
 
-		System.out.println("BaseCtl perload called");
-
 	}
 
 	protected BaseBean populateBean(HttpServletRequest request) {
@@ -94,6 +92,8 @@ public abstract class BaseCtl extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("service method");
+
+		preload(request);
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 		System.out.println(op);

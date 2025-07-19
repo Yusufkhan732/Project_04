@@ -47,6 +47,9 @@ public class RoleModel {
 
 //-----------------------------------------------------------------------------------------------
 	public long add(RoleBean bean) throws Exception {
+		
+		Connection conn = null;
+		int pk = 0;
 
 		RoleBean existBean = findByName(bean.getName());
 
@@ -56,12 +59,10 @@ public class RoleModel {
 
 		}
 
-		int pk = nextPk();
-
-		Connection conn = null;
 		try {
 
-			JDBCDataSource.getConnection();
+			pk = nextPk();
+		conn=	JDBCDataSource.getConnection();
 
 			conn.setAutoCommit(false);
 
@@ -76,12 +77,11 @@ public class RoleModel {
 			pstmt.setTimestamp(7, bean.getCreatedDatetime());
 
 			int i = pstmt.executeUpdate();
-
+			System.out.println("Data Inserted:=" + i);
 			conn.commit();
 
-			System.out.println("Data Inserted:=" + i);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 			try {
 				conn.rollback();
 

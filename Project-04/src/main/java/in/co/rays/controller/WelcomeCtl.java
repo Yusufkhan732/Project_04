@@ -15,14 +15,14 @@ public class WelcomeCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("khan");
+
 		ServletUtility.forward(getView(), request, response);
 
 	}
 
 	@Override
 	protected String getView() {
-		System.out.println("shdhdh");
+
 		return ORSView.WELCOME_VIEW;
 	}
 }

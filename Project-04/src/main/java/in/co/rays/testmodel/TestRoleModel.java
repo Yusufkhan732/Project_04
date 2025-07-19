@@ -14,16 +14,16 @@ public class TestRoleModel {
 		// testadd();
 		// testupdate();
 		// testdelete();
-		 testfindbypk();
+		// testfindbypk();
 		// testFindByName();
-		//testserch();
+		testserch();
 	}
 
 	public static void testadd() throws Exception {
 
 		RoleBean bean = new RoleBean();
-		bean.setName("Faculty");
-		bean.setDescription("Faculty");
+		bean.setName("Subject");
+		bean.setDescription("Subject");
 		bean.setCreatedBy("admin@gmail.com");
 		bean.setModifiedBy("admin@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
