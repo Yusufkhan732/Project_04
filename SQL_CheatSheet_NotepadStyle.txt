@@ -1,0 +1,106 @@
+
+SQL CRUD & BASIC COMMANDS - Notepad Style Reference
+
+----------------------------------------------------
+1. CREATE TABLE
+----------------------------------------------------
+CREATE TABLE st_yusuf (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    city VARCHAR(100)
+);
+-- Creates a new table with columns
+
+----------------------------------------------------
+2. INSERT INTO
+----------------------------------------------------
+INSERT INTO st_yusuf (id, name, city)
+VALUES (1, 'Yusuf', 'Delhi');
+-- Adds a new row into the table
+
+----------------------------------------------------
+3. SELECT (Read Data)
+----------------------------------------------------
+SELECT * FROM st_yusuf;
+-- Selects all rows from the table
+
+SELECT name, city FROM st_yusuf;
+-- Selects specific columns
+
+----------------------------------------------------
+4. UPDATE
+----------------------------------------------------
+UPDATE st_yusuf
+SET city = 'Mumbai'
+WHERE id = 1;
+-- Updates city for record where id = 1
+
+----------------------------------------------------
+5. DELETE
+----------------------------------------------------
+DELETE FROM st_yusuf
+WHERE id = 1;
+-- Deletes row where id = 1
+
+----------------------------------------------------
+6. ALTER TABLE (Add Column)
+----------------------------------------------------
+ALTER TABLE st_yusuf
+ADD age INT;
+-- Adds a new column 'age' to the table
+
+----------------------------------------------------
+7. DROP TABLE
+----------------------------------------------------
+DROP TABLE st_yusuf;
+-- Deletes the entire table (structure + data)
+
+----------------------------------------------------
+8. TRUNCATE TABLE
+----------------------------------------------------
+TRUNCATE TABLE st_yusuf;
+-- Deletes all data but keeps the table structure
+
+----------------------------------------------------
+9. WHERE Clause
+----------------------------------------------------
+SELECT * FROM st_yusuf WHERE city = 'Delhi';
+-- Filters rows with city = 'Delhi'
+
+----------------------------------------------------
+10. ORDER BY
+----------------------------------------------------
+SELECT * FROM st_yusuf ORDER BY name ASC;
+-- Sorts data by name in ascending order
+
+----------------------------------------------------
+11. GROUP BY + Aggregate
+----------------------------------------------------
+SELECT city, COUNT(*) FROM st_yusuf GROUP BY city;
+-- Groups by city and counts records
+
+----------------------------------------------------
+12. INNER JOIN (Basic Join)
+----------------------------------------------------
+SELECT a.id, a.name, b.city_name
+FROM st_yusuf a
+INNER JOIN cities b ON a.city = b.city_id;
+-- Joins two tables on matching column
+
+----------------------------------------------------
+13. LIKE (Pattern Match)
+----------------------------------------------------
+SELECT * FROM st_yusuf WHERE name LIKE 'Y%';
+-- Name starts with 'Y'
+
+----------------------------------------------------
+14. IN Clause
+----------------------------------------------------
+SELECT * FROM st_yusuf WHERE city IN ('Delhi', 'Mumbai');
+-- Filters rows where city is Delhi or Mumbai
+
+----------------------------------------------------
+15. BETWEEN Clause
+----------------------------------------------------
+SELECT * FROM st_yusuf WHERE age BETWEEN 18 AND 25;
+-- Filters rows where age is between 18 and 25
