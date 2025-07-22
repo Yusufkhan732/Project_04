@@ -15,11 +15,11 @@ public class TestUserModel {
 
 	public static void main(String[] args) throws Exception {
 		// testnextPk();
-		//testAdd();
-		 testupdate();
+		// testAdd();
+		// testupdate();
 		// testdelete();
-		 //testFindbyPk();
-		//testsearch();
+		// testFindbyPk();
+		 testsearch();
 	}
 
 	public static void testnextPk() throws Exception {
@@ -43,7 +43,7 @@ public class TestUserModel {
 		bean.setLastName("khan");
 		bean.setLogin("anas@gmail.com");
 		bean.setPassword("pass123");
-	//	bean.setConfirmPassword("Ak567");
+		// bean.setConfirmPassword("Ak567");
 		bean.setDob(sdf.parse("2025-07-07"));
 		bean.setMobileNo("9145678990");
 		bean.setRoleId(3);
@@ -66,7 +66,7 @@ public class TestUserModel {
 		bean.setLastName("meena");
 		bean.setLogin("mohit@gmail.com");
 		bean.setPassword("pass123");
-		//bean.setConfirmPassword("MH7777");
+		// bean.setConfirmPassword("MH7777");
 		bean.setDob(new Date());
 		bean.setMobileNo("9145678990");
 		bean.setRoleId(2);
@@ -83,7 +83,10 @@ public class TestUserModel {
 
 		UserModel model = new UserModel();
 
-		model.delete(2);
+		UserBean bean = new UserBean();
+
+		model.delete(bean);
+
 	}
 
 	public static void testFindbyPk() throws Exception {
@@ -143,7 +146,7 @@ public class TestUserModel {
 		UserBean bean = new UserBean();
 
 		UserModel model = new UserModel();
-
+		//bean.setLogin("riya.mehta@example.com");
 		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();

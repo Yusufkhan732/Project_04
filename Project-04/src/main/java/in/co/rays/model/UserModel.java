@@ -154,7 +154,7 @@ public class UserModel {
 	}
 //---------------------------------------------------------------------------------------------
 
-	public void delete(long id) throws ApplicationException {
+	public void delete(UserBean bean) throws ApplicationException {
 
 		Connection conn = null;
 
@@ -165,7 +165,7 @@ public class UserModel {
 
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_user where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
 
@@ -329,6 +329,10 @@ public class UserModel {
 		if (bean != null) {
 			if (bean.getFirstName() != null && bean.getFirstName().length() > 0) {
 				sql.append(" and first_name like '" + bean.getFirstName() + "%'");
+			}
+			if (bean.getLogin() != null && bean.getLogin().length() > 0) {
+				sql.append(" and login like '" + bean.getLogin() + "%'");
+
 			}
 			if (bean.getDob() != null && bean.getDob().getTime() > 0) {
 				sql.append(" and dob like '" + new java.sql.Date(bean.getDob().getTime()) + "%'");

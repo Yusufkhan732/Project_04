@@ -20,7 +20,7 @@ public class TestCollegeModel {
 		// testupadte();
 		// testdelete();
 		// testfindByPk();
-		// testfindByName();
+		 //testfindByName();
 		testsearch();
 
 	}
@@ -117,7 +117,7 @@ public class TestCollegeModel {
 		CollegeModel model = new CollegeModel();
 		CollegeBean bean = new CollegeBean();
 
-		// bean.setName("CDGI Indore");
+		 bean.setName("MITS Gwalior");
 		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();
