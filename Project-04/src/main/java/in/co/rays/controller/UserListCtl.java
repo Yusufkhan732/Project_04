@@ -29,6 +29,7 @@ public class UserListCtl extends BaseCtl {
 			List roleList = model.list();
 
 			request.setAttribute("roleList", roleList);
+			System.out.println("Child Preload");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,23 +42,26 @@ public class UserListCtl extends BaseCtl {
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
 		bean.setLogin(DataUtility.getString(request.getParameter("login")));
 		bean.setRoleId(DataUtility.getLong(request.getParameter("roleId")));
-
+		System.out.println("bean Method");
 		return bean;
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		System.out.println("do get");
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 		UserBean bean = (UserBean) populateBean(request);
 		UserModel model = new UserModel();
 
 		try {
+			
 			List<UserBean> list = model.search(bean, pageNo, pageSize);
+			System.out.println("list");
 			List<UserBean> next = model.search(bean, pageNo + 1, pageSize);
-
+			System.out.println("next");
+			
 			if (list == null || list.isEmpty()) {
 				ServletUtility.setSuccessMessage("no record found", request);
 			}
@@ -66,7 +70,7 @@ public class UserListCtl extends BaseCtl {
 			ServletUtility.setPageSize(pageSize, request);
 			request.setAttribute("nextListSize", next.size());
 			ServletUtility.forward(getView(), request, response);
-
+			System.out.println("Forward");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,25 +85,26 @@ public class UserListCtl extends BaseCtl {
 
 		int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
 		int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
-
+		System.out.println("dono get hogaye");
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		pageSize = (pageSize == 0) ? DataUtility.getInt(PropertyReader.getValue("page.size")) : pageSize;
-
+		System.out.println("pageSize");
 		UserBean bean = (UserBean) populateBean(request);
 		UserModel model = new UserModel();
 
 		String op = DataUtility.getString(request.getParameter("operation"));
+		System.out.println(op + "operation");
 		String[] ids = request.getParameterValues("ids");
 
 		try {
 
-			if (OP_SEARCH.equalsIgnoreCase(op) || "Next".equalsIgnoreCase(op) || "Previous".equalsIgnoreCase(op)) {
+			if (OP_SEARCH.equalsIgnoreCase(op) || OP_NEXT.equalsIgnoreCase(op) || OP_PREVIOUS.equalsIgnoreCase(op)) {
 
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
 
 					pageNo = 1;
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
-
+					System.out.println("next");
 					pageNo++;
 				} else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
 					pageNo--;

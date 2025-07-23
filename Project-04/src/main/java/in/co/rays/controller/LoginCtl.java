@@ -31,7 +31,8 @@ public class LoginCtl extends BaseCtl {
 
 		boolean pass = true;
 
-		String op = request.getParameter("operation");
+		String op = DataUtility.getString(request.getParameter("operation"));
+		
 		if (OP_SIGN_UP.equalsIgnoreCase(op) || OP_LOG_OUT.equalsIgnoreCase(op)) {
 			return pass;
 		}
@@ -115,6 +116,7 @@ public class LoginCtl extends BaseCtl {
 
 					bean = (UserBean) populateBean(request);
 					ServletUtility.setBean(bean, request);
+					ServletUtility.setErrorMessage("Invalid login Password", request);
 				}
 
 			} catch (Exception e) {
@@ -137,14 +139,4 @@ public class LoginCtl extends BaseCtl {
 		return ORSView.LOGIN_VIEW;
 	}
 
-	/*
-	 * [Login.jsp Form Submit] ↓ [LoginCtl.service()] ↓ [get operation param] ↓
-	 * [validate()] ↓ ↘ fail pass ↓ ↓ [forward to login] [populateBean()] ↓
-	 * [doPost()] ↓ ┌──────────┴────────────┐ [Sign In] [Sign Up] ↓ ↓
-	 * [UserModel.authenticate()] [Redirect to] ↓ [UserRegistrationCtl]
-	 * ┌────────┴──────┐ [User == null] [User Found] ↓ ↓ [Set error msg] [Save user
-	 * in session] [forward] [Get Role from RoleModel] [Save role in session]
-	 * [Redirect to WelcomeCtl]
-	 * 
-	 */
 }

@@ -42,6 +42,7 @@ public abstract class BaseCtl extends HttpServlet {
 	}
 
 	protected void preload(HttpServletRequest request) {
+		System.out.println("ParentPreload");
 
 	}
 
@@ -96,12 +97,11 @@ public abstract class BaseCtl extends HttpServlet {
 		preload(request);
 
 		String op = DataUtility.getString(request.getParameter("operation"));
-		System.out.println(op);
+		System.out.println("operation");
 
 		if (DataValidator.isNotNull(op) && !OP_CANCEL.equalsIgnoreCase(op) && !OP_VIEW.equalsIgnoreCase(op)
 
 				&& !OP_DELETE.equalsIgnoreCase(op) && !OP_RESET.equalsIgnoreCase(op)) {
-			System.out.println("upside validate");
 
 			if (!validate(request)) {
 
@@ -111,8 +111,9 @@ public abstract class BaseCtl extends HttpServlet {
 
 			}
 		}
-
+		System.out.println("SuperService");
 		super.service(request, response);
+		
 	}
 
 	protected abstract String getView();

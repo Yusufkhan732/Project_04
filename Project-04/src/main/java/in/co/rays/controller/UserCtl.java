@@ -30,13 +30,11 @@ public class UserCtl extends BaseCtl {
 
 		try {
 			List<RoleBean> roleList = model.list();
-			System.out.println();
+			System.out.println("rolelist");
 			request.setAttribute("roleList", roleList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("wnaikasndkwsnka");
 	}
 
 	@Override
@@ -234,7 +232,7 @@ public class UserCtl extends BaseCtl {
 				ServletUtility.setErrorMessage("Login Id already exists", request);
 			}
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
-			
+
 			ServletUtility.redirect(ORSView.USER_CTL, request, response);
 			return;
 
