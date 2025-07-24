@@ -25,6 +25,18 @@
 	<b>|</b>
 	<a href="UserListCtl"><b>User List</b></a>
 	<b>|</b>
+	<a href="RoleCtl">Add Role</a>
+	<b>|</b>
+	<a href="RoleListCtl">Role List</a>
+	<b>|</b>
+	<a href="CollegeCtl">Add College</a>
+	<b>|</b>
+	<a href="CollegeListCtl">College List</a>
+	<b>|</b>
+	<a href="StudentCtl">Add Student</a>
+	<b>|</b>
+	<a href="StudentListCtl">Student List</a>
+	<b>|</b>
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%
 		} else {

@@ -70,7 +70,7 @@ public class UserCtl extends BaseCtl {
 			pass = false;
 
 		} else if (!DataValidator.isEmail(login)) {
-			request.setAttribute("login", PropertyReader.getValue("error.email", "Login "));
+			request.setAttribute("login", "Invalid login Id");
 			pass = false;
 		}
 
@@ -202,7 +202,7 @@ public class UserCtl extends BaseCtl {
 				long pk = model.add(bean);
 				bean.setId(pk);
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data is successfully saved", request);
+				ServletUtility.setSuccessMessage("Data is Successfully Saved", request);
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 				return;
@@ -249,3 +249,23 @@ public class UserCtl extends BaseCtl {
 		return ORSView.USER_VIEW;
 	}
 }
+
+/*
+ * 🔽 🔸 UserView.jsp Form - <form method="post" action="UserCtl"> - <input
+ * name="firstName"> - <input type="submit" name="operation" value="Save"> 🔽 🔸
+ * Browser sends POST request → /UserCtl 🔽 🔸 BaseCtl.service(request,
+ * response)
+ * 
+ * ➤ op = request.getParameter("operation")
+ * 
+ * ➤ if (op is not CANCEL, DELETE, VIEW, RESET): 🔹 validate(request) | ├──
+ * false: // validation fail | └── populateBean(request) | └── setBean(bean) |
+ * └── forward(getView()) → form reload with error | └── true: // validation
+ * passed 🔽
+ * 
+ * 🔸 super.service(...) → calls UserCtl.doPost()
+ * 
+ * ➤ if (op.equalsIgnoreCase("Save")): 🔹 populateBean(request) 🔹
+ * model.add(bean) 🔹 setSuccessMessage 🔹 forward(getView()) → form reload with
+ * success
+ */

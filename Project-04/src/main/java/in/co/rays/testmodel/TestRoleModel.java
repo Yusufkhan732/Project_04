@@ -15,8 +15,8 @@ public class TestRoleModel {
 		// testupdate();
 		// testdelete();
 		// testfindbypk();
-		// testFindByName();
-		testserch();
+	//	testFindByName();
+		 testserch();
 	}
 
 	public static void testadd() throws Exception {
@@ -55,8 +55,8 @@ public class TestRoleModel {
 	public static void testdelete() throws Exception {
 
 		RoleModel model = new RoleModel();
-
-		model.delete(2);
+		RoleBean bean = new RoleBean();
+		model.delete(bean);
 
 	}
 
@@ -104,7 +104,7 @@ public class TestRoleModel {
 		RoleModel model = new RoleModel();
 
 		RoleBean bean = new RoleBean();
-
+		bean.setName("Student");
 		List list = model.search(bean, 1, 4);
 
 		Iterator it = list.iterator();

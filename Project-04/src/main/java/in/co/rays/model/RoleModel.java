@@ -9,6 +9,7 @@ import java.util.List;
 
 import in.co.rays.bean.CourseBean;
 import in.co.rays.bean.RoleBean;
+import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
 import in.co.rays.exception.DuplicateRecordException;
@@ -46,8 +47,8 @@ public class RoleModel {
 	}
 
 //-----------------------------------------------------------------------------------------------
-	public long add(RoleBean bean) throws Exception {
-		
+	public long add(RoleBean bean) throws DuplicateRecordException, ApplicationException {
+
 		Connection conn = null;
 		int pk = 0;
 
@@ -62,7 +63,7 @@ public class RoleModel {
 		try {
 
 			pk = nextPk();
-		conn=	JDBCDataSource.getConnection();
+			conn = JDBCDataSource.getConnection();
 
 			conn.setAutoCommit(false);
 
@@ -100,7 +101,7 @@ public class RoleModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void update(RoleBean bean) throws Exception {
+	public void update(RoleBean bean) throws DuplicateRecordException, ApplicationException {
 
 		RoleBean existbBean = findByName(bean.getName());
 
@@ -151,7 +152,7 @@ public class RoleModel {
 	}
 
 //-----------------------------------------------------------------------------------------------
-	public void delete(long id) throws Exception {
+	public void delete(RoleBean bean) throws ApplicationException {
 		Connection conn = null;
 
 		try {
@@ -161,7 +162,7 @@ public class RoleModel {
 
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_role where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
 
@@ -189,7 +190,7 @@ public class RoleModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public RoleBean findByPk(long id) throws Exception {
+	public RoleBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
 		RoleBean bean = null;
@@ -227,7 +228,7 @@ public class RoleModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public RoleBean findByName(String name) throws Exception {
+	public RoleBean findByName(String name) throws ApplicationException {
 		Connection conn = null;
 		RoleBean bean = null;
 
@@ -268,7 +269,7 @@ public class RoleModel {
 		return search(null, 0, 0);
 	}
 
-	public List search(RoleBean bean, int pageNo, int pageSize) throws Exception {
+	public List search(RoleBean bean, int pageNo, int pageSize) throws ApplicationException {
 
 		Connection conn = null;
 
@@ -282,8 +283,9 @@ public class RoleModel {
 
 			if (bean != null) {
 				if (bean.getName() != null && bean.getName().length() > 0) {
-					sql.append(" and first_name like '" + bean.getName() + "%'");
+					sql.append(" and name like '" + bean.getName() + "%'");
 				}
+
 			}
 
 			if (pageSize > 0) {
