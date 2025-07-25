@@ -20,7 +20,7 @@ public class TestCollegeModel {
 		// testupadte();
 		// testdelete();
 		// testfindByPk();
-		 //testfindByName();
+		// testfindByName();
 		testsearch();
 
 	}
@@ -70,7 +70,8 @@ public class TestCollegeModel {
 
 	private static void testdelete() throws ApplicationException {
 		CollegeModel model = new CollegeModel();
-		model.delete(11);
+		CollegeBean bean = new CollegeBean();
+		model.delete(bean);
 	}
 
 	private static void testfindByPk() throws ApplicationException {
@@ -117,7 +118,7 @@ public class TestCollegeModel {
 		CollegeModel model = new CollegeModel();
 		CollegeBean bean = new CollegeBean();
 
-		 bean.setName("MITS Gwalior");
+		bean.setName("MITS Gwalior");
 		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();

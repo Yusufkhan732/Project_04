@@ -30,10 +30,11 @@ public class StudentCtl extends BaseCtl {
 
 		try {
 
-			List<CollegeBean> collegeList = model.list();
+			List collegeList = model.list();
 			request.setAttribute("collegeList", collegeList);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return;
 		}
 	}
 
@@ -115,7 +116,6 @@ public class StudentCtl extends BaseCtl {
 		bean.setMobileNo(DataUtility.getString(request.getParameter("mobileNo")));
 		bean.setEmail(DataUtility.getString(request.getParameter("email")));
 		bean.setCollegeId(DataUtility.getLong(request.getParameter("collegeId")));
-		bean.setCollegeName(DataUtility.getString(request.getParameter("collegeName")));
 		populateDTO(bean, request);
 
 		return bean;

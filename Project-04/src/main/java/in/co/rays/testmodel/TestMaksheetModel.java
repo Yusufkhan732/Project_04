@@ -63,7 +63,7 @@ public class TestMaksheetModel {
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
 		MarksheetModel model = new MarksheetModel();
-		model.upadte(bean);
+		model.update(bean);
 
 	}
 

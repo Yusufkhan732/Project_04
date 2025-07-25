@@ -147,7 +147,7 @@ public class CollegeModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void delete(long id) throws ApplicationException {
+	public void delete(CollegeBean bean) throws ApplicationException {
 
 		Connection conn = null;
 
@@ -158,7 +158,7 @@ public class CollegeModel {
 
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_college where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 			int i = pstmt.executeUpdate();
 			conn.commit();
 			System.out.println("Data Deleted:" + i);

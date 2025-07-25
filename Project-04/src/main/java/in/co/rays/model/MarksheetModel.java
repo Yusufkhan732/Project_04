@@ -46,7 +46,7 @@ public class MarksheetModel {
 		return pk + 1;
 	}
 
-	public long add(MarksheetBean bean) throws Exception {
+	public long add(MarksheetBean bean) throws DuplicateRecordException, ApplicationException {
 
 		StudentModel stmodel = new StudentModel();
 		StudentBean studentbean = stmodel.findByPk(bean.getStudentId());
@@ -101,7 +101,7 @@ public class MarksheetModel {
 		return pk;
 	}
 
-	public void upadte(MarksheetBean bean) throws Exception {
+	public void update(MarksheetBean bean) throws ApplicationException, DuplicateRecordException {
 
 		Connection conn = null;
 		StudentModel studentModel = new StudentModel();
