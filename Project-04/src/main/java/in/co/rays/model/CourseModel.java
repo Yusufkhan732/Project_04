@@ -40,7 +40,7 @@ public class CourseModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public long add(CourseBean bean) throws Exception {
+	public long add(CourseBean bean) throws ApplicationException, DuplicateRecordException ,Exception{
 
 		CourseBean exsitbBean = findByName(bean.getName());
 
@@ -96,7 +96,7 @@ public class CourseModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void update(CourseBean bean) throws Exception {
+	public void update(CourseBean bean) throws DuplicateRecordException, ApplicationException ,Exception {
 
 		CourseBean exitbBean = findByName(bean.getName());
 

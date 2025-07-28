@@ -12,12 +12,12 @@ public class TestMaksheetModel {
 
 	public static void main(String[] args) throws Exception {
 		// testNextPk();
-		// testadd();
+		 testadd();
 		// testupadte();
-		testDelete();
+		// testDelete();
 		// testFindByPk();
 		// testFindByRollNo();
-		// testSearch();
+		//testSearch();
 
 	}
 
@@ -32,8 +32,8 @@ public class TestMaksheetModel {
 	private static void testadd() throws Exception {
 		MarksheetBean bean = new MarksheetBean();
 
-		bean.setRollNo("110k");
-		bean.setStudentId(203);
+		bean.setRollNo("111k");
+		bean.setStudentId(11);
 		bean.setPhysics(67);
 		bean.setChemistry(78);
 		bean.setMaths(77);

@@ -46,7 +46,7 @@ public class SubjectModel {
 		return pk + 1;
 	}
 
-	public long add(SubjectBean bean) throws Exception {
+	public long add(SubjectBean bean) throws Exception  {
 
 		int pk = 0;
 		Connection conn = null;

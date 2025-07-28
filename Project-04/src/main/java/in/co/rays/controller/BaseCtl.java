@@ -108,12 +108,13 @@ public abstract class BaseCtl extends HttpServlet {
 				BaseBean bean = populateBean(request);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.forward(getView(), request, response);
+				return;
 
 			}
 		}
 		System.out.println("SuperService");
 		super.service(request, response);
-		
+
 	}
 
 	protected abstract String getView();

@@ -14,6 +14,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
+<body>
 <form action="<%=ORSView.STUDENT_CTL%>" method="POST">
 		<%@ include file="Header.jsp"%>
 

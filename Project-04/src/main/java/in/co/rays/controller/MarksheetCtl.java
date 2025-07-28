@@ -25,9 +25,11 @@ public class MarksheetCtl extends BaseCtl {
 	protected void preload(HttpServletRequest request) {
 		StudentModel model = new StudentModel();
 		try {
+
 			List studentList = model.list();
 			request.setAttribute("studentList", studentList);
 		} catch (ApplicationException e) {
+
 			e.printStackTrace();
 			return;
 		}
@@ -38,15 +40,14 @@ public class MarksheetCtl extends BaseCtl {
 
 		boolean pass = true;
 
-		if (DataValidator.isNull(request.getParameter("studentId"))) {
-			request.setAttribute("studentId", PropertyReader.getValue("error.require", "Student Name"));
-			pass = false;
-		}
-
 		if (DataValidator.isNull(request.getParameter("rollNo"))) {
 			request.setAttribute("rollNo", PropertyReader.getValue("error.require", "Roll Number"));
 			pass = false;
 
+			if (DataValidator.isNull(request.getParameter("studentId"))) {
+				request.setAttribute("studentId", PropertyReader.getValue("error.require", "Student Name"));
+				pass = false;
+			}
 		} else if (!DataValidator.isRollNo(request.getParameter("rollNo"))) {
 			request.setAttribute("rollNo", "Roll No is invalid");
 			pass = false;
@@ -94,11 +95,6 @@ public class MarksheetCtl extends BaseCtl {
 		} else if (DataUtility.getInt(request.getParameter("maths")) > 100
 				|| DataUtility.getInt(request.getParameter("maths")) < 0) {
 			request.setAttribute("maths", "Marks should be in 0 to 100");
-			pass = false;
-		}
-
-		if (DataValidator.isNull(request.getParameter("studentId"))) {
-			request.setAttribute("studentId", PropertyReader.getValue("error.require", "Student Name"));
 			pass = false;
 		}
 

@@ -37,6 +37,19 @@
 	<b>|</b>
 	<a href="StudentListCtl">Student List</a>
 	<b>|</b>
+	<a href="SubjectCtl">Add Subject</a>
+	<b>|</b>
+	<a href="SubjectListCtl">Subject List</a>
+	<b>|</b>
+	<a href="MarksheetCtl">Add Marksheet</a>
+	<b>|</b>
+	<a href="MarksheetListCtl">Marksheet List</a>
+	<b>|</b>
+	<b>|</b>
+	<a href="CourseCtl">Add Course</a>
+	<b>|</b>
+	<a href="CourseListCtl">Course List</a>
+	<b>|</b>
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%
 		} else {

@@ -35,27 +35,31 @@ public class HTMLUtility {
 	public static String getList(String name, String selectedVal, List list) {
 
 		// Collections.sort(list);
-
-		List<DropdownListBean> dd = (List<DropdownListBean>) list;
-
 		StringBuffer sb = new StringBuffer("<select style=\"width: 170px;text-align-last: center;\"; "
 				+ "class='form-control' name='" + name + "'>");
 
 		sb.append("\n<option selected value=''>-------------Select-------------</option>");
 
-		String key = null;
-		String val = null;
+		if (list != null && !list.isEmpty()) {
+			List<DropdownListBean> dd = (List<DropdownListBean>) list;
 
-		for (DropdownListBean obj : dd) {
-			key = obj.getKey();
-			val = obj.getValue();
+			String key = null;
+			String val = null;
 
-			if (key.trim().equals(selectedVal)) {
-				sb.append("\n<option selected value='" + key + "'>" + val + "</option>");
-			} else {
-				sb.append("\n<option value='" + key + "'>" + val + "</option>");
+			for (DropdownListBean obj : dd) {
+				key = obj.getKey();
+				val = obj.getValue();
+
+				if (key != null && key.trim().equals(selectedVal)) {
+					sb.append("\n<option selected value='" + key + "'>" + val + "</option>");
+				} else {
+					sb.append("\n<option value='" + key + "'>" + val + "</option>");
+				}
 			}
+		} else {
+			sb.append("\n<option value=''>-- No Data Available --</option>");
 		}
+
 		sb.append("\n</select>");
 		return sb.toString();
 	}
