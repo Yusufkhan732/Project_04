@@ -27,8 +27,13 @@ public class StudentCtl extends BaseCtl {
 	protected void preload(HttpServletRequest request) {
 		CollegeModel model = new CollegeModel();
 		try {
-			List collegeList = model.list();
-			request.setAttribute("collegeList", collegeList);
+
+			List<CollegeBean> list = model.list();
+			request.setAttribute("list", list);
+			if (list == null) {
+				System.out.println("null");
+
+			}
 		} catch (ApplicationException e) {
 			e.printStackTrace();
 			return;
@@ -87,7 +92,7 @@ public class StudentCtl extends BaseCtl {
 		if (DataValidator.isNull(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.require", "Date of Birth"));
 			pass = false;
-
+			
 		} else if (!DataValidator.isDate(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.date", "Date of Birth"));
 			pass = false;
@@ -168,7 +173,7 @@ public class StudentCtl extends BaseCtl {
 			StudentBean bean = (StudentBean) populateBean(request);
 			try {
 				if (bean.getId() > 0) {
-					model.upadte(bean);
+					model.update(bean);
 				}
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Student updated successfully", request);

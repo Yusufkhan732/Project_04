@@ -20,12 +20,12 @@ public class TestStudentModel {
 
 		//testadd();
 
-		// testupdate();
+		 testupdate();
 
 		// testfindByPk();
 
 		// testfinfemail();
-		 testsearch();
+		// testsearch();
 	}
 
 	private static void testNextPk() throws Exception {
@@ -36,17 +36,17 @@ public class TestStudentModel {
 		System.out.println("NextPk:= " + i);
 	}
 
-	private static void testadd() throws ParseException, ApplicationException, DuplicateRecordException {
+	private static void testadd() throws Exception, ApplicationException, DuplicateRecordException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StudentBean bean = new StudentBean();
-		bean.setFirstName("Mohit");
+		bean.setFirstName("krishna");
 		bean.setLastName("Meena");
 		bean.setDob(sdf.parse("2025-07-07"));
 		bean.setGender("male");
 		bean.setMobileNo("7648880088");
-		bean.setEmail("mohit@gmail.com");
-		bean.setCollegeId(1);
+		bean.setEmail("krishna@gmail.com");
+		bean.setCollegeId(3);
 		bean.setCreatedBy("admin@gmail.com");
 		bean.setModifiedBy("admin@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
@@ -57,25 +57,25 @@ public class TestStudentModel {
 
 	}
 
-	private static void testupdate() throws ParseException, ApplicationException, DuplicateRecordException {
+	private static void testupdate() throws Exception, ApplicationException, DuplicateRecordException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StudentBean bean = new StudentBean();
-		bean.setId(1);
-		bean.setFirstName("Akbar");
-		bean.setLastName("Mansuri");
+		bean.setId(13);
+		bean.setFirstName("Nusad");
+		bean.setLastName("khan");
 		bean.setDob(sdf.parse("2025-07-07"));
 		bean.setGender("male");
 		bean.setMobileNo("7648880088");
-		bean.setEmail("akbar@gmail.com");
-		bean.setCollegeId(1);
+		bean.setEmail("anas@gmail.com");
+		bean.setCollegeId(3);
 		bean.setCreatedBy("admin@gmail.com");
 		bean.setModifiedBy("admin@gmail.com");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
 		StudentModel model = new StudentModel();
-		model.upadte(bean);
+		model.update(bean);
 
 	}
 
@@ -138,7 +138,7 @@ public class TestStudentModel {
 
 		List list = model.search(bean, 0, 4);
 
-		 //List list = model.list();
+		// List list = model.list();
 
 		Iterator it = list.iterator();
 

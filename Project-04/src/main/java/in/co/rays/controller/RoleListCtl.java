@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.RoleBean;
+import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.model.RoleModel;
+import in.co.rays.model.UserModel;
 import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
@@ -25,8 +27,8 @@ public class RoleListCtl extends BaseCtl {
 		RoleModel model = new RoleModel();
 
 		try {
-			List Rolelist = model.list();
-			request.setAttribute("roleList", Rolelist);
+			List rolelist = model.list();
+			request.setAttribute("rolelist", rolelist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,7 +39,7 @@ public class RoleListCtl extends BaseCtl {
 
 		RoleBean bean = new RoleBean();
 		bean.setName(DataUtility.getString(request.getParameter("name")));
-		bean.setId(DataUtility.getLong(request.getParameter("id")));
+		bean.setId(DataUtility.getLong(request.getParameter("roleId")));
 
 		return bean;
 	}
@@ -80,13 +82,16 @@ public class RoleListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		List list = null;
 		List next = null;
 
 		int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
 		int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
+
 		pageNo = (pageNo == 0) ? 1 : pageNo;
 		pageSize = (pageSize == 0) ? DataUtility.getInt(PropertyReader.getValue("page.size")) : pageSize;
+
 		RoleBean bean = (RoleBean) populateBean(request);
 		RoleModel model = new RoleModel();
 
@@ -101,9 +106,8 @@ public class RoleListCtl extends BaseCtl {
 
 					pageNo = 1;
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
-					System.out.println("next");
 					pageNo++;
-					
+
 				} else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
 					pageNo--;
 				}
@@ -118,7 +122,7 @@ public class RoleListCtl extends BaseCtl {
 				pageNo = 1;
 				if (ids != null && ids.length > 0) {
 
-					RoleBean deletebean = new RoleBean();
+					UserBean deletebean = new UserBean();
 					for (String id : ids) {
 
 						deletebean.setId(DataUtility.getInt(id));

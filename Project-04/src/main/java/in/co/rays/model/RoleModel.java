@@ -271,30 +271,26 @@ public class RoleModel {
 
 	public List search(RoleBean bean, int pageNo, int pageSize) throws ApplicationException {
 
-		Connection conn = null;
+		StringBuffer sql = new StringBuffer("select * from st_role where 1=1");
 
+		if (bean != null) {
+			if (bean.getId() > 0) {
+				sql.append(" and id = " + bean.getId());
+			}
+		}
+
+		if (pageSize > 0) {
+			pageNo = (pageNo - 1) * pageSize;
+			sql.append(" limit " + pageNo + ", " + pageSize);
+		}
+
+		System.out.println("sql ==>> " + sql.toString());
+
+		Connection conn = null;
 		List list = new ArrayList();
 
 		try {
-
 			conn = JDBCDataSource.getConnection();
-
-			StringBuffer sql = new StringBuffer("select * from st_role where 1=1");
-
-			if (bean != null) {
-				if (bean.getName() != null && bean.getName().length() > 0) {
-					sql.append(" and name like '" + bean.getName() + "%'");
-				}
-
-			}
-
-			if (pageSize > 0) {
-
-				pageNo = (pageNo - 1) * pageSize;
-				sql.append(" limit " + pageNo + "," + pageSize);
-			}
-
-			System.out.println("sql ==>> " + sql.toString());
 
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 
@@ -312,6 +308,7 @@ public class RoleModel {
 				list.add(bean);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 
 			throw new ApplicationException("Exception: Exception in serach role" + e);
 

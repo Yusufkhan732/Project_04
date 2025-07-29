@@ -15,10 +15,10 @@ public class TestSubjectModel {
 		// nextPk();
 
 		// testadd();
-		// testupadte();
+		 testupadte();
 		// testdelete();
 		// testfindByPk();
-		testfindByName();
+		//testfindByName();
 		// testsearch();
 	}
 
@@ -50,7 +50,7 @@ public class TestSubjectModel {
 
 	private static void testupadte() throws Exception {
 		SubjectBean bean = new SubjectBean();
-		bean.setId(1);
+		bean.setId(11);
 		bean.setName("ITI");
 		bean.setCourseId(2);
 		bean.setDescription("ITI");
@@ -60,14 +60,15 @@ public class TestSubjectModel {
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
 		SubjectModel model = new SubjectModel();
-		model.upadte(bean);
+		model.update(bean);
 	}
 
 	private static void testdelete() throws ApplicationException {
 
 		SubjectModel model = new SubjectModel();
+		SubjectBean bean = new SubjectBean();
 
-		model.delete(1);
+		model.delete(bean);
 	}
 
 	private static void testfindByPk() throws ApplicationException {

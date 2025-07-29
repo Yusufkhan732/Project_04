@@ -1,15 +1,12 @@
 package in.co.rays.model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.co.rays.bean.CollegeBean;
-import in.co.rays.bean.FacultyBean;
 import in.co.rays.bean.StudentBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
@@ -109,7 +106,7 @@ public class StudentModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void upadte(StudentBean bean) throws ApplicationException, DuplicateRecordException {
+	public void update(StudentBean bean) throws ApplicationException, DuplicateRecordException {
 
 		Connection conn = null;
 
@@ -151,6 +148,7 @@ public class StudentModel {
 			conn.commit();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			try {
 				conn.rollback();
 

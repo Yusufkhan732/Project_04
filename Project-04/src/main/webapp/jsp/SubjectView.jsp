@@ -24,7 +24,7 @@
 		%>
 
 		<div align="center">
-			<h1 align="center" style="margin-bottom: -15; color: navy">
+			<h2 align="center" style="margin-bottom: -15; color: navy">
 				<%
 					if (bean != null && bean.getId() > 0) {
 				%>Update<%
@@ -32,8 +32,8 @@
 				%>Add<%
 					}
 				%>
-				Student
-			</h1>
+				Subject
+			</h2>
 
 			<div style="height: 15px; margin-bottom: 12px">
 				<H3 align="center">
@@ -71,14 +71,7 @@
 					<th align="left">Description<span style="color: red">*</span></th>
 					<td align="center"><textarea
 							style="width: 173px; resize: none;" name="description" rows="3"
-							placeholder="Enter Short description">
-							<%
-								if (bean != null && bean.getId() > 0) {
-							%><%=DataUtility.getStringData(bean.getDescription())%>
-							<%
-								}
-							%>
-						</textarea></td>
+							placeholder="Enter Short description"><%=DataUtility.getStringData(bean.getDescription())%></textarea>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("description", request)%></font></td>
 				</tr>
 				<tr>

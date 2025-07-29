@@ -84,7 +84,6 @@ public class CourseCtl extends BaseCtl {
 			throws ServletException, IOException {
 
 		String op = DataUtility.getString(request.getParameter("operation"));
-		long id = DataUtility.getLong(request.getParameter("id"));
 		CourseModel model = new CourseModel();
 
 		if (OP_SAVE.equalsIgnoreCase(op)) {
@@ -108,11 +107,11 @@ public class CourseCtl extends BaseCtl {
 			try {
 
 				if (bean.getId() > 0) {
-
-					model.update(bean);
-					ServletUtility.setBean(bean, request);
-					ServletUtility.setSuccessMessage("Data Successfully Update", request);
 				}
+				model.update(bean);
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setSuccessMessage("Data Successfully Update", request);
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 

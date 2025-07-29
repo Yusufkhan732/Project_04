@@ -18,7 +18,7 @@
 			ServletUtility.forward(ORSView.WELCOME_VIEW, request, response);
 		}
 	%>
-	<marquee behavior="alternate" scrollamount="100" loop="10">
+	<marquee behavior="alternate" scrollamount="200" loop="1">
 		<div align="center">
 			<img src="img/customLogo.jpg" align="middle" width="318" height="127"
 				border="0">
@@ -27,11 +27,10 @@
 
 	<br>
 	<br>
-	<marquee behavior="scroll" scrollamount="100" loop="50">
+	
 		<h1 align="center">
 			<font size="10px" color="red"> <a
 				href="<%=ORSView.WELCOME_CTL%>">Online Result System</a></font>
 		</h1>
-	</marquee>
 </body>
 </html>

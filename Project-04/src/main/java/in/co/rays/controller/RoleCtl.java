@@ -26,8 +26,9 @@ public class RoleCtl extends BaseCtl {
 		boolean isValid = true;
 
 		if (DataValidator.isNull(request.getParameter("name"))) {
-			request.setAttribute("name", PropertyReader.getValue("error.reqiure", "Name"));
+			request.setAttribute("name", PropertyReader.getValue("error.require", "Name"));
 			isValid = false;
+			
 		} else if (!DataValidator.isName(request.getParameter("name"))) {
 			request.setAttribute("name", "Invalid name");
 			isValid = false;
@@ -69,13 +70,13 @@ public class RoleCtl extends BaseCtl {
 			try {
 
 				bean = model.findByPk(id);
-
 				ServletUtility.setBean(bean, request);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
 			}
 		}
+		ServletUtility.forward(getView(), request, response);
 	}
 
 	@Override

@@ -104,7 +104,7 @@ public class TestRoleModel {
 		RoleModel model = new RoleModel();
 
 		RoleBean bean = new RoleBean();
-		bean.setName("Student");
+	//	bean.setName("Student");
 		List list = model.search(bean, 1, 4);
 
 		Iterator it = list.iterator();

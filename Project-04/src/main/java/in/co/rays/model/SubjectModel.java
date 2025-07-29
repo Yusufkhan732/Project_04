@@ -46,7 +46,7 @@ public class SubjectModel {
 		return pk + 1;
 	}
 
-	public long add(SubjectBean bean) throws Exception  {
+	public long add(SubjectBean bean) throws Exception {
 
 		int pk = 0;
 		Connection conn = null;
@@ -97,7 +97,7 @@ public class SubjectModel {
 		return pk;
 	}
 
-	public void upadte(SubjectBean bean) throws Exception {
+	public void update(SubjectBean bean) throws Exception {
 
 		Connection conn = null;
 		CourseModel courseModel = new CourseModel();
@@ -128,7 +128,7 @@ public class SubjectModel {
 			pstmt.setLong(9, bean.getId());
 
 			int i = pstmt.executeUpdate();
-			System.out.println("Data Inserted:" + i);
+			System.out.println("Data Updated:" + i);
 			conn.commit();
 
 		} catch (Exception e) {
@@ -148,7 +148,7 @@ public class SubjectModel {
 		}
 	}
 
-	public void delete(long id) throws ApplicationException {
+	public void delete(SubjectBean bean) throws ApplicationException {
 		Connection conn = null;
 
 		try {
@@ -158,10 +158,10 @@ public class SubjectModel {
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_subject where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
-
+			System.out.println("Data update");
 			conn.commit();
 
 		} catch (Exception e) {
@@ -262,26 +262,31 @@ public class SubjectModel {
 
 	public List search(SubjectBean bean, int pageNo, int pageSize) throws ApplicationException {
 
+		StringBuffer sql = new StringBuffer("select * from st_subject where 1=1");
+
+		if (bean != null) {
+
+			if (bean.getCourseId() > 0) {
+				sql.append(" and course_id = " + bean.getCourseId());
+			}
+
+			if (bean.getId() > 0) {
+				sql.append(" and id = " + bean.getId());
+			}
+		}
+		if (pageSize > 0) {
+			pageNo = (pageNo - 1) * pageSize;
+			sql.append(" limit " + pageNo + ", " + pageSize);
+		}
+
+		System.out.println("sql ==>> " + sql.toString());
+
 		Connection conn = null;
 		List list = new ArrayList();
 
 		try {
+
 			conn = JDBCDataSource.getConnection();
-
-			StringBuffer sql = new StringBuffer("select * from st_subject where 1=1");
-
-			if (bean != null) {
-				if (bean.getName() != null && bean.getName().length() > 0) {
-					sql.append(" and name like '" + bean.getName() + "%'");
-				}
-			}
-
-			if (pageSize > 0) {
-				pageNo = (pageNo - 1) * pageSize;
-				sql.append(" limit " + pageNo + ", " + pageSize);
-			}
-
-			System.out.println("sql ==>> " + sql.toString());
 
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 

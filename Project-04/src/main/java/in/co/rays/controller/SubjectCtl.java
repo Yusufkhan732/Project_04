@@ -45,19 +45,18 @@ public class SubjectCtl extends BaseCtl {
 		if (DataValidator.isNull(request.getParameter("name"))) {
 			request.setAttribute("name", PropertyReader.getValue("error.require", "SubjectName"));
 			isValid = false;
+		}
+		if (DataValidator.isNull(request.getParameter("courseId"))) {
+			request.setAttribute("courseId", PropertyReader.getValue("error.require", "CourseName"));
+			isValid = false;
+		}
 
-			if (DataValidator.isNull(request.getParameter("courseName"))) {
-				request.setAttribute("courseName", PropertyReader.getValue("error.require", "CourseName"));
-				isValid = false;
-
-			}
-
-			if (DataValidator.isNull(request.getParameter("description"))) {
-				request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
-				isValid = false;
-			}
+		if (DataValidator.isNull(request.getParameter("description"))) {
+			request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
+			isValid = false;
 		}
 		return isValid;
+
 	}
 
 	@Override
@@ -68,6 +67,8 @@ public class SubjectCtl extends BaseCtl {
 		bean.setName(DataUtility.getString(request.getParameter("name")));
 		bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
 		bean.setDescription(DataUtility.getString(request.getParameter("description")));
+
+		populateDTO(bean, request);
 		return bean;
 
 	}
@@ -103,56 +104,46 @@ public class SubjectCtl extends BaseCtl {
 			throws ServletException, IOException {
 
 		String op = DataUtility.getString(request.getParameter("operation"));
-
-		long id = DataUtility.getLong(request.getParameter("id"));
-
 		SubjectModel model = new SubjectModel();
 
 		if (OP_SAVE.equalsIgnoreCase(op)) {
 
 			SubjectBean bean = (SubjectBean) populateBean(request);
-
 			try {
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data Succssefully saved..", request);
+				ServletUtility.setSuccessMessage("Data Successfully saved", request);
 			} catch (ApplicationException e) {
-
 				e.printStackTrace();
-				return;
 			} catch (DuplicateRecordException e) {
-
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Subject already Exists", request);
+				ServletUtility.setErrorMessage("Subject  already exists", request);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
-			SubjectBean bean = (SubjectBean) populateBean(request);
 
+			SubjectBean bean = (SubjectBean) populateBean(request);
 			try {
-				if (bean.getCourseId() > 0) {
-					model.upadte(bean);
+
+				if (bean.getId() > 0) {
 				}
+				model.update(bean);
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data Successfully...Update", request);
+				ServletUtility.setSuccessMessage("Data Successfully Update", request);
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
-				return;
-			} catch (DuplicateRecordException e) {
 
+			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("SubjectName already exists", request);
+				ServletUtility.setErrorMessage("Subject Already exists", request);
 				e.printStackTrace();
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
-
 			ServletUtility.redirect(ORSView.SUBJECT_LIS_CTL, request, response);
 			return;
 

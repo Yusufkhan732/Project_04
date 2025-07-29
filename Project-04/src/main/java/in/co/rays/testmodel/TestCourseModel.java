@@ -12,7 +12,7 @@ public class TestCourseModel {
 
 	public static void main(String[] args) throws Exception {
 
-		//testNextPK();
+		// testNextPK();
 		// testAdd();
 		// testDelete();
 		// testfindByPk();
@@ -49,7 +49,8 @@ public class TestCourseModel {
 	private static void testDelete() throws Exception {
 
 		CourseModel model = new CourseModel();
-		model.delete(111);
+		CourseBean bean = new CourseBean();
+		model.delete(bean);
 
 	}
 

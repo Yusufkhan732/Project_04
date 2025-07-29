@@ -118,7 +118,7 @@ public class TestCollegeModel {
 		CollegeModel model = new CollegeModel();
 		CollegeBean bean = new CollegeBean();
 
-		bean.setName("MITS Gwalior");
+		//bean.setName("MITS Gwalior");
 		List list = model.search(bean, 1, 10);
 
 		Iterator it = list.iterator();

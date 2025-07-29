@@ -21,9 +21,34 @@
 		<%=user.getFirstName()%>
 		(<%=session.getAttribute("role")%>)
 	</h3>
-	<a href="UserCtl.do"><b>Add User</b></a>
+	<a href="UserCtl"><b>Add User</b></a>
 	<b>|</b>
-	<a href="UserListCtl.do"><b>User List</b></a>
+	<a href="UserListCtl"><b>User List</b></a>
+	<b>|</b>
+	<a href="RoleCtl">Add Role</a>
+	<b>|</b>
+	<a href="RoleListCtl">Role List</a>
+	<b>|</b>
+	<a href="CollegeCtl">Add College</a>
+	<b>|</b>
+	<a href="CollegeListCtl">College List</a>
+	<b>|</b>
+	<a href="StudentCtl">Add Student</a>
+	<b>|</b>
+	<a href="StudentListCtl">Student List</a>
+	<b>|</b>
+	<a href="SubjectCtl">Add Subject</a>
+	<b>|</b>
+	<a href="SubjectListCtl">Subject List</a>
+	<b>|</b>
+	<a href="MarksheetCtl">Add Marksheet</a>
+	<b>|</b>
+	<a href="MarksheetListCtl">Marksheet List</a>
+	<b>|</b>
+	<b>|</b>
+	<a href="CourseCtl">Add Course</a>
+	<b>|</b>
+	<a href="CourseListCtl">Course List</a>
 	<b>|</b>
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%

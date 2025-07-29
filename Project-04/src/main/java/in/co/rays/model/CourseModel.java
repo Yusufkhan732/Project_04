@@ -40,7 +40,7 @@ public class CourseModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public long add(CourseBean bean) throws ApplicationException, DuplicateRecordException ,Exception{
+	public long add(CourseBean bean) throws ApplicationException, DuplicateRecordException, Exception {
 
 		CourseBean exsitbBean = findByName(bean.getName());
 
@@ -96,7 +96,7 @@ public class CourseModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void update(CourseBean bean) throws DuplicateRecordException, ApplicationException ,Exception {
+	public void update(CourseBean bean) throws DuplicateRecordException, ApplicationException, Exception {
 
 		CourseBean exitbBean = findByName(bean.getName());
 
@@ -113,17 +113,16 @@ public class CourseModel {
 			conn.setAutoCommit(false);
 
 			PreparedStatement pstmt = conn.prepareStatement("update st_course set name = ?,duration = ?,"
-					+ "description = ?, created_by = ?,modified_by = ?,created_datetime = ?,modified_datetime = ?");
+					+ "description = ?, created_by = ?,modified_by = ?,created_datetime = ?,modified_datetime = ? where id = ?");
 
-			pstmt.setLong(1, bean.getId());
-			pstmt.setString(2, bean.getName());
-			pstmt.setString(3, bean.getDuration());
-			pstmt.setString(4, bean.getDescription());
-			pstmt.setString(5, bean.getCreatedBy());
-			pstmt.setString(6, bean.getModifiedBy());
-			pstmt.setTimestamp(7, bean.getCreatedDatetime());
-			pstmt.setTimestamp(8, bean.getModifiedDatetime());
-
+			pstmt.setString(1, bean.getName());
+			pstmt.setString(2, bean.getDuration());
+			pstmt.setString(3, bean.getDescription());
+			pstmt.setString(4, bean.getCreatedBy());
+			pstmt.setString(5, bean.getModifiedBy());
+			pstmt.setTimestamp(6, bean.getCreatedDatetime());
+			pstmt.setTimestamp(7, bean.getModifiedDatetime());
+			pstmt.setLong(8, bean.getId());
 			int i = pstmt.executeUpdate();
 
 			System.out.println("update inserted:" + i);
@@ -148,7 +147,7 @@ public class CourseModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void delete(long id) throws Exception {
+	public void delete(CourseBean bean) throws Exception {
 
 		Connection conn = null;
 
@@ -160,7 +159,7 @@ public class CourseModel {
 
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_course where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
 
@@ -271,28 +270,29 @@ public class CourseModel {
 //------------------------------------------------------------------------------------------------
 	public List search(CourseBean bean, int pageNo, int pageSize) throws Exception {
 
-		Connection conn = null;
+		StringBuffer sql = new StringBuffer("select * from st_course where 1=1");
 
+		if (bean != null) {
+			if (bean.getName() != null && bean.getName().length() > 0) {
+				sql.append(" and name like '" + bean.getName() + "%'");
+			}
+			if (bean.getId() > 0) {
+				sql.append(" and id = " + bean.getId());
+			}
+		}
+		if (pageSize > 0) {
+			pageNo = (pageNo - 1) * pageSize;
+			sql.append(" limit " + pageNo + ", " + pageSize);
+		}
+
+		System.out.println("sql ==>> " + sql.toString());
+
+		Connection conn = null;
 		List list = new ArrayList();
 
 		try {
 
 			conn = JDBCDataSource.getConnection();
-
-			StringBuffer sql = new StringBuffer("select * from st_course where 1=1");
-
-			if (bean != null) {
-				if (bean.getName() != null && bean.getName().length() > 0) {
-					sql.append(" and name like '" + bean.getName() + "%'");
-
-				}
-			}
-			if (pageSize > 0) {
-				pageNo = (pageNo - 1) * pageSize;
-				sql.append(" limit " + pageNo + "," + pageSize);
-
-			}
-			System.out.println("sql==>>" + sql.toString());
 
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 

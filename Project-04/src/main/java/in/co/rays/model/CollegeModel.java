@@ -276,7 +276,12 @@ public class CollegeModel {
 				if (bean.getName() != null && bean.getName().length() > 0) {
 					sql.append(" and name like '" + bean.getName() + "%'");
 				}
+
+				if (bean.getCity() != null && bean.getCity().length() > 0) {
+					sql.append(" and city like '" + bean.getCity() + "%'");
+				}
 			}
+
 			if (pageSize > 0) {
 				pageNo = (pageNo - 1) * pageSize;
 				sql.append(" limit " + pageNo + ", " + pageSize);
@@ -302,7 +307,7 @@ public class CollegeModel {
 
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 			throw new ApplicationException("Exception :  Exception in search College " + e);
 
 		} finally {
