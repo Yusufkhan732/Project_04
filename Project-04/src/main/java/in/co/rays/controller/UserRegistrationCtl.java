@@ -147,6 +147,7 @@ public class UserRegistrationCtl extends BaseCtl {
 			UserBean bean = (UserBean) populateBean(request);
 
 			try {
+
 				model.add(bean);
 
 				ServletUtility.setBean(bean, request);
@@ -177,14 +178,10 @@ public class UserRegistrationCtl extends BaseCtl {
 	}
 }
 
- /* 1. User browser se request bhejta hai (GET ya POST)
-	2. BaseCtl.service() method call hota hai
-	   |
-	   --> validate(request) call hoti hai (agar op Signup ho to)
-	       |
-	       --> Validation pass → to doPost()
-	3. doPost() → operation check
-	4. populateBean(request) → UserBean bana
-	5. model.add(bean) → DB me insert
-	6. Success ya Error Message set
-	7. Page forward (JSP view show)*/
+/*
+ * 1. User browser se request bhejta hai (GET ya POST) 2. BaseCtl.service()
+ * method call hota hai | --> validate(request) call hoti hai (agar op Signup ho
+ * to) | --> Validation pass → to doPost() 3. doPost() → operation check 4.
+ * populateBean(request) → UserBean bana 5. model.add(bean) → DB me insert 6.
+ * Success ya Error Message set 7. Page forward (JSP view show)
+ */

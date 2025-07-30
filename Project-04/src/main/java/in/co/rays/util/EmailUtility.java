@@ -1,100 +1,79 @@
 package in.co.rays.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
-import in.co.rays.bean.BaseBean;
-import in.co.rays.model.RoleModel;
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import in.co.rays.exception.ApplicationException;
 
 public class EmailUtility {
-	
-	
-	
-	public static String getList(String name, String selectedVal, HashMap<String, String> map) {
 
-		StringBuffer sb = new StringBuffer(
-				"<select style=\"width: 170px;text-align-last: center;\"; class='form-control' name='" + name + "'>");
+	static ResourceBundle rb = ResourceBundle.getBundle("in.co.rays.bundle.system");
 
-		sb.append("\n<option selected value=''>-------------Select-------------</option>");
+	private static final String SMTP_HOST_NAME = rb.getString("smtp.server");
+	private static final String SMTP_PORT = rb.getString("smtp.port");
+	private static final String emailFromAddress = rb.getString("email.login");
+	private static final String emailPassword = rb.getString("email.pwd");
 
-		Set<String> keys = map.keySet();
-		String val = null;
+	private static Properties props = new Properties();
 
-		for (String key : keys) {
-			val = map.get(key);
-			if (key.trim().equals(selectedVal)) {
-				sb.append("\n<option selected value='" + key + "'>" + val + "</option>");
-			} else {
-				sb.append("\n<option value='" + key + "'>" + val + "</option>");
-			}
+	static {
+		props.put("mail.smtp.host", SMTP_HOST_NAME);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+		props.put("mail.debug", "true");
+		props.put("mail.smtp.port", SMTP_PORT);
+		props.put("mail.smtp.socketFactory.port", SMTP_PORT);
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.socketFactory.fallback", "false");
+	}
+
+	public static void sendEmail(EmailMessage emailMessageDTO) throws ApplicationException {
+		try {
+			// Setup mail session
+
+			Session session = Session.getDefaultInstance(props, new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(emailFromAddress, emailPassword);
+				}
+			});
+
+			// Create and setup the email message
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(emailFromAddress));
+			msg.setRecipients(Message.RecipientType.TO, getInternetAddresses(emailMessageDTO.getTo()));
+			msg.setSubject(emailMessageDTO.getSubject());
+
+			// Set content type based on message type
+			String contentType = emailMessageDTO.getMessageType() == EmailMessage.HTML_MSG ? "text/html" : "text/plain";
+			msg.setContent(emailMessageDTO.getMessage(), contentType);
+
+			// Send the email
+			Transport.send(msg);
+
+		} catch (Exception ex) {
+			throw new ApplicationException("Email Error: " + ex.getMessage());
 		}
-		sb.append("\n</select>");
-		return sb.toString();
 	}
 
-//	public static String getList(String name, String selectedVal, List list) {
-//
-//		BaseBean bean = (BaseBean) list.get(0);
-//
-////		System.out.println("my key => " + bean.getKey());
-//		System.out.println("my value => " + bean.getValue());
-
-		// Collections.sort(list);
-
-	//	List<DropdownListBean> dd = (List<DropdownListBean>) list;
-//
-//		StringBuffer sb = new StringBuffer("<select style=\"width: 170px;text-align-last: center;\"; "
-//				+ "class='form-control' name='" + name + "'>");
-//
-//		sb.append("\n<option selected value=''>-------------Select-------------</option>");
-//
-//		String key = null;
-//		String val = null;
-//
-//		for (DropdownListBean obj : dd) {
-//			key = obj.getKey();
-//			val = obj.getValue();
-//
-//			if (key.trim().equals(selectedVal)) {
-//				sb.append("\n<option selected value='" + key + "'>" + val + "</option>");
-//			} else {
-//				sb.append("\n<option value='" + key + "'>" + val + "</option>");
-//			}
-//		}
-//		sb.append("\n</select>");
-//		return sb.toString();
-//	}
-
-//	public static void testGetListByMap() {
-//
-//		HashMap<String, String> map = new HashMap<>();
-//		map.put("male", "male");
-//		map.put("female", "female");
-//
-//		String selectedValue = "male";
-//		String htmlSelectFromMap = HTMLUtility.getList("gender", selectedValue, map);
-//
-//		System.out.println(htmlSelectFromMap);
-//	}
-
-//	public static void testGetListByList() throws Exception {
-//
-//		RoleModel model = new RoleModel();
-//
-//		//List<DropdownListBean> list = model.list();
-//
-//		String selectedValue = null;
-//
-//		String htmlSelectFromList = HTMLUtility.getList("fname", selectedValue, list);
-//
-//		System.out.println(htmlSelectFromList);
-//	}
-//
-//	public static void main(String[] args) throws Exception {
-//
-//		// testGetListByMap();
-//
-//		testGetListByList();
-//
+	private static InternetAddress[] getInternetAddresses(String emails) throws Exception {
+		if (emails == null || emails.isEmpty()) {
+			return new InternetAddress[0];
+		}
+		String[] emailArray = emails.split(",");
+		InternetAddress[] addresses = new InternetAddress[emailArray.length];
+		for (int i = 0; i < emailArray.length; i++) {
+			addresses[i] = new InternetAddress(emailArray[i].trim());
+		}
+		return addresses;
 	}
+}

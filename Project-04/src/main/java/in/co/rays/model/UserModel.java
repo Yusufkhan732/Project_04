@@ -4,12 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
 import in.co.rays.exception.DuplicateRecordException;
+import in.co.rays.exception.RecordNotFoundException;
+import in.co.rays.util.EmailBuilder;
+import in.co.rays.util.EmailMessage;
+import in.co.rays.util.EmailUtility;
 import in.co.rays.util.JDBCDataSource;
 
 public class UserModel {
@@ -385,4 +390,93 @@ public class UserModel {
 		}
 		return list;
 	}
+
+	public boolean changePassword(Long id, String oldPassword, String newPassword)
+			throws RecordNotFoundException, ApplicationException {
+
+		boolean flag = false;
+		UserBean beanExist = null;
+
+		beanExist = findByPk(id);
+		if (beanExist != null && beanExist.getPassword().equals(oldPassword)) {
+			beanExist.setPassword(newPassword);
+			try {
+				update(beanExist);
+			} catch (DuplicateRecordException e) {
+				throw new ApplicationException("LoginId is already exist");
+			}
+			flag = true;
+		} else {
+			throw new RecordNotFoundException("Login not exist");
+		}
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("login", beanExist.getLogin());
+		map.put("password", beanExist.getPassword());
+		map.put("firstName", beanExist.getFirstName());
+		map.put("lastName", beanExist.getLastName());
+
+		String message = EmailBuilder.getChangePasswordMessage(map);
+
+		EmailMessage msg = new EmailMessage();
+		msg.setTo(beanExist.getLogin());
+		msg.setSubject("Rays ORS Password has been changed Successfully.");
+		msg.setMessage(message);
+		msg.setMessageType(EmailMessage.HTML_MSG);
+
+		EmailUtility.sendEmail(msg);
+
+		return flag;
+	}
+
+	public boolean forgetPassword(String login) throws ApplicationException, RecordNotFoundException {
+
+		UserBean userData = findByLogin(login);
+		boolean flag = false;
+
+		if (userData == null) {
+			throw new RecordNotFoundException("Email ID does not exists !");
+		}
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("login", userData.getLogin());
+		map.put("password", userData.getPassword());
+		map.put("firstName", userData.getFirstName());
+		map.put("lastName", userData.getLastName());
+
+		String message = EmailBuilder.getForgetPasswordMessage(map);
+
+		EmailMessage msg = new EmailMessage();
+		msg.setTo(login);
+		msg.setSubject("Rays ORS Password Reset");
+		msg.setMessage(message);
+		msg.setMessageType(EmailMessage.HTML_MSG);
+
+		EmailUtility.sendEmail(msg);
+
+		flag = true;
+		return flag;
+	}
+
+	public long registerUser(UserBean bean) throws ApplicationException, DuplicateRecordException {
+
+		long pk = add(bean);
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("login", bean.getLogin());
+		map.put("password", bean.getPassword());
+
+		String message = EmailBuilder.getUserRegistrationMessage(map);
+
+		EmailMessage msg = new EmailMessage();
+		msg.setTo(bean.getLogin());
+		msg.setSubject("Registration is successful for ORS Project");
+		msg.setMessage(message);
+		msg.setMessageType(EmailMessage.HTML_MSG);
+
+		EmailUtility.sendEmail(msg);
+
+		return pk;
+	}
+
 }

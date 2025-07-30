@@ -12,12 +12,12 @@ public class TestMaksheetModel {
 
 	public static void main(String[] args) throws Exception {
 		// testNextPk();
-		 testadd();
+		testadd();
 		// testupadte();
 		// testDelete();
 		// testFindByPk();
 		// testFindByRollNo();
-		//testSearch();
+		// testSearch();
 
 	}
 
@@ -69,7 +69,8 @@ public class TestMaksheetModel {
 
 	public static void testDelete() throws Exception {
 		MarksheetModel model = new MarksheetModel();
-		model.delete(11);
+		MarksheetBean bean = new MarksheetBean();
+		model.delete(bean);
 	}
 
 	public static void testFindByPk() throws Exception {

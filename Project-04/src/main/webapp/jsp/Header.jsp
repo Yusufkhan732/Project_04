@@ -50,6 +50,10 @@
 	<b>|</b>
 	<a href="CourseListCtl">Course List</a>
 	<b>|</b>
+	<a href="FacultyCtl">Add Faculty</a>
+	<b>|</b>
+	<a href="FacultyListCtl">Faculty List</a>
+	<b>|</b>
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%
 		} else {

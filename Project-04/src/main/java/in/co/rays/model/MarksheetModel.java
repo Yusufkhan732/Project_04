@@ -154,7 +154,7 @@ public class MarksheetModel {
 		}
 	}
 
-	public void delete(long id) throws ApplicationException {
+	public void delete(MarksheetBean bean) throws ApplicationException {
 		Connection conn = null;
 
 		try {
@@ -164,7 +164,7 @@ public class MarksheetModel {
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_marksheet where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
 			System.out.println("Delete = >" + i);

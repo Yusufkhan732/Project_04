@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public class EmailBuilder {
 
-	
 	public static String getUserRegistrationMessage(HashMap<String, String> map) {
 		StringBuilder msg = new StringBuilder();
 		msg.append("<HTML><BODY>");
@@ -42,5 +41,4 @@ public class EmailBuilder {
 		msg.append("</BODY></HTML>");
 		return msg.toString();
 	}
-
 }
