@@ -22,7 +22,7 @@ public class TestTimetableModel {
 		// testCoursetName();
 		// testSubjectName();
 		// testexamTime();
-		testSemester();
+		testSemester1111();
 	}
 
 	public static void testAdd() throws Exception {
