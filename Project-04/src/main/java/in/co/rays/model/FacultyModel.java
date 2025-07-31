@@ -207,7 +207,7 @@ public class FacultyModel {
 	}
 
 //------------------------------------------------------------------------------------------------
-	public void delete(long id) throws ApplicationException {
+	public void delete(FacultyBean bean) throws ApplicationException {
 
 		Connection conn = null;
 
@@ -218,7 +218,7 @@ public class FacultyModel {
 
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_faculty where id = ?");
 
-			pstmt.setLong(1, id);
+			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
 
@@ -359,8 +359,12 @@ public class FacultyModel {
 				if (bean.getFirstName() != null && bean.getFirstName().length() > 0) {
 					sql.append(" and first_name like '" + bean.getFirstName() + "%'");
 				}
-				if (bean.getDob() != null && bean.getDob().getTime() > 0) {
-					sql.append(" and dob like '" + new java.sql.Date(bean.getDob().getTime()) + "%'");
+				if (bean.getLastName() != null && bean.getLastName().length() > 0) {
+					sql.append(" and last_name like '" + bean.getLastName() + "%'");
+				}
+				if (bean.getEmail() != null && bean.getEmail().length() > 0) {
+					sql.append(" and email like '" + bean.getEmail() + "%'");
+
 				}
 			}
 

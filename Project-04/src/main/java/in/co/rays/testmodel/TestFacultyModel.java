@@ -14,7 +14,7 @@ public class TestFacultyModel {
 	public static void main(String[] args) throws Exception {
 
 		// testadd();
-		//testupdate();
+		// testupdate();
 		// testdelete();
 		// testFindByPk();
 		// testFindByEmail();
@@ -58,8 +58,8 @@ public class TestFacultyModel {
 	private static void testdelete() throws ApplicationException {
 
 		FacultyModel model = new FacultyModel();
-
-		model.delete(2);
+		FacultyBean bean = new FacultyBean();
+		model.delete(bean);
 	}
 
 	private static void testFindByPk() throws ApplicationException {

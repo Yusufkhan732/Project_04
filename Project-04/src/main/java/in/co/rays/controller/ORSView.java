@@ -63,4 +63,10 @@ public interface ORSView {
 	public String FACULTY_LIST_CTL = APP_CONTEXT + "/FacultyListCtl";
 	public String FACULTY_LIST_VIEW = PAGE_FOLDER + "/FacultyListView.jsp";
 
+	public String TIMETABLE_CTL = APP_CONTEXT + "/TimetableCtl";
+	public String TIMETABLE_VIEW = PAGE_FOLDER + "/TimetableView.jsp";
+
+	public String TIMETABLE_LIST_CTL = APP_CONTEXT + "/TimetableListCtl";
+	public String TIMETABLE_LIST_VIEW = PAGE_FOLDER + "/TimetableListView.jsp";
+
 }
