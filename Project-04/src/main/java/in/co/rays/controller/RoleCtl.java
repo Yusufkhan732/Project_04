@@ -28,7 +28,7 @@ public class RoleCtl extends BaseCtl {
 		if (DataValidator.isNull(request.getParameter("name"))) {
 			request.setAttribute("name", PropertyReader.getValue("error.require", "Name"));
 			isValid = false;
-			
+
 		} else if (!DataValidator.isName(request.getParameter("name"))) {
 			request.setAttribute("name", "Invalid name");
 			isValid = false;
@@ -94,19 +94,22 @@ public class RoleCtl extends BaseCtl {
 
 			try {
 
-				long pk = model.add(bean);
-				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data Successfully saved", request);
+				throw new ApplicationException("Error");
+//				long pk = model.add(bean);
+//				ServletUtility.setBean(bean, request);
+//				ServletUtility.setSuccessMessage("Data Successfully saved", request);
 
 			} catch (ApplicationException e) {
 				e.printStackTrace();
+				ServletUtility.handleException(e, request, response);
+
 				return;
 
-			} catch (DuplicateRecordException e) {
-				ServletUtility.setBean(bean, request);
-
-				ServletUtility.setErrorMessage("Role alredy exists", request);
-				return;
+//			} catch (DuplicateRecordException e) {
+//				ServletUtility.setBean(bean, request);
+//
+//				ServletUtility.setErrorMessage("Role alredy exists", request);
+//				return;
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 

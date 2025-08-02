@@ -21,42 +21,49 @@
 		<%=user.getFirstName()%>
 		(<%=session.getAttribute("role")%>)
 	</h3>
+	<a href="MyProfileCtl"><b>My Profile</b></a>
+	<b>|</b>
+	<a href="ChangePasswordCtl"><b>Change Password</b></a>
+	<b>|</b>
+	<a href="GetMarksheetCtl"><b>Get Marksheet</b></a>
+	<b>|</b>
+	<a href="MarksheetMeritListCtl"><b>Marksheet Merit List</b></a>
+	<b>|</b>
 	<a href="UserCtl"><b>Add User</b></a>
 	<b>|</b>
 	<a href="UserListCtl"><b>User List</b></a>
 	<b>|</b>
-	<a href="RoleCtl">Add Role</a>
+	<a href="RoleCtl"><b>Add Role</b></a>
 	<b>|</b>
-	<a href="RoleListCtl">Role List</a>
+	<a href="RoleListCtl"><b>Role List</b></a>
 	<b>|</b>
-	<a href="CollegeCtl">Add College</a>
+	<a href="CollegeCtl"><b>Add College</b></a>
 	<b>|</b>
-	<a href="CollegeListCtl">College List</a>
+	<a href="CollegeListCtl"><b>College List</b></a>
 	<b>|</b>
-	<a href="StudentCtl">Add Student</a>
+	<a href="StudentCtl"><b>Add Student</b></a>
 	<b>|</b>
-	<a href="StudentListCtl">Student List</a>
+	<a href="StudentListCtl"><b>Student List</b></a>
 	<b>|</b>
-	<a href="SubjectCtl">Add Subject</a>
+	<a href="MarksheetCtl"><b>Add Marksheet</b></a>
 	<b>|</b>
-	<a href="SubjectListCtl">Subject List</a>
+	<a href="MarksheetListCtl"><b>Marksheet List</b></a>
 	<b>|</b>
-	<a href="MarksheetCtl">Add Marksheet</a>
+	<a href="CourseCtl"><b>Add Course</b></a>
 	<b>|</b>
-	<a href="MarksheetListCtl">Marksheet List</a>
+	<a href="CourseListCtl"><b>Course List</b></a>
 	<b>|</b>
+	<a href="SubjectCtl"><b>Add Subject</b></a>
 	<b>|</b>
-	<a href="CourseCtl">Add Course</a>
+	<a href="SubjectListCtl"><b>Subject List</b></a>
 	<b>|</b>
-	<a href="CourseListCtl">Course List</a>
+	<a href="TimetableCtl"><b>Add Timetable</b></a>
 	<b>|</b>
-	<a href="FacultyCtl">Add Faculty</a>
+	<a href="TimetableListCtl"><b>Timetable List</b></a>
 	<b>|</b>
-	<a href="FacultyListCtl">Faculty List</a>
+	<a href="FacultyCtl"><b>Add Faculty</b></a>
 	<b>|</b>
-	<a href="TimetableCtl">Add Timetable</a>
-	<b>|</b>
-	<a href="TimetableListCtl">Timetable List</a>
+	<a href="FacultyListCtl"><b>Faculty List</b></a>
 	<b>|</b>
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%

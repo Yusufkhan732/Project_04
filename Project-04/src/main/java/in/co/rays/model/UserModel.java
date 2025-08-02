@@ -19,6 +19,10 @@ import in.co.rays.util.JDBCDataSource;
 
 public class UserModel {
 
+	/**
+	 * @return
+	 * @throws DatabaseException
+	 */
 	public Integer nextPk() throws DatabaseException {
 
 		Connection conn = null;
@@ -47,6 +51,12 @@ public class UserModel {
 	}
 
 //---------------------------------------------------------------------------------------------
+	/**
+	 * @param bean
+	 * @return
+	 * @throws DuplicateRecordException
+	 * @throws ApplicationException
+	 */
 	public long add(UserBean bean) throws DuplicateRecordException, ApplicationException {
 
 		Connection conn = null;
@@ -106,6 +116,11 @@ public class UserModel {
 	}
 
 //--------------------------------------------------------------------------------------------
+	/**
+	 * @param bean
+	 * @throws ApplicationException
+	 * @throws DuplicateRecordException
+	 */
 	public void update(UserBean bean) throws ApplicationException, DuplicateRecordException {
 
 		Connection conn = null;
@@ -159,6 +174,10 @@ public class UserModel {
 	}
 //---------------------------------------------------------------------------------------------
 
+	/**
+	 * @param bean
+	 * @throws ApplicationException
+	 */
 	public void delete(UserBean bean) throws ApplicationException {
 
 		Connection conn = null;
@@ -198,6 +217,11 @@ public class UserModel {
 	}
 //--------------------------------------------------------------------------------------------
 
+	/**
+	 * @param id
+	 * @return
+	 * @throws ApplicationException
+	 */
 	public UserBean findByPk(long id) throws ApplicationException {
 
 		Connection conn = null;
@@ -240,6 +264,11 @@ public class UserModel {
 	}
 //--------------------------------------------------------------------------------------------
 
+	/**
+	 * @param login
+	 * @return
+	 * @throws ApplicationException
+	 */
 	public UserBean findByLogin(String login) throws ApplicationException {
 
 		Connection conn = null;
@@ -283,6 +312,12 @@ public class UserModel {
 	}
 //--------------------------------------------------------------------------------------------
 
+	/**
+	 * @param loginId
+	 * @param password
+	 * @return
+	 * @throws ApplicationException
+	 */
 	public UserBean authenticate(String loginId, String password) throws ApplicationException {
 
 		Connection conn = null;
@@ -327,6 +362,13 @@ public class UserModel {
 	}
 
 //--------------------------------------------------------------------------------------------
+	/**
+	 * @param bean
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws ApplicationException
+	 */
 	public List search(UserBean bean, int pageNo, int pageSize) throws ApplicationException {
 
 		StringBuffer sql = new StringBuffer("select * from st_user where 1=1");
@@ -391,6 +433,14 @@ public class UserModel {
 		return list;
 	}
 
+	/**
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 * @throws RecordNotFoundException
+	 * @throws ApplicationException
+	 */
 	public boolean changePassword(Long id, String oldPassword, String newPassword)
 			throws RecordNotFoundException, ApplicationException {
 
@@ -424,11 +474,17 @@ public class UserModel {
 		msg.setMessage(message);
 		msg.setMessageType(EmailMessage.HTML_MSG);
 
-		EmailUtility.sendEmail(msg);
+		EmailUtility.sendMail(msg);
 
 		return flag;
 	}
 
+	/**
+	 * @param login
+	 * @return
+	 * @throws ApplicationException
+	 * @throws RecordNotFoundException
+	 */
 	public boolean forgetPassword(String login) throws ApplicationException, RecordNotFoundException {
 
 		UserBean userData = findByLogin(login);
@@ -452,12 +508,18 @@ public class UserModel {
 		msg.setMessage(message);
 		msg.setMessageType(EmailMessage.HTML_MSG);
 
-		EmailUtility.sendEmail(msg);
+		EmailUtility.sendMail(msg);
 
 		flag = true;
 		return flag;
 	}
 
+	/**
+	 * @param bean
+	 * @return
+	 * @throws ApplicationException
+	 * @throws DuplicateRecordException
+	 */
 	public long registerUser(UserBean bean) throws ApplicationException, DuplicateRecordException {
 
 		long pk = add(bean);
@@ -474,9 +536,8 @@ public class UserModel {
 		msg.setMessage(message);
 		msg.setMessageType(EmailMessage.HTML_MSG);
 
-		EmailUtility.sendEmail(msg);
+		EmailUtility.sendMail(msg);
 
 		return pk;
 	}
-
 }

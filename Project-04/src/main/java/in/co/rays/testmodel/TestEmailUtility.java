@@ -25,7 +25,7 @@ public class TestEmailUtility {
 			emailMessage.setMessage(message);
 			emailMessage.setMessageType(EmailMessage.HTML_MSG);
 
-			EmailUtility.sendEmail(emailMessage);
+			EmailUtility.sendMail(emailMessage);
 
 			System.out.println("Email sent successfully.");
 
@@ -33,5 +33,6 @@ public class TestEmailUtility {
 			ex.printStackTrace();
 			System.err.println("Failed to send email: " + ex.getMessage());
 		}
+
 	}
 }

@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 import in.co.rays.exception.ApplicationException;
 
 public class EmailUtility {
-
+	
 	static ResourceBundle rb = ResourceBundle.getBundle("in.co.rays.bundle.system");
 
 	private static final String SMTP_HOST_NAME = rb.getString("smtp.server");
@@ -37,10 +37,9 @@ public class EmailUtility {
 		props.put("mail.smtp.socketFactory.fallback", "false");
 	}
 
-	public static void sendEmail(EmailMessage emailMessageDTO) throws ApplicationException {
+	public static void sendMail(EmailMessage emailMessageDTO) throws ApplicationException {
 		try {
 			// Setup mail session
-
 			Session session = Session.getDefaultInstance(props, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(emailFromAddress, emailPassword);
