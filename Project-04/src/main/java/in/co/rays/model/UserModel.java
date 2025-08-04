@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
@@ -19,11 +21,14 @@ import in.co.rays.util.JDBCDataSource;
 
 public class UserModel {
 
+	public static Logger log = Logger.getLogger(UserModel.class);
+	
 	/**
 	 * @return
 	 * @throws DatabaseException
 	 */
 	public Integer nextPk() throws DatabaseException {
+		log.debug("NextPk started");
 
 		Connection conn = null;
 		int pk = 0;
@@ -46,6 +51,7 @@ public class UserModel {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("next pk ended");
 
 		return pk + 1;
 	}

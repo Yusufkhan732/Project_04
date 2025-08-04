@@ -8,6 +8,15 @@
 <html>
 <head>
 <title>Insert title here</title>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Include jQuery UI -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<!-- Include jQuery UI CSS -->
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="/Project-04/js/checkbox.js"></script>
+<script src="/Project-04/js/datepicker.js"></script>
 </head>
 <body>
 	<%
