@@ -5,6 +5,7 @@ public interface ORSView {
 	public String APP_CONTEXT = "/Project-04";
 
 	public String PAGE_FOLDER = "/jsp";
+	public String JAVA_DOC_VIEW = APP_CONTEXT + "/doc/index.html";
 
 	public String WELCOME_VIEW = PAGE_FOLDER + "/Welcome.jsp";
 	public String WELCOME_CTL = APP_CONTEXT + "/WelcomeCtl";
