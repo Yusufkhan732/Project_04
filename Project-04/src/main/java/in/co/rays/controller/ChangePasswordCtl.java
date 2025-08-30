@@ -18,11 +18,22 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "ChangePasswordCtl", urlPatterns = { "/ChangePasswordCtl" })
+/**
+ * Controller to handle Change Password operations.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "ChangePasswordCtl", urlPatterns = { "/ctl/ChangePasswordCtl" })
 public class ChangePasswordCtl extends BaseCtl {
 
 	public static final String OP_CHANGE_MY_PROFILE = "Change My Profile";
 
+	/**
+	 * Validates input data for changing password.
+	 *
+	 * @param request HttpServletRequest
+	 * @return boolean true if data is valid, false otherwise
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -67,6 +78,13 @@ public class ChangePasswordCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates UserBean with request parameters.
+	 *
+	 * @param request HttpServletRequest
+	 * @return populated UserBean
+	 */
+
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -80,11 +98,23 @@ public class ChangePasswordCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET request. Forwards to the Change Password view.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST request for changing password.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -121,6 +151,11 @@ public class ChangePasswordCtl extends BaseCtl {
 		ServletUtility.forward(ORSView.CHANGE_PASSWORD_VIEW, request, response);
 	}
 
+	/**
+	 * Returns the view for Change Password.
+	 *
+	 * @return String view path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.CHANGE_PASSWORD_VIEW;

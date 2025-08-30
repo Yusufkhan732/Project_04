@@ -15,9 +15,26 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "MarksheetMeritListCtl", urlPatterns = {"/MarksheetMeritListCtl"})
+/**
+ * Controller to handle the operations related to displaying the Marksheet Merit
+ * List (Top scorers).
+ * 
+ * This controller fetches the top records sorted by total marks.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "MarksheetMeritListCtl", urlPatterns = { "/ctl/MarksheetMeritListCtl" })
 public class MarksheetMeritListCtl extends BaseCtl {
 
+	/**
+	 * Handles GET requests to display the initial merit list of marksheets.
+	 * Retrieves data using the getMeritList method of the MarksheetModel.
+	 * 
+	 * @param request  HTTPServletRequest
+	 * @param response HTTPServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -46,6 +63,15 @@ public class MarksheetMeritListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Handles POST requests for user actions. Currently supports only the "Back"
+	 * operation, which redirects to the welcome page.
+	 * 
+	 * @param request  HTTPServletRequest
+	 * @param response HTTPServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -57,6 +83,11 @@ public class MarksheetMeritListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view path for the merit list page.
+	 * 
+	 * @return path of the merit list JSP page
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.MARKSHEET_MERIT_LIST_VIEW;

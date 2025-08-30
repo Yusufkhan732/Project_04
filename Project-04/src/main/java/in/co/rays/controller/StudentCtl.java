@@ -20,9 +20,22 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/StudentCtl")
+/**
+ * Controller servlet for handling Student operations like add, update, and
+ * load. It validates input, interacts with the model, and forwards to
+ * appropriate views.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "StudentCtl", urlPatterns = { "/ctl/StudentCtl" })
 public class StudentCtl extends BaseCtl {
 
+	/**
+	 * Loads the list of colleges for populating the dropdown before displaying the
+	 * student form.
+	 * 
+	 * @param request HttpServletRequest object
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 		CollegeModel model = new CollegeModel();
@@ -40,6 +53,14 @@ public class StudentCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Validates input parameters from the HTTP request. Checks for required fields,
+	 * proper formats (e.g., email, phone), and sets appropriate error messages if
+	 * validation fails.
+	 * 
+	 * @param request HttpServletRequest object
+	 * @return boolean true if all inputs are valid, false otherwise
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -92,7 +113,7 @@ public class StudentCtl extends BaseCtl {
 		if (DataValidator.isNull(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.require", "Date of Birth"));
 			pass = false;
-			
+
 		} else if (!DataValidator.isDate(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.date", "Date of Birth"));
 			pass = false;
@@ -101,6 +122,13 @@ public class StudentCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates and returns a StudentBean object using data from the HTTP request
+	 * parameters.
+	 * 
+	 * @param request HttpServletRequest object
+	 * @return BaseBean populated with student data
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -120,6 +148,15 @@ public class StudentCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET requests for loading student details if an ID is provided,
+	 * otherwise displays a blank form.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -144,6 +181,15 @@ public class StudentCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests for save, update, cancel, and reset operations on
+	 * student data.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -198,6 +244,11 @@ public class StudentCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view (JSP) page path associated with the student form.
+	 * 
+	 * @return String representing the student view JSP path
+	 */
 	@Override
 	protected String getView() {
 

@@ -17,9 +17,23 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/UserListCtl")
+/**
+ * Controller class to manage the user list view and operations like search,
+ * pagination, delete, reset, and redirection.
+ * 
+ * This controller fetches users from the database using criteria provided in
+ * search form and displays them in paginated format.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "UserListCtl", urlPatterns = { "/ctl/UserListCtl" })
 public class UserListCtl extends BaseCtl {
 
+	/**
+	 * Preloads roles list into request scope before the page loads.
+	 *
+	 * @param request HttpServletRequest
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -35,6 +49,12 @@ public class UserListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates UserBean from request parameters for search filters.
+	 *
+	 * @param request HttpServletRequest
+	 * @return UserBean
+	 */
 	protected BaseBean populateBean(HttpServletRequest request) {
 
 		UserBean bean = new UserBean();
@@ -46,6 +66,14 @@ public class UserListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET request to display the first page of the user list.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -56,12 +84,12 @@ public class UserListCtl extends BaseCtl {
 		UserModel model = new UserModel();
 
 		try {
-			
+
 			List<UserBean> list = model.search(bean, pageNo, pageSize);
 			System.out.println("list");
 			List<UserBean> next = model.search(bean, pageNo + 1, pageSize);
 			System.out.println("next");
-			
+
 			if (list == null || list.isEmpty()) {
 				ServletUtility.setSuccessMessage("no record found", request);
 			}
@@ -76,6 +104,15 @@ public class UserListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Handles HTTP POST request for search, pagination, deletion, reset, and
+	 * navigation operations.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -167,6 +204,11 @@ public class UserListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view path for the user list page.
+	 *
+	 * @return String view path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.USER_LIST_VIEW;

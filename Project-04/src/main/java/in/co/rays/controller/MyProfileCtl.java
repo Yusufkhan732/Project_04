@@ -18,11 +18,26 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "MyProfileCtl", urlPatterns = { "/MyProfileCtl" })
+/**
+ * MyProfileCtl handles displaying and updating the current user's profile.
+ * 
+ * Features: - Displays current user details from session - Allows updating
+ * name, gender, mobile number, and DOB - Redirects to Change Password
+ * controller
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "MyProfileCtl", urlPatterns = { "/ctl/MyProfileCtl" })
 public class MyProfileCtl extends BaseCtl {
 
 	public static final String OP_CHANGE_MY_PASSWORD = "Change Password";
 
+	/**
+	 * Validates user profile form fields.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return boolean true if all inputs are valid
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -74,6 +89,12 @@ public class MyProfileCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates UserBean from request parameters.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return UserBean object
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -98,6 +119,12 @@ public class MyProfileCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET request to show current user profile.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -120,6 +147,12 @@ public class MyProfileCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST requests to update user profile or redirect to change password.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -160,6 +193,11 @@ public class MyProfileCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view page for My Profile.
+	 * 
+	 * @return path of My Profile JSP view
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.MY_PROFILE_VIEW;

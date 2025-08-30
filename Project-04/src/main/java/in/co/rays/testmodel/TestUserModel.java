@@ -14,12 +14,12 @@ import in.co.rays.model.UserModel;
 public class TestUserModel {
 
 	public static void main(String[] args) throws Exception {
-		// testnextPk();
+		 testnextPk();
 		// testAdd();
 		// testupdate();
 		// testdelete();
 		// testFindbyPk();
-		 testsearch();
+//		 testsearch();
 	}
 
 	public static void testnextPk() throws Exception {

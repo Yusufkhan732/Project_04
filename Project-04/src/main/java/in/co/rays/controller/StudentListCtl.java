@@ -16,9 +16,22 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/StudentListCtl")
+/**
+ * StudentListCtl handles the listing, searching, pagination, and deletion of
+ * Student records. It processes both GET and POST requests and interacts with
+ * the StudentModel.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "StudentListCtl", urlPatterns = { "/ctl/StudentListCtl" })
 public class StudentListCtl extends BaseCtl {
 
+	/**
+	 * Populates a StudentBean instance from HTTP request parameters.
+	 * 
+	 * @param request the HttpServletRequest containing student search parameters
+	 * @return a populated StudentBean with search criteria
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -31,6 +44,15 @@ public class StudentListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET request to list students based on search criteria, with
+	 * pagination support.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException if a servlet error occurs
+	 * @throws IOException      if an IO error occurs
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -61,6 +83,15 @@ public class StudentListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Handles HTTP POST request for student list operations such as search,
+	 * pagination, deletion, reset, and navigation.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException if a servlet error occurs
+	 * @throws IOException      if an IO error occurs
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -86,24 +117,24 @@ public class StudentListCtl extends BaseCtl {
 
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
 					pageNo = 1;
-					
+
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
 					pageNo++;
-					
+
 				} else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
 					pageNo--;
 				}
 			} else if (OP_NEW.equalsIgnoreCase(op)) {
 				ServletUtility.redirect(ORSView.STUDENT_CTL, request, response);
 				return;
-				
+
 			} else if (OP_DELETE.equalsIgnoreCase(op)) {
 				pageNo = 1;
 				if (ids != null && ids.length > 0) {
-					
+
 					StudentBean deletebean = new StudentBean();
 					for (String id : ids) {
-						
+
 						deletebean.setId(DataUtility.getInt(id));
 						model.delete(deletebean);
 						ServletUtility.setSuccessMessage("Student is deleted successfully", request);
@@ -114,7 +145,7 @@ public class StudentListCtl extends BaseCtl {
 			} else if (OP_RESET.equalsIgnoreCase(op)) {
 				ServletUtility.redirect(ORSView.STUDENT_LIST_CTL, request, response);
 				return;
-				
+
 			} else if (OP_BACK.equalsIgnoreCase(op)) {
 				ServletUtility.redirect(ORSView.STUDENT_LIST_CTL, request, response);
 				return;
@@ -125,7 +156,7 @@ public class StudentListCtl extends BaseCtl {
 
 			if (!OP_DELETE.equalsIgnoreCase(op)) {
 				if (list == null || list.size() == 0) {
-					
+
 					ServletUtility.setErrorMessage("No record found ", request);
 				}
 			}
@@ -143,6 +174,11 @@ public class StudentListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view (JSP) for the student list page.
+	 * 
+	 * @return the student list view path as String
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.STUDENT_LIST_VIEW;

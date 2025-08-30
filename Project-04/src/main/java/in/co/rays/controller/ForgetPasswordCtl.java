@@ -17,9 +17,20 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "ForgetPasswordCtl", urlPatterns = { "/ForgetPasswordCtl" })
+/**
+ * ForgetPasswordCtl Controller to handle forget password functionality.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "ForgetPasswordCtl", urlPatterns = { "/ctl/ForgetPasswordCtl" })
 public class ForgetPasswordCtl extends BaseCtl {
 
+	/**
+	 * Validates the input data from the forget password form.
+	 *
+	 * @param request the HttpServletRequest
+	 * @return true if data is valid, otherwise false
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -36,6 +47,12 @@ public class ForgetPasswordCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates the UserBean with request parameters.
+	 *
+	 * @param request the HttpServletRequest
+	 * @return a populated UserBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -46,11 +63,27 @@ public class ForgetPasswordCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Displays the forget password view (HTTP GET).
+	 *
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles forget password operation (HTTP POST).
+	 *
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -76,6 +109,11 @@ public class ForgetPasswordCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view path of the forget password page.
+	 *
+	 * @return view page path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.FORGET_PASSWORD_VIEW;

@@ -15,9 +15,20 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "FacultyListCtl", urlPatterns = "/FacultyListCtl")
+/**
+ * Faculty List Controller. Performs search and delete operations for Faculty.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "FacultyListCtl", urlPatterns = { "/ctl/FacultyListCtl" })
 public class FacultyListCtl extends BaseCtl {
 
+	/**
+	 * Populates the FacultyBean from request parameters.
+	 *
+	 * @param request the HttpServletRequest
+	 * @return populated FacultyBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 		FacultyBean bean = new FacultyBean();
@@ -28,6 +39,15 @@ public class FacultyListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET method. Displays the list of faculty members with
+	 * pagination.
+	 *
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -58,6 +78,15 @@ public class FacultyListCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST method. Processes search, pagination, delete and other
+	 * operations.
+	 *
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -137,6 +166,11 @@ public class FacultyListCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Returns the view page for this controller.
+	 *
+	 * @return view page path
+	 */
 	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub

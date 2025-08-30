@@ -2,91 +2,221 @@ package in.co.rays.bean;
 
 import java.util.Date;
 
+
+/**
+ * TimetableBean represents the timetable details for exams,
+ * including semester, exam date/time, course and subject information.
+ * 
+ * @author Yusuf Khan
+ */
 public class TimetableBean extends BaseBean {
 
-	private String semester;
-	private String description;
-	private Date examDate;
-	private String examTime;
-	private long courseId;
-	private String courseName;
-	private long subjectId;
-	private String subjectName;
 
-	public String getSemester() {
-		return semester;
-	}
+    /**
+     * Semester for which the timetable is applicable.
+     */
+    private String semester;
 
-	public void setSemester(String semester) {
-		this.semester = semester;
-	}
+    /**
+     * Description related to the timetable.
+     */
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * Date of the exam.
+     */
+    private Date examDate;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     * Time of the exam.
+     */
+    private String examTime;
 
-	public Date getExamDate() {
-		return examDate;
-	}
+    /**
+     * ID of the course related to the timetable.
+     */
+    private long courseId;
 
-	public void setExamDate(Date examDate) {
-		this.examDate = examDate;
-	}
+    /**
+     * Name of the course related to the timetable.
+     */
+    private String courseName;
 
-	public String getExamTime() {
-		return examTime;
-	}
+    /**
+     * ID of the subject related to the timetable.
+     */
+    private long subjectId;
 
-	public void setExamTime(String examTime) {
-		this.examTime = examTime;
-	}
+    /**
+     * Name of the subject related to the timetable.
+     */
+    private String subjectName;
 
-	public long getCourseId() {
-		return courseId;
-	}
+    /**
+     * Returns the semester.
+     * 
+     * @return semester
+     */
+    public String getSemester() {
+        return semester;
+    }
 
-	public void setCourseId(long courseId) {
-		this.courseId = courseId;
-	}
+    /**
+     * Sets the semester.
+     * 
+     * @param semester the semester to set
+     */
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
 
-	public String getCourseName() {
-		return courseName;
-	}
+    /**
+     * Returns the description.
+     * 
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
 
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
+    /**
+     * Sets the description.
+     * 
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public long getSubjectId() {
-		return subjectId;
-	}
+    /**
+     * Returns the exam date.
+     * 
+     * @return examDate
+     */
+    public Date getExamDate() {
+        return examDate;
+    }
 
-	public void setSubjectId(long subjectId) {
-		this.subjectId = subjectId;
-	}
+    /**
+     * Sets the exam date.
+     * 
+     * @param examDate the examDate to set
+     */
+    public void setExamDate(Date examDate) {
+        this.examDate = examDate;
+    }
 
-	public String getSubjectName() {
-		return subjectName;
-	}
+    /**
+     * Returns the exam time.
+     * 
+     * @return examTime
+     */
+    public String getExamTime() {
+        return examTime;
+    }
 
-	public void setSubjectName(String subjectName) {
-		this.subjectName = subjectName;
-	}
+    /**
+     * Sets the exam time.
+     * 
+     * @param examTime the examTime to set
+     */
+    public void setExamTime(String examTime) {
+        this.examTime = examTime;
+    }
 
-	@Override
-	public String getKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * Returns the course ID.
+     * 
+     * @return courseId
+     */
+    public long getCourseId() {
+        return courseId;
+    }
 
-	@Override
-	public String getValue() {
-		// TODO Auto-generated method stub
-		return null;
+    /**
+     * Sets the course ID.
+     * 
+     * @param courseId the courseId to set
+     */
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
-	}
+    /**
+     * Returns the course name.
+     * 
+     * @return courseName
+     */
+    public String getCourseName() {
+        return courseName;
+    }
+
+    /**
+     * Sets the course name.
+     * 
+     * @param courseName the courseName to set
+     */
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    /**
+     * Returns the subject ID.
+     * 
+     * @return subjectId
+     */
+    public long getSubjectId() {
+        return subjectId;
+    }
+
+    /**
+     * Sets the subject ID.
+     * 
+     * @param subjectId the subjectId to set
+     */
+    public void setSubjectId(long subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    /**
+     * Returns the subject name.
+     * 
+     * @return subjectName
+     */
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    /**
+     * Sets the subject name.
+     * 
+     * @param subjectName the subjectName to set
+     */
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    /**
+     * Returns the key (ID as String) used in dropdowns or identifiers.
+     * Currently returns null and can be overridden to provide proper key.
+     * 
+     * @return key as String or null
+     */
+    @Override
+    public String getKey() {
+        // TODO: Provide meaningful key if needed
+        return null;
+    }
+
+    /**
+     * Returns the display value used in dropdowns or lists.
+     * Currently returns null and can be overridden to provide proper value.
+     * 
+     * @return display value or null
+     */
+    @Override
+    public String getValue() {
+        // TODO: Provide meaningful value if needed
+        return null;
+    }
 }

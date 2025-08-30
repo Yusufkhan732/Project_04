@@ -17,13 +17,27 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/UserRegistrationCtl")
+/**
+ * Controller class to handle User Registration functionality.
+ * 
+ * Validates user input, populates the UserBean, and interacts with the
+ * UserModel to persist user data.
+ * 
+ * Handles GET and POST HTTP methods for rendering and submitting the
+ * registration form respectively.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "UserRegistrationCtl", urlPatterns = { "/UserRegistrationCtl" })
 public class UserRegistrationCtl extends BaseCtl {
 
 	public static final String OP_SIGN_UP = "Signup";
 
 	/**
-	 *
+	 * Validates input parameters from the user registration form.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return boolean true if all fields are valid, false otherwise
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
@@ -101,6 +115,12 @@ public class UserRegistrationCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates UserBean from HTTP request parameters.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return BaseBean UserBean populated with form data
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -130,6 +150,14 @@ public class UserRegistrationCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET request to load registration page.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -138,6 +166,14 @@ public class UserRegistrationCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST request for user registration.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -173,6 +209,11 @@ public class UserRegistrationCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view path for the registration page.
+	 * 
+	 * @return String view path
+	 */
 	@Override
 	protected String getView() {
 

@@ -14,17 +14,33 @@ import javax.mail.internet.MimeMessage;
 
 import in.co.rays.exception.ApplicationException;
 
+/**
+ * Utility class for sending email messages using SMTP. Supports both HTML and
+ * plain text emails. Configurations are loaded from a ResourceBundle.
+ * 
+ * Author: Yusuf Khan Version: 1.0
+ */
 public class EmailUtility {
-	
+
+	/** Resource bundle for system properties */
 	static ResourceBundle rb = ResourceBundle.getBundle("in.co.rays.bundle.system");
 
+	/** SMTP server host name */
 	private static final String SMTP_HOST_NAME = rb.getString("smtp.server");
+
+	/** SMTP server port */
 	private static final String SMTP_PORT = rb.getString("smtp.port");
+
+	/** Sender email address */
 	private static final String emailFromAddress = rb.getString("email.login");
+
+	/** Sender email password */
 	private static final String emailPassword = rb.getString("email.pwd");
 
+	/** Properties object for mail configuration */
 	private static Properties props = new Properties();
 
+	/** Static block to initialize mail properties */
 	static {
 		props.put("mail.smtp.host", SMTP_HOST_NAME);
 		props.put("mail.smtp.auth", "true");
@@ -37,6 +53,13 @@ public class EmailUtility {
 		props.put("mail.smtp.socketFactory.fallback", "false");
 	}
 
+	/**
+	 * Sends an email message using SMTP server.
+	 *
+	 * @param emailMessageDTO the EmailMessage object containing recipient, subject,
+	 *                        content, and type
+	 * @throws ApplicationException if there is an error sending the email
+	 */
 	public static void sendMail(EmailMessage emailMessageDTO) throws ApplicationException {
 		try {
 			// Setup mail session
@@ -64,6 +87,14 @@ public class EmailUtility {
 		}
 	}
 
+	/**
+	 * Converts a comma-separated string of emails into an array of InternetAddress
+	 * objects.
+	 *
+	 * @param emails comma-separated email addresses
+	 * @return array of InternetAddress objects
+	 * @throws Exception if any email address is invalid
+	 */
 	private static InternetAddress[] getInternetAddresses(String emails) throws Exception {
 		if (emails == null || emails.isEmpty()) {
 			return new InternetAddress[0];

@@ -16,9 +16,26 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/SubjectListCtl")
+/**
+ * SubjectListCtl is a controller servlet responsible for handling the
+ * operations related to listing, searching, pagination, and deletion of Subject
+ * records.
+ * 
+ * It interacts with the SubjectModel to fetch data and manages user inputs from
+ * the Subject list view.
+ * 
+ * Supports operations: Search, Next, Previous, New, Delete, Reset, Back.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "SubjectListCtl", urlPatterns = { "/ctl/SubjectListCtl" })
 public class SubjectListCtl extends BaseCtl {
-
+	/**
+	 * Loads data needed for dropdowns or other preload requirements before the page
+	 * is rendered.
+	 * 
+	 * @param request HttpServletRequest object
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -37,6 +54,12 @@ public class SubjectListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates a SubjectBean from the HTTP request parameters.
+	 * 
+	 * @param request HttpServletRequest object
+	 * @return populated SubjectBean instance
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -50,6 +73,15 @@ public class SubjectListCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Handles HTTP GET requests to load and display the list of subjects with
+	 * pagination.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -80,6 +112,15 @@ public class SubjectListCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests for search, pagination, new record, delete, reset,
+	 * and back operations.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -160,6 +201,11 @@ public class SubjectListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the path to the Subject list view JSP.
+	 * 
+	 * @return the Subject list JSP path
+	 */
 	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub

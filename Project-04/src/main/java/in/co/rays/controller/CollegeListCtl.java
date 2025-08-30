@@ -16,9 +16,23 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/CollegeListCtl")
+/**
+ * CollegeListCtl class handles list, search, delete, pagination, and navigation
+ * operations for College entities. It extends BaseCtl and interacts with
+ * CollegeModel for database operations.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "CollegeListCtl", urlPatterns = { "/ctl/CollegeListCtl" })
 public class CollegeListCtl extends BaseCtl {
 
+	/**
+	 * Loads the list of colleges from the model and sets it as a request attribute.
+	 * This method is called before main request processing to preload dropdowns or
+	 * reference data.
+	 * 
+	 * @param request HttpServletRequest object containing client request
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 		CollegeModel collegeModel = new CollegeModel();
@@ -33,6 +47,13 @@ public class CollegeListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates a CollegeBean from HTTP request parameters. This bean is used for
+	 * search and filtering operations.
+	 * 
+	 * @param request HttpServletRequest containing client parameters
+	 * @return populated CollegeBean object
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -45,6 +66,15 @@ public class CollegeListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET requests. Loads the paginated list of colleges based on
+	 * search criteria. Forwards the request to the list view.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -76,6 +106,16 @@ public class CollegeListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Handles HTTP POST requests. Supports operations like Search, Next, Previous,
+	 * New, Delete, Reset, and Back. Manages pagination, deletion, and forwarding to
+	 * the list view.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -158,6 +198,11 @@ public class CollegeListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view page for the College List.
+	 * 
+	 * @return String representing the view path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.COLLEGE_LIST_VIEW;

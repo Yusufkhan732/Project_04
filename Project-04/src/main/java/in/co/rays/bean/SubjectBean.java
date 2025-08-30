@@ -1,52 +1,122 @@
 package in.co.rays.bean;
 
+/**
+ * SubjectBean represents the details of a subject,
+ * including its name, associated course details, and description.
+ * 
+ * @author Yusuf Khan
+ */
 public class SubjectBean extends BaseBean {
 
-	private String name;
-	private long courseId;
-	private String courseName;
-	private String description;
+	   /**
+     * Name of the subject.
+     */
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * ID of the course this subject belongs to.
+     */
+    private long courseId;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Name of the course this subject belongs to.
+     */
+    private String courseName;
 
-	public long getCourseId() {
-		return courseId;
-	}
+    /**
+     * Description of the subject.
+     */
+    private String description;
 
-	public void setCourseId(long courseId) {
-		this.courseId = courseId;
-	}
+    /**
+     * Returns the name of the subject.
+     * 
+     * @return subject name
+     */
+    public String getName() {
+        return name;
+    }
 
-	public String getCourseName() {
-		return courseName;
-	}
+    /**
+     * Sets the name of the subject.
+     * 
+     * @param name subject name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
+    /**
+     * Returns the course ID associated with the subject.
+     * 
+     * @return course ID
+     */
+    public long getCourseId() {
+        return courseId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * Sets the course ID associated with the subject.
+     * 
+     * @param courseId course ID to set
+     */
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     * Returns the course name associated with the subject.
+     * 
+     * @return course name
+     */
+    public String getCourseName() {
+        return courseName;
+    }
 
-	@Override
-	public String getKey() {
-		return id + "";
-	}
+    /**
+     * Sets the course name associated with the subject.
+     * 
+     * @param courseName course name to set
+     */
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
-	@Override
-	public String getValue() {
-		return name;
-	}
+    /**
+     * Returns the description of the subject.
+     * 
+     * @return subject description
+     */
+    public String getDescription() {
+        return description;
+    }
 
+    /**
+     * Sets the description of the subject.
+     * 
+     * @param description subject description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Returns the key (ID as string) used for dropdowns or identifiers.
+     * 
+     * @return key as String
+     */
+    @Override
+    public String getKey() {
+        return id + "";
+    }
+
+    /**
+     * Returns the display value (subject name) used in dropdowns or lists.
+     * 
+     * @return subject name
+     */
+    @Override
+    public String getValue() {
+        return name;
+    }
 }

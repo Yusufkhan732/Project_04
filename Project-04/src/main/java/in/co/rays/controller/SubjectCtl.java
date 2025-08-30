@@ -20,9 +20,20 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/SubjectCtl")
+/**
+ * SubjectCtl is a controller servlet that handles CRUD operations for Subject.
+ * It loads required data for the view, validates inputs, populates bean from
+ * request, and manages save/update/cancel/reset operations.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "SubjectCtl", urlPatterns = { "/ctl/SubjectCtl" })
 public class SubjectCtl extends BaseCtl {
-
+	/**
+	 * Loads list of courses to be displayed in the dropdown in the view.
+	 * 
+	 * @param request HttpServletRequest
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -37,6 +48,12 @@ public class SubjectCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Validates form input parameters for Subject form.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return boolean true if all inputs are valid, false otherwise
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -59,6 +76,12 @@ public class SubjectCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Populates SubjectBean from HTTP request parameters.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return populated SubjectBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -73,6 +96,14 @@ public class SubjectCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Handles HTTP GET request to load subject data for editing if id is provided.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -99,6 +130,14 @@ public class SubjectCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests for Save, Update, Cancel, and Reset operations.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -155,6 +194,11 @@ public class SubjectCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the path of the Subject view JSP.
+	 * 
+	 * @return Subject view path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.SUBJECT_VIEW;

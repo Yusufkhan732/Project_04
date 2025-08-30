@@ -17,9 +17,26 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/CollegeCtl")
+/**
+ * CollegeCtl class performs the operations for College management. It extends
+ * BaseCtl and overrides methods for validation, bean population, and handling
+ * HTTP GET and POST requests.
+ * 
+ * This servlet handles adding, updating, resetting, and canceling college
+ * information.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "CollegeCtl", urlPatterns = { "/ctl/CollegeCtl" })
 public class CollegeCtl extends BaseCtl {
 
+	/**
+	 * Validates the input parameters from the HTTP request. Checks for required
+	 * fields and proper format.
+	 * 
+	 * @param request the HttpServletRequest object containing client request
+	 * @return true if all validations pass, false otherwise
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -66,6 +83,13 @@ public class CollegeCtl extends BaseCtl {
 		return isValid;
 	}
 
+	/**
+	 * Populates a CollegeBean object from HTTP request parameters. Sets all
+	 * relevant fields from request and calls populateDTO to set audit fields.
+	 * 
+	 * @param request the HttpServletRequest object containing client request
+	 * @return a populated CollegeBean object
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -82,6 +106,15 @@ public class CollegeCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET requests. Loads a CollegeBean based on ID parameter and
+	 * forwards to the view.
+	 * 
+	 * @param request  the HttpServletRequest object
+	 * @param response the HttpServletResponse object
+	 * @throws ServletException if servlet-specific error occurs
+	 * @throws IOException      if an I/O error occurs
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -109,6 +142,15 @@ public class CollegeCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests. Supports save, update, cancel, and reset
+	 * operations. Performs business logic using CollegeModel.
+	 * 
+	 * @param request  the HttpServletRequest object
+	 * @param response the HttpServletResponse object
+	 * @throws ServletException if servlet-specific error occurs
+	 * @throws IOException      if an I/O error occurs
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -165,6 +207,11 @@ public class CollegeCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view for this controller.
+	 * 
+	 * @return String view page path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.COLLEGE_VIEW;

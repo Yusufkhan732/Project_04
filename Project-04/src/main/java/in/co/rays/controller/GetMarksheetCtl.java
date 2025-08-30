@@ -17,9 +17,21 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "GetMarksheetCtl", urlPatterns = "/GetMarksheetCtl")
+/**
+ * GetMarksheetCtl Controller: Handles request to fetch a student's marksheet
+ * using their roll number.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "GetMarksheetCtl", urlPatterns = { "/ctl/GetMarksheetCtl" })
 public class GetMarksheetCtl extends BaseCtl {
 
+	/**
+	 * Validates the input field (Roll Number).
+	 *
+	 * @param request HttpServletRequest containing user input
+	 * @return true if validation passes, otherwise false
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -33,6 +45,12 @@ public class GetMarksheetCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates the MarksheetBean with request data.
+	 *
+	 * @param request HttpServletRequest
+	 * @return populated MarksheetBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -43,11 +61,28 @@ public class GetMarksheetCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET method. Forwards to the Get Marksheet View.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST method. Processes the 'GO' operation to retrieve the
+	 * marksheet using roll number.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -76,6 +111,11 @@ public class GetMarksheetCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view page for Get Marksheet.
+	 *
+	 * @return the view path as a String
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.GET_MARKSHEET_VIEW;

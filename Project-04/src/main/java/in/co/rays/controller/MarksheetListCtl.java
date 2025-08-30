@@ -15,9 +15,21 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "MarksheetListCtl", urlPatterns = "/MarksheetListCtl")
+/**
+ * MarksheetListCtl controller handles the list, search, pagination, and delete
+ * operations for Marksheet entities.
+ *
+ * @author Yusuf
+ */
+@WebServlet(name = "MarksheetListCtl", urlPatterns = { "/ctl/MarksheetListCtl" })
 public class MarksheetListCtl extends BaseCtl {
 
+	/**
+	 * Populates the MarksheetBean from request parameters.
+	 *
+	 * @param request the HTTP request
+	 * @return populated MarksheetBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 		MarksheetBean bean = new MarksheetBean();
@@ -28,6 +40,12 @@ public class MarksheetListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET requests for displaying the initial list of marksheets.
+	 *
+	 * @param request  HTTPServletRequest
+	 * @param response HTTPServletResponse
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -59,6 +77,13 @@ public class MarksheetListCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Handles POST requests for search, pagination, delete, reset, and back
+	 * operations.
+	 *
+	 * @param request  HTTPServletRequest
+	 * @param response HTTPServletResponse
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -137,6 +162,11 @@ public class MarksheetListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view for the Marksheet list.
+	 *
+	 * @return view path for marksheet list
+	 */
 	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub

@@ -15,9 +15,20 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/CourseListCtl")
+/**
+ * Controller to handle Course List operations such as searching, paging,
+ * deleting, and redirecting to the course form.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "CourseListCtl", urlPatterns = { "/ctl/CourseListCtl" })
 public class CourseListCtl extends BaseCtl {
 
+	/**
+	 * Preloads course data to be used in dropdowns or forms.
+	 *
+	 * @param request HttpServletRequest
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 		CourseModel model = new CourseModel();
@@ -29,6 +40,12 @@ public class CourseListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates CourseBean from request parameters.
+	 *
+	 * @param request HttpServletRequest
+	 * @return populated CourseBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 		CourseBean bean = new CourseBean();
@@ -37,6 +54,12 @@ public class CourseListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET requests. Displays the course list view with pagination.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -69,6 +92,13 @@ public class CourseListCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests. Supports operations like Search, Next, Previous,
+	 * Delete, Reset, and Back.
+	 *
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -149,6 +179,11 @@ public class CourseListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view name for the course list screen.
+	 *
+	 * @return String view path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.COURSE_LIST_VIEW;

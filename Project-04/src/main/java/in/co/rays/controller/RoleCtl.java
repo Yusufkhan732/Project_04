@@ -17,9 +17,24 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/RoleCtl")
+/**
+ * RoleCtl is a controller servlet class that handles HTTP requests for Role
+ * operations such as add, update, and view roles in the application.
+ * 
+ * It performs validation of input data and interacts with RoleModel for
+ * database operations.
+ * 
+ * Author: Yusuf Khan Date: 05-08-2025
+ */
+@WebServlet(name = "RoleCtl", urlPatterns = { "/ctl/RoleCtl" })
 public class RoleCtl extends BaseCtl {
 
+	/**
+	 * Validates Role input fields.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return boolean true if input is valid
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -42,6 +57,12 @@ public class RoleCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Populates RoleBean from request parameters.
+	 * 
+	 * @param request HttpServletRequest
+	 * @return populated RoleBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 		RoleBean bean = new RoleBean();
@@ -54,6 +75,13 @@ public class RoleCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET request for Role page. If an ID is provided, fetches the role
+	 * record and populates the form.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -79,6 +107,12 @@ public class RoleCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST requests for Save, Update, Reset, and Cancel operations.
+	 * 
+	 * @param request  HttpServletRequest
+	 * @param response HttpServletResponse
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -94,10 +128,9 @@ public class RoleCtl extends BaseCtl {
 
 			try {
 
-				throw new ApplicationException("Error");
-//				long pk = model.add(bean);
-//				ServletUtility.setBean(bean, request);
-//				ServletUtility.setSuccessMessage("Data Successfully saved", request);
+				long pk = model.add(bean);
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setSuccessMessage("Data Successfully saved", request);
 
 			} catch (ApplicationException e) {
 				e.printStackTrace();
@@ -105,11 +138,11 @@ public class RoleCtl extends BaseCtl {
 
 				return;
 
-//			} catch (DuplicateRecordException e) {
-//				ServletUtility.setBean(bean, request);
-//
-//				ServletUtility.setErrorMessage("Role alredy exists", request);
-//				return;
+			} catch (DuplicateRecordException e) {
+				ServletUtility.setBean(bean, request);
+
+				ServletUtility.setErrorMessage("Role alredy exists", request);
+				return;
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 
@@ -143,6 +176,11 @@ public class RoleCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view for the role form.
+	 * 
+	 * @return ROLE_VIEW path
+	 */
 	@Override
 	protected String getView() {
 

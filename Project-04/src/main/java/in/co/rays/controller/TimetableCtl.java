@@ -20,9 +20,22 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "TimetableCtl", urlPatterns = "/TimetableCtl")
+/**
+ * TimetableCtl is a controller responsible for handling operations related to
+ * creating, updating, validating, and displaying timetable entries.
+ *
+ * It communicates with TimetableModel to perform database operations.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "TimetableCtl", urlPatterns = { "/ctl/TimetableCtl" })
 public class TimetableCtl extends BaseCtl {
 
+	/**
+	 * Preloads subject and course lists for use in dropdowns on the Timetable form.
+	 * 
+	 * @param request the HttpServletRequest object
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -42,6 +55,12 @@ public class TimetableCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Validates user input from the Timetable form.
+	 * 
+	 * @param request the HttpServletRequest
+	 * @return true if input is valid; false otherwise
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -86,6 +105,12 @@ public class TimetableCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates a TimetableBean with request parameters.
+	 * 
+	 * @param request the HttpServletRequest
+	 * @return a populated TimetableBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -104,6 +129,14 @@ public class TimetableCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET requests. Loads existing Timetable data for editing.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -123,6 +156,14 @@ public class TimetableCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST requests for Save, Update, Reset, and Cancel operations.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -217,6 +258,11 @@ public class TimetableCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view page path for Timetable form.
+	 * 
+	 * @return the path to timetable JSP
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.TIMETABLE_VIEW;

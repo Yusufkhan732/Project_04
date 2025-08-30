@@ -21,9 +21,22 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "FacultyCtl", urlPatterns = "/FacultyCtl")
+/**
+ * Controller class to handle Faculty add/update form operations.
+ * 
+ * Handles operations like: - Displaying form (GET) - Submitting form (POST) -
+ * Input validation - Preloading dropdown data (College, Course, Subject)
+ * 
+ * URL Mapping: /FacultyCtl
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "FacultyCtl", urlPatterns = { "/ctl/FacultyCtl" })
 public class FacultyCtl extends BaseCtl {
 
+	/**
+	 * Loads College, Subject, and Course lists for form dropdowns.
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -47,6 +60,9 @@ public class FacultyCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Validates user input for faculty form.
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -110,6 +126,9 @@ public class FacultyCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates FacultyBean from request parameters.
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -140,6 +159,9 @@ public class FacultyCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET request to load form for editing if ID is provided.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -161,6 +183,9 @@ public class FacultyCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST requests for save, update, reset, and cancel operations.
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -215,6 +240,9 @@ public class FacultyCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns view path for the Faculty form.
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.FACULTY_VIEW;

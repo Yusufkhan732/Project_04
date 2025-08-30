@@ -18,9 +18,23 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet(name = "TimetableListCtl", urlPatterns = "/TimetableListCtl")
+/**
+ * TimetableListCtl handles listing, searching, pagination, and deletion of
+ * timetable records.
+ *
+ * It communicates with TimetableModel to fetch data and forwards it to the
+ * view.
+ * 
+ * @author Yusuf Khan
+ */
+@WebServlet(name = "TimetableListCtl", urlPatterns = { "/ctl/TimetableListCtl" })
 public class TimetableListCtl extends BaseCtl {
 
+	/**
+	 * Preloads course and subject lists before rendering the timetable list view.
+	 * 
+	 * @param request the HttpServletRequest
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -40,6 +54,12 @@ public class TimetableListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates TimetableBean from HTTP request parameters.
+	 * 
+	 * @param request the HttpServletRequest
+	 * @return populated TimetableBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -52,6 +72,14 @@ public class TimetableListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET request to display the timetable list with pagination.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -82,6 +110,15 @@ public class TimetableListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Handles HTTP POST request for search, next, previous, delete, reset, new, and
+	 * back operations.
+	 * 
+	 * @param request  the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -161,6 +198,11 @@ public class TimetableListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view for timetable list.
+	 * 
+	 * @return the path of the timetable list JSP
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.TIMETABLE_LIST_VIEW;

@@ -6,16 +6,31 @@ import java.util.ResourceBundle;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+/**
+ * Singleton utility class for managing JDBC connections using C3P0 connection
+ * pool. Provides methods to get a database connection, close connection, and
+ * rollback transaction. Configurations are loaded from a ResourceBundle.
+ * 
+ * Author: Yusuf Khan Version: 1.0
+ */
 public final class JDBCDataSource {
 
+	/** Private constructor to prevent instantiation */
 	private JDBCDataSource() {
-
 	}
 
+	/** Singleton instance of JDBCDataSource */
 	private static JDBCDataSource dataSource;
 
+	/** C3P0 connection pool instance */
 	private ComboPooledDataSource cpds = null;
 
+	/**
+	 * Returns the singleton instance of JDBCDataSource. Initializes the C3P0
+	 * connection pool if not already initialized.
+	 * 
+	 * @return JDBCDataSource singleton instance
+	 */
 	public static JDBCDataSource getInstance() {
 		if (dataSource == null) {
 
@@ -41,10 +56,21 @@ public final class JDBCDataSource {
 
 	}
 
+	/**
+	 * Returns a database connection from the connection pool.
+	 * 
+	 * @return Connection object
+	 * @throws SQLException if a database access error occurs
+	 */
 	public static Connection getConnection() throws SQLException {
 		return getInstance().cpds.getConnection();
 	}
 
+	/**
+	 * Closes the given database connection.
+	 * 
+	 * @param connection the Connection to close
+	 */
 	public static void closeConnection(Connection connection) {
 		if (connection != null) {
 			try {
@@ -55,6 +81,11 @@ public final class JDBCDataSource {
 		}
 	}
 
+	/**
+	 * Rolls back the transaction on the given connection.
+	 * 
+	 * @param connection the Connection to rollback
+	 */
 	public static void trnrollBack(Connection connection) {
 		if (connection != null) {
 			try {

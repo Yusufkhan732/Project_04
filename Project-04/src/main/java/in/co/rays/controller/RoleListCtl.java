@@ -18,9 +18,27 @@ import in.co.rays.util.DataUtility;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/RoleListCtl")
+/**
+ * RoleListCtl is a controller servlet class that manages the listing,
+ * searching, pagination, and deletion of Role records in the application.
+ * 
+ * It interacts with the RoleModel to perform CRUD operations and prepares data
+ * for display in the Role List View.
+ * 
+ * It supports operations like search, next, previous, new, delete, reset, and
+ * back.
+ * 
+ * Author: Yusuf Khan Date: 2025
+ */
+@WebServlet(name = "RoleListCtl", urlPatterns = { "/ctl/RoleListCtl" })
 public class RoleListCtl extends BaseCtl {
 
+	/**
+	 * Loads the list of roles to be used in dropdowns or other UI components before
+	 * rendering the page.
+	 * 
+	 * @param request HttpServletRequest object
+	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
 
@@ -34,6 +52,12 @@ public class RoleListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Populates RoleBean from request parameters.
+	 * 
+	 * @param request HttpServletRequest object
+	 * @return RoleBean populated from request data
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -44,6 +68,12 @@ public class RoleListCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET request to display paginated list of roles.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -79,6 +109,13 @@ public class RoleListCtl extends BaseCtl {
 
 	}
 
+	/**
+	 * Handles HTTP POST request to perform operations like search, pagination, new
+	 * record, delete, reset, and back.
+	 * 
+	 * @param request  HttpServletRequest object
+	 * @param response HttpServletResponse object
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -169,6 +206,11 @@ public class RoleListCtl extends BaseCtl {
 		}
 	}
 
+	/**
+	 * Returns the view (JSP) path for the Role List page.
+	 * 
+	 * @return String representing the view path
+	 */
 	@Override
 	protected String getView() {
 

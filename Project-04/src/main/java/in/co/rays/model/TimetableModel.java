@@ -13,42 +13,63 @@ import in.co.rays.bean.TimetableBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
 import in.co.rays.util.JDBCDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
 
+/**
+ * The {@code TimetableModel} class handles CRUD operations and validations for
+ * the Timetable entity in the application. It interacts with the `st_timetable`
+ * table in the database using JDBC.
+ *
+ * Author: Yusuf Khan
+ */
 public class TimetableModel {
 
-	public Integer nextPk() throws Exception {
+	private static Logger log = Logger.getLogger(TimetableModel.class);
 
+	/**
+	 * Returns the next primary key value for the timetable table.
+	 *
+	 * @return next primary key as an integer
+	 * @throws Exception if any database access error occurs
+	 */
+	public Integer nextPk() throws Exception {
+		log.debug("nextPk start");
 		int pk = 0;
 		Connection conn = null;
 
 		try {
-
 			conn = JDBCDataSource.getConnection();
-
 			PreparedStatement pstmt = conn.prepareStatement("select max(ID) from st_timetable");
-
 			ResultSet rs = pstmt.executeQuery();
-			// System.out.println("NextPk =:" + pk);
 			while (rs.next()) {
-
 				pk = rs.getInt(1);
 			}
-
 		} catch (Exception e) {
-
+			log.error("Exception in nextPk", e);
 			throw new DatabaseException("Exception:   Exception in getting pk:" + e);
-
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
-
+		log.debug("nextPk end");
 		return pk + 1;
 	}
 
-//------------------------------------------------------------------------------------------------
+	/**
+	 * Adds a new timetable entry to the database. Sets course and subject names
+	 * automatically based on their respective IDs.
+	 *
+	 * @param bean the TimetableBean object containing timetable details
+	 * @return the generated primary key of the new timetable
+	 * @throws Exception if insertion or rollback fails
+	 */
 	public long add(TimetableBean bean) throws Exception {
-
+		log.debug("add start");
 		int pk = 0;
 
 		CourseModel courseModel = new CourseModel();
@@ -61,7 +82,6 @@ public class TimetableModel {
 
 		Connection conn = null;
 		try {
-
 			pk = nextPk();
 			conn = JDBCDataSource.getConnection();
 			conn.setAutoCommit(false);
@@ -83,29 +103,35 @@ public class TimetableModel {
 			pstmt.setTimestamp(13, bean.getModifiedDatetime());
 
 			int i = pstmt.executeUpdate();
-
-			System.out.println("data inserted => " + i);
+			log.debug("data inserted => " + i);
 			conn.commit();
-
 		} catch (Exception e) {
+			log.error("Exception in add, rolling back", e);
 			try {
+
 				conn.rollback();
-
 			} catch (Exception e2) {
-
+				log.error("Rollback exception in add", e2);
 				throw new ApplicationException("Exception : Add rollBack Exception" + e2.getMessage());
 			}
 			throw new ApplicationException("Exception : Add Timetable Exception" + e);
-
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("add end");
 		return pk;
 	}
 
-//------------------------------------------------------------------------------------------------
+	/**
+	 * Updates an existing timetable entry. Updates course and subject names from
+	 * related models.
+	 *
+	 * @param bean TimetableBean with updated data
+	 * @throws Exception if update or rollback fails
+	 */
 	public void update(TimetableBean bean) throws Exception {
+		log.debug("update start");
 
 		CourseModel courseModel = new CourseModel();
 		CourseBean courseBean = courseModel.findByPk(bean.getCourseId());
@@ -114,9 +140,9 @@ public class TimetableModel {
 		SubjectModel subjectModel = new SubjectModel();
 		SubjectBean subjectBean = subjectModel.findByPk(bean.getSubjectId());
 		bean.setSubjectName(subjectBean.getName());
+
 		Connection conn = null;
 		try {
-
 			conn = JDBCDataSource.getConnection();
 			conn.setAutoCommit(false);
 
@@ -138,76 +164,82 @@ public class TimetableModel {
 			pstmt.setLong(13, bean.getId());
 
 			int i = pstmt.executeUpdate();
-
-			System.out.println("data updated => " + i);
+			log.debug("data updated => " + i);
 			conn.commit();
-
 		} catch (Exception e) {
-			try {
-				conn.rollback();
 
+			log.error("Exception in update, rolling back", e);
+			try {
+
+				conn.rollback();
 			} catch (Exception e2) {
 
+				log.error("Rollback exception in update", e2);
 				throw new ApplicationException("Exception : Add rollBack Exception" + e2.getMessage());
 			}
 			throw new ApplicationException("Exception : Add timetable Exception" + e);
-
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
-
 		}
+		log.debug("update end");
+
 	}
 
-//------------------------------------------------------------------------------------------------
+	/**
+	 * Deletes a timetable entry from the database by ID.
+	 *
+	 * @param bean TimetableBean containing the ID to delete
+	 * @throws ApplicationException if deletion fails
+	 */
 	public void delete(TimetableBean bean) throws ApplicationException {
+		log.debug("delete start: ID=" + bean.getId());
 		Connection conn = null;
 
 		try {
-
 			conn = JDBCDataSource.getConnection();
-
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement("delete from st_timetable where id = ?");
-
 			pstmt.setLong(1, bean.getId());
 
 			int i = pstmt.executeUpdate();
-			System.out.println("Data Deleted = " + i);
+			log.debug("Data Deleted = " + i);
 			conn.commit();
-
 		} catch (Exception e) {
-
+			log.error("Exception in delete, rolling back", e);
 			try {
 
 				conn.rollback();
-
 			} catch (Exception e2) {
-
+				log.error("Rollback exception in delete", e2);
 				throw new ApplicationException("Exception : Add RollBack Exception" + e2.getMessage());
 			}
 			throw new ApplicationException("Exception : Delete Timetable Exception" + e);
-
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("delete end: ID=" + bean.getId());
 	}
 
-//------------------------------------------------------------------------------------------------
+	/**
+	 * Finds a timetable record by its primary key (ID).
+	 *
+	 * @param id timetable ID
+	 * @return TimetableBean if found, otherwise null
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public TimetableBean findByPk(long id) throws ApplicationException {
-
+		log.debug("findByPk start: ID=" + id);
 		Connection conn = null;
 		TimetableBean bean = null;
 
 		try {
 			conn = JDBCDataSource.getConnection();
-
 			PreparedStatement pstmt = conn.prepareStatement("select * from st_timetable where id = ?");
 			pstmt.setLong(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
-
 			while (rs.next()) {
 				bean = new TimetableBean();
 				bean.setId(rs.getLong(1));
@@ -225,18 +257,25 @@ public class TimetableModel {
 				bean.setModifiedDatetime(rs.getTimestamp(13));
 			}
 		} catch (Exception e) {
-
-			throw new ApplicationException("Exception : Exception  getting timetable by pk");
-
+			log.error("Exception in findByPk", e);
+			throw new ApplicationException("Exception : Exception getting timetable by pk");
 		} finally {
-
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("findByPk end: ID=" + id);
 		return bean;
 	}
 
-//------------------------------------------------------------------------------------------
+	/**
+	 * Checks if a timetable entry already exists by course ID and exam date.
+	 *
+	 * @param courseId the course ID
+	 * @param examDate the date of the exam
+	 * @return TimetableBean if a duplicate exists, else null
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public TimetableBean checkByCourseName(Long courseId, Date examDate) throws ApplicationException {
+		log.debug("checkByCourseName start: courseId=" + courseId + ", examDate=" + examDate);
 		StringBuffer sql = new StringBuffer("select * from st_timetable where course_id = ? and exam_date = ?");
 		TimetableBean bean = null;
 		Connection conn = null;
@@ -267,17 +306,28 @@ public class TimetableModel {
 			rs.close();
 			pstmt.close();
 		} catch (Exception e) {
-
+			log.error("Exception in checkByCourseName", e);
 			throw new ApplicationException("Exception : Exception in get Timetable");
-
 		} finally {
-
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("checkByCourseName end: found=" + (bean != null));
 		return bean;
 	}
 
+	/**
+	 * Checks for a duplicate timetable entry using course ID, subject ID, and exam
+	 * date.
+	 *
+	 * @param courseId  the course ID
+	 * @param subjectId the subject ID
+	 * @param examDate  the date of the exam
+	 * @return TimetableBean if a duplicate exists, else null
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public TimetableBean checkBySubjectName(Long courseId, Long subjectId, Date examDate) throws ApplicationException {
+		log.debug("checkBySubjectName start: courseId=" + courseId + ", subjectId=" + subjectId + ", examDate="
+				+ examDate);
 		StringBuffer sql = new StringBuffer(
 				"select * from st_timetable where course_id = ? and subject_id = ? and exam_date = ?");
 		TimetableBean bean = null;
@@ -311,17 +361,31 @@ public class TimetableModel {
 			pstmt.close();
 		} catch (Exception e) {
 
+			log.error("Exception in checkBySubjectName", e);
 			throw new ApplicationException("Exception : Exception in get Timetable");
-
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("checkBySubjectName end: found=" + (bean != null));
 		return bean;
 	}
 
+	/**
+	 * Checks for a duplicate entry by course ID, subject ID, semester, and exam
+	 * date.
+	 *
+	 * @param courseId  the course ID
+	 * @param subjectId the subject ID
+	 * @param semester  the semester name
+	 * @param examDate  the exam date
+	 * @return TimetableBean if found, else null
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public TimetableBean checkBySemester(Long courseId, Long subjectId, String semester, Date examDate)
 			throws ApplicationException {
+		log.debug("TimetableModel.checkBySemester() start: courseId=" + courseId + ", subjectId=" + subjectId
+				+ ", semester=" + semester + ", examDate=" + examDate);
 		StringBuffer sql = new StringBuffer(
 				"select * from st_timetable where course_id = ? and subject_id = ? and semester = ? and exam_date = ?");
 		TimetableBean bean = null;
@@ -355,18 +419,33 @@ public class TimetableModel {
 			rs.close();
 			pstmt.close();
 		} catch (Exception e) {
-
+			log.error("Exception in checkBySemester", e);
 			throw new ApplicationException("Exception : Exception in get Timetable");
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("TimetableModel.checkBySemester() end: bean=" + bean);
 		return bean;
 	}
 
+	/**
+	 * Checks for a full duplicate entry with all fields.
+	 *
+	 * @param courseId    the course ID
+	 * @param subjectId   the subject ID
+	 * @param semester    the semester
+	 * @param examDate    the exam date
+	 * @param examTime    the exam time
+	 * @param description the exam description
+	 * @return TimetableBean if a full match is found, else null
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public TimetableBean checkByExamTime(Long courseId, Long subjectId, String semester, Date examDate, String examTime,
 			String description) throws ApplicationException {
-
+		log.debug("TimetableModel.checkByExamTime() start: courseId=" + courseId + ", subjectId=" + subjectId
+				+ ", semester=" + semester + ", examDate=" + examDate + ", examTime=" + examTime + ", description="
+				+ description);
 		StringBuffer sql = new StringBuffer(
 				"select * from st_timetable where course_id = ? and subject_id = ? and semester = ? and exam_date = ? and exam_time = ? and description = ?");
 		TimetableBean bean = null;
@@ -402,22 +481,40 @@ public class TimetableModel {
 			rs.close();
 			pstmt.close();
 		} catch (Exception e) {
-
+			log.error("Exception in checkByExamTime", e);
 			throw new ApplicationException("Exception : Exception in get Timetable");
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+		log.debug("TimetableModel.checkByExamTime() end: bean=" + bean);
 		return bean;
 	}
 
-//------------------------------------------------------------------------------------------
+	/**
+	 * Lists all timetable entries from the database.
+	 *
+	 * @return list of all TimetableBean objects
+	 * @throws ApplicationException if a database error occurs
+	 */
 	public List list() throws ApplicationException {
 		return search(null, 0, 0);
 
 	}
 
+	/**
+	 * Searches for timetable entries based on criteria and supports pagination.
+	 *
+	 * @param bean     TimetableBean with search parameters
+	 * @param pageNo   current page number (1-based index)
+	 * @param pageSize number of records per page
+	 * @return list of matching TimetableBean records
+	 * @throws ApplicationException if a database error occurs
+	 */
+
 	public List<TimetableBean> search(TimetableBean bean, int pageNo, int pageSize) throws ApplicationException {
+		log.debug("TimetableModel.search() start: bean=" + bean + ", pageNo=" + pageNo + ", pageSize=" + pageSize);
+
 		StringBuffer sql = new StringBuffer("select * from st_timetable where 1=1");
 
 		if (bean != null) {
@@ -455,10 +552,9 @@ public class TimetableModel {
 			sql.append(" limit " + pageNo + ", " + pageSize);
 		}
 
-		ArrayList<TimetableBean> list = new ArrayList<TimetableBean>();
+		ArrayList<TimetableBean> list = new ArrayList<>();
 		Connection conn = null;
 		try {
-
 			conn = JDBCDataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			ResultSet rs = pstmt.executeQuery();
@@ -482,12 +578,14 @@ public class TimetableModel {
 			rs.close();
 			pstmt.close();
 		} catch (Exception e) {
-
+			log.error("Exception in TimetableModel.search()", e);
 			throw new ApplicationException("Exception : Exception in search Timetable");
 		} finally {
 
 			JDBCDataSource.closeConnection(conn);
 		}
+
+		log.debug("TimetableModel.search() end: list.size=" + list.size());
 		return list;
 	}
 }

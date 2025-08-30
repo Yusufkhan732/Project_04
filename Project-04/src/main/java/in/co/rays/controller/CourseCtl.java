@@ -15,9 +15,23 @@ import in.co.rays.util.DataValidator;
 import in.co.rays.util.PropertyReader;
 import in.co.rays.util.ServletUtility;
 
-@WebServlet("/CourseCtl")
+/**
+ * CourseCtl is a controller servlet that handles add, update, and display
+ * operations for Course entities. It validates input data, populates CourseBean
+ * from request parameters, and interacts with CourseModel.
+ * 
+ * @author Yusuf khan
+ */
+@WebServlet(name = "CourseCtl", urlPatterns = { "/ctl/CourseCtl" })
 public class CourseCtl extends BaseCtl {
 
+	/**
+	 * Validates the request parameters for Course form. Checks for required fields
+	 * and valid formats.
+	 * 
+	 * @param request HttpServletRequest containing parameters to validate.
+	 * @return true if all validations pass, false otherwise.
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -41,6 +55,12 @@ public class CourseCtl extends BaseCtl {
 		return isValid;
 	}
 
+	/**
+	 * Populates and returns a CourseBean from HTTP request parameters.
+	 * 
+	 * @param request HttpServletRequest containing form parameters.
+	 * @return populated CourseBean.
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
@@ -55,6 +75,15 @@ public class CourseCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles HTTP GET requests. Loads Course details by id if provided and
+	 * forwards to the Course view.
+	 * 
+	 * @param request  HttpServletRequest object.
+	 * @param response HttpServletResponse object.
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -79,6 +108,15 @@ public class CourseCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles HTTP POST requests. Performs save, update, cancel, or reset
+	 * operations based on the operation parameter.
+	 * 
+	 * @param request  HttpServletRequest object.
+	 * @param response HttpServletResponse object.
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -135,6 +173,11 @@ public class CourseCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns the view page for CourseCtl.
+	 * 
+	 * @return String view path.
+	 */
 	@Override
 	protected String getView() {
 
