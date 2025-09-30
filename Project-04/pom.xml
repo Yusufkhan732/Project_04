@@ -46,6 +46,16 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
+<<<<<<< HEAD
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+=======
+>>>>>>> 44550202eb54eef528014c7b862ae884b334e858
 	</dependencies>
 	<properties>
 		<maven.compiler.source>11</maven.compiler.source>

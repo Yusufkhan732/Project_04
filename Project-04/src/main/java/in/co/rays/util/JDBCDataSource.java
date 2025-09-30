@@ -37,6 +37,22 @@ public final class JDBCDataSource {
 			ResourceBundle rb = ResourceBundle.getBundle("in.co.rays.bundle.system");
 
 			dataSource = new JDBCDataSource();
+<<<<<<< HEAD
+			try {
+			dataSource.cpds = new ComboPooledDataSource();
+			
+				dataSource.cpds.setDriverClass(rb.getString("driver"));
+				
+				String jdbcUrl = System.getenv("DATABASE_URL");
+			 
+				if (jdbcUrl==null) {
+					System.out.println("database "+jdbcUrl);
+					jdbcUrl= rb.getString("url");
+				}
+				
+				System.out.println("database "+jdbcUrl);
+			dataSource.cpds.setJdbcUrl(jdbcUrl);
+=======
 			dataSource.cpds = new ComboPooledDataSource();
 			try {
 				dataSource.cpds.setDriverClass(rb.getString("driver"));
@@ -44,13 +60,22 @@ public final class JDBCDataSource {
 				e.printStackTrace();
 			}
 			dataSource.cpds.setJdbcUrl(rb.getString("url"));
+>>>>>>> 44550202eb54eef528014c7b862ae884b334e858
 			dataSource.cpds.setUser(rb.getString("username"));
 			dataSource.cpds.setPassword(rb.getString("password"));
 			dataSource.cpds.setInitialPoolSize(new Integer((String) rb.getString("initialpoolsize")));
 			dataSource.cpds.setAcquireIncrement(new Integer((String) rb.getString("acquireincrement")));
 			dataSource.cpds.setMaxPoolSize(new Integer((String) rb.getString("maxpoolsize")));
 			dataSource.cpds.setMinPoolSize(new Integer((String) rb.getString("minpoolsize")));
+<<<<<<< HEAD
+          
+			
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+=======
 
+>>>>>>> 44550202eb54eef528014c7b862ae884b334e858
 		}
 		return dataSource;
 
