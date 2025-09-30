@@ -40,16 +40,21 @@ public final class JDBCDataSource {
 			try {
 			dataSource.cpds = new ComboPooledDataSource();
 			
+			dataSource.cpds.setDriverClass(rb.getString("driver"));
+			dataSource.cpds = new ComboPooledDataSource();
+			try {
 				dataSource.cpds.setDriverClass(rb.getString("driver"));
-				
-				String jdbcUrl = System.getenv("DATABASE_URL");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			String jdbcUrl = System.getenv("DATABASE_URL");
 			 
-				if (jdbcUrl==null) {
-					System.out.println("database "+jdbcUrl);
-					jdbcUrl= rb.getString("url");
-				}
-				
-				System.out.println("database "+jdbcUrl);
+			if (jdbcUrl==null) {
+				System.out.println("on local database "+jdbcUrl);
+				jdbcUrl= rb.getString("url");
+			}
+			
+			System.out.println("database "+jdbcUrl);
 			dataSource.cpds.setJdbcUrl(jdbcUrl);
 			dataSource.cpds.setUser(rb.getString("username"));
 			dataSource.cpds.setPassword(rb.getString("password"));
