@@ -1,0 +1,6 @@
+PROBLEMS_FILTERS_MIGRATE=true
+eclipse.preferences.version=1
+org.eclipse.ui.internal.views.markers.CachedMarkerBuilderorg.eclipse.ui.views.AllMarkersView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<filterGroups andFilters\="false" markerLimit\="100" markerLimitEnabled\="true"/>
+platformState=1659723250850
+quickStart=false
+tipsAndTricks=true
