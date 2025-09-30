@@ -52,7 +52,10 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69528f4ed114ccc803bed1f77134671fd4d1bd0b
 	</dependencies>
 	<properties>
 		<maven.compiler.source>11</maven.compiler.source>
