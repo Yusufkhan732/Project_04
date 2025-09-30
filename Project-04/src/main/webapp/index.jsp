@@ -26,7 +26,3 @@
 	</h1>
 </body>
 </html>
-			href="<%=ORSView.WELCOME_CTL%>">Online Result System12345</a></font>
-	</h1>
-</body>
-</html>
