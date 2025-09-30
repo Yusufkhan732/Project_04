@@ -5,8 +5,7 @@
 <html>
 <head>
 <title>Welcome to ORS</title>
-<link rel="icon" type="image/png"
-	href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16" />
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/>
 </head>
 <body>
 	<form action="<%=ORSView.WELCOME_CTL%>">
@@ -25,6 +24,7 @@
 		<h2 align="Center">
 			<a style="color: maroon" href="#">Click here to see your
 				Marksheet </a>
+			
 		</h2>
 
 		<%
@@ -33,5 +33,6 @@
 		%>
 
 	</form>
+	<%@ include file="Footer.jsp" %>
 </body>
 </html>

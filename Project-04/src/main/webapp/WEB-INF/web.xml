@@ -3,15 +3,28 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>ssxds</servlet-name>
-  	<display-name>ssxds</display-name>
-  	<description></description>
-  	<servlet-class>in.co.rays.controller.ssxds</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>ssxds</servlet-name>
-  	<url-pattern>/ssxds</url-pattern>
-  </servlet-mapping>
+	<display-name>Online Result System</display-name>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- 404 Error -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/jsp/ErrorView404.jsp</location>
+	</error-page>
+
+	<!-- 500 Error (Internal Server Error) -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/ctl/ErrorCtl</location>
+	</error-page>
+
+	<!-- Any Exception -->
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/ctl/ErrorCtl</location>
+	</error-page>
+
 </web-app>

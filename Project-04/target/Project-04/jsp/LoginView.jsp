@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Login</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 </head>
 <body>
 	<form action="<%=ORSView.LOGIN_CTL%>" method="post">
@@ -77,10 +77,19 @@
 					<th></th>
 					<td></td>
 				</tr>
-
+				<tr>
+					<th></th>
+					<td></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><a href="<%=ORSView.FORGET_PASSWORD_CTL%>"><b>Forget
+								my password?</b></a>&nbsp;</td>
+				</tr>
 			</table>
 		</div>
 		<input type="hidden" name="uri" value="<%=uri%>">
 	</form>
+	<%@ include file="Footer.jsp" %>
 </body>
 </html>

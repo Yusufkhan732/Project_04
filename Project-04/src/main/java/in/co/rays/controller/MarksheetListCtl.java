@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.MarksheetBean;
 import in.co.rays.model.MarksheetModel;
@@ -23,6 +25,9 @@ import in.co.rays.util.ServletUtility;
  */
 @WebServlet(name = "MarksheetListCtl", urlPatterns = { "/ctl/MarksheetListCtl" })
 public class MarksheetListCtl extends BaseCtl {
+
+	/** The Constant log. */
+	private static Logger log = Logger.getLogger(MarksheetListCtl.class);
 
 	/**
 	 * Populates the MarksheetBean from request parameters.
@@ -50,6 +55,8 @@ public class MarksheetListCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("MarksheetListCtl doGet Start");
+
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 
@@ -57,11 +64,10 @@ public class MarksheetListCtl extends BaseCtl {
 		MarksheetModel marksheetModel = new MarksheetModel();
 
 		try {
-
 			List list = marksheetModel.search(bean, pageNo, pageSize);
 			List next = marksheetModel.search(bean, pageNo + 1, pageSize);
 
-			if (list == null && list.isEmpty()) {
+			if (list == null || list.isEmpty()) {
 				ServletUtility.setErrorMessage("no record found", request);
 			}
 			ServletUtility.setBean(bean, request);
@@ -71,10 +77,11 @@ public class MarksheetListCtl extends BaseCtl {
 			request.setAttribute("nextListSize", next.size());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error in doGet of MarksheetListCtl", e);
 		}
 		ServletUtility.forward(getView(), request, response);
 
+		log.debug("MarksheetListCtl doGet End");
 	}
 
 	/**
@@ -87,6 +94,8 @@ public class MarksheetListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("MarksheetListCtl doPost Start");
 
 		List list = null;
 		List next = null;
@@ -104,14 +113,11 @@ public class MarksheetListCtl extends BaseCtl {
 		String[] ids = request.getParameterValues("ids");
 
 		try {
-
 			if (OP_SEARCH.equalsIgnoreCase(op) || OP_NEXT.equalsIgnoreCase(op) || OP_PREVIOUS.equalsIgnoreCase(op)) {
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
 					pageNo = 1;
-
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
 					pageNo++;
-
 				} else if (OP_PREVIOUS.equalsIgnoreCase(op)) {
 					pageNo--;
 				}
@@ -122,10 +128,8 @@ public class MarksheetListCtl extends BaseCtl {
 			} else if (OP_DELETE.equalsIgnoreCase(op)) {
 				pageNo = 1;
 				if (ids != null && ids.length > 0) {
-
 					MarksheetBean deletebBean = new MarksheetBean();
 					for (String id : ids) {
-
 						deletebBean.setId(DataUtility.getLong(id));
 						marksheetModel.delete(deletebBean);
 						ServletUtility.setSuccessMessage("Marksheet is Deleted Successfully..", request);
@@ -140,13 +144,13 @@ public class MarksheetListCtl extends BaseCtl {
 			} else if (OP_BACK.equalsIgnoreCase(op)) {
 				ServletUtility.redirect(ORSView.MARKSHEET_LIST_CTL, request, response);
 				return;
-
 			}
+
 			list = marksheetModel.search(bean, pageNo, pageSize);
 			next = marksheetModel.search(bean, pageNo + 1, pageSize);
 
 			if (!OP_DELETE.equalsIgnoreCase(op)) {
-				if (list == null && list.size() == 0) {
+				if (list == null || list.size() == 0) {
 					ServletUtility.setErrorMessage("No record found", request);
 				}
 			}
@@ -158,8 +162,10 @@ public class MarksheetListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error in doPost of MarksheetListCtl", e);
 		}
+
+		log.debug("MarksheetListCtl doPost End");
 	}
 
 	/**
@@ -169,8 +175,6 @@ public class MarksheetListCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-		// TODO Auto-generated method stub
 		return ORSView.MARKSHEET_LIST_VIEW;
 	}
-
 }

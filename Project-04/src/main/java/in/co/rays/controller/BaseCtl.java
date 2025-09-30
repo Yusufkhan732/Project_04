@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.UserBean;
 import in.co.rays.util.DataUtility;
@@ -25,6 +27,9 @@ import in.co.rays.util.ServletUtility;
  */
 @WebServlet(name = "BaseCtl", urlPatterns = { "/ctl/BaseCtl" })
 public abstract class BaseCtl extends HttpServlet {
+
+	/** The Constant log. */
+	private static final Logger log = Logger.getLogger(BaseCtl.class);
 
 	/** Operation constant for Save */
 	public static final String OP_SAVE = "Save";
@@ -92,7 +97,7 @@ public abstract class BaseCtl extends HttpServlet {
 	 * @param request the HttpServletRequest object
 	 */
 	protected void preload(HttpServletRequest request) {
-		System.out.println("ParentPreload");
+		log.debug("BaseCtl preload() called");
 	}
 
 	/**
@@ -161,35 +166,34 @@ public abstract class BaseCtl extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("service method");
+		log.debug("service() started");
 
 		preload(request);
 
 		String op = DataUtility.getString(request.getParameter("operation"));
-		System.out.println("operation");
+		log.debug("Operation received: " + op);
 
 		if (DataValidator.isNotNull(op) && !OP_CANCEL.equalsIgnoreCase(op) && !OP_VIEW.equalsIgnoreCase(op)
 				&& !OP_DELETE.equalsIgnoreCase(op) && !OP_RESET.equalsIgnoreCase(op)) {
 
 			if (!validate(request)) {
-
+				log.warn("Validation failed, forwarding back to view");
 				BaseBean bean = populateBean(request);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.forward(getView(), request, response);
 				return;
-
 			}
 		}
-		System.out.println("SuperService");
+		log.debug("Calling super.service()");
 		super.service(request, response);
 
 	}
-	
+
 	/**
-	 * Returns the view (JSP page) for the controller. Must be implemented by
-	 * subclasses.
-	 * 
-	 * @return the view page as a String
+	 * Returns the view associated with this controller.
+	 *
+	 * @return the view path as String
 	 */
 	protected abstract String getView();
+
 }

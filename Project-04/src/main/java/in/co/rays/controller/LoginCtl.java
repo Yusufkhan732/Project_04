@@ -101,7 +101,11 @@ public class LoginCtl extends BaseCtl {
 
 			session.invalidate();
 			ServletUtility.setSuccessMessage("Logout Successful..!!", request);
+
+			ServletUtility.forward(getView(), request, response);
+			return;
 		}
+
 		ServletUtility.forward(getView(), request, response);
 	}
 
@@ -122,7 +126,7 @@ public class LoginCtl extends BaseCtl {
 
 		UserModel model = new UserModel();
 
-		RoleModel role = new RoleModel();
+		RoleModel rolemodel = new RoleModel();
 
 		if (OP_SIGN_IN.equalsIgnoreCase(op)) {
 
@@ -134,7 +138,7 @@ public class LoginCtl extends BaseCtl {
 
 					session.setAttribute("user", bean);
 
-					RoleBean roleBean = role.findByPk(bean.getRoleId());
+					RoleBean roleBean = rolemodel.findByPk(bean.getRoleId());
 
 					if (roleBean != null) {
 
@@ -156,7 +160,7 @@ public class LoginCtl extends BaseCtl {
 
 					bean = (UserBean) populateBean(request);
 					ServletUtility.setBean(bean, request);
-					ServletUtility.setErrorMessage("Invalid login Password", request);
+					ServletUtility.setErrorMessage("Invalid login Password...!!", request);
 				}
 
 			} catch (Exception e) {

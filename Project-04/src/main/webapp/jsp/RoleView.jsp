@@ -6,8 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Role</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 </head>
   <form action="<%=ORSView.ROLE_CTL%>" method="post">
         <%@ include file="Header.jsp"%>

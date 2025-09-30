@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CollegeBean;
 import in.co.rays.exception.ApplicationException;
@@ -30,6 +32,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "CollegeCtl", urlPatterns = { "/ctl/CollegeCtl" })
 public class CollegeCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(CollegeCtl.class);
+
 	/**
 	 * Validates the input parameters from the HTTP request. Checks for required
 	 * fields and proper format.
@@ -39,6 +44,8 @@ public class CollegeCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+
+		log.debug("CollegeCtl validate started");
 
 		boolean isValid = true;
 
@@ -80,6 +87,7 @@ public class CollegeCtl extends BaseCtl {
 
 		}
 
+		log.debug("CollegeCtl validate Ended with result : " + isValid);
 		return isValid;
 	}
 
@@ -93,6 +101,8 @@ public class CollegeCtl extends BaseCtl {
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
+		log.debug("CollegeCtl populateBean started");
+
 		CollegeBean bean = new CollegeBean();
 
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
@@ -103,6 +113,8 @@ public class CollegeCtl extends BaseCtl {
 		bean.setPhoneNo(DataUtility.getString(request.getParameter("phoneNo")));
 
 		populateDTO(bean, request);
+
+		log.debug("CollegeCtl populateBean Ended");
 		return bean;
 	}
 
@@ -119,6 +131,8 @@ public class CollegeCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("CollegeCtl doGet Started");
+
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		CollegeModel model = new CollegeModel();
@@ -133,13 +147,15 @@ public class CollegeCtl extends BaseCtl {
 				ServletUtility.setBean(bean, request);
 
 			} catch (Exception e) {
-
+				log.error("Exception in CollegeCtl doGet", e);
 				e.printStackTrace();
 				return;
 			}
 
 		}
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("CollegeCtl doGet Ended");
 	}
 
 	/**
@@ -155,6 +171,8 @@ public class CollegeCtl extends BaseCtl {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("CollegeCtl doPost Started");
+
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		CollegeModel model = new CollegeModel();
@@ -166,11 +184,11 @@ public class CollegeCtl extends BaseCtl {
 			try {
 
 				long pk = model.add(bean);
-
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Data is Successfully saved", request);
 
 			} catch (ApplicationException e) {
+				log.error("ApplicationException in CollegeCtl doPost Save", e);
 				e.printStackTrace();
 				return;
 			} catch (DuplicateRecordException e) {
@@ -187,6 +205,7 @@ public class CollegeCtl extends BaseCtl {
 					ServletUtility.setSuccessMessage("Data is Successfully Update", request);
 				}
 			} catch (ApplicationException e) {
+				log.error("ApplicationException in CollegeCtl doPost Update", e);
 				e.printStackTrace();
 				return;
 			} catch (DuplicateRecordException e) {
@@ -205,6 +224,8 @@ public class CollegeCtl extends BaseCtl {
 		}
 
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("CollegeCtl doPost Ended");
 	}
 
 	/**

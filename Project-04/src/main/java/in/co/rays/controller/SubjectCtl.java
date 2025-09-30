@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CourseBean;
 import in.co.rays.bean.SubjectBean;
@@ -29,6 +31,9 @@ import in.co.rays.util.ServletUtility;
  */
 @WebServlet(name = "SubjectCtl", urlPatterns = { "/ctl/SubjectCtl" })
 public class SubjectCtl extends BaseCtl {
+
+	private static Logger log = Logger.getLogger(SubjectCtl.class);
+
 	/**
 	 * Loads list of courses to be displayed in the dropdown in the view.
 	 * 
@@ -36,16 +41,18 @@ public class SubjectCtl extends BaseCtl {
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("SubjectCtl preload started");
 
 		CourseModel model = new CourseModel();
 
 		try {
-			List<SubjectBean> courseList = model.list();
+			List<CourseBean> courseList = model.list();
 			request.setAttribute("courseList", courseList);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+			log.error("Exception in preload", e);
 		}
+
+		log.debug("SubjectCtl preload ended");
 	}
 
 	/**
@@ -56,6 +63,7 @@ public class SubjectCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+		log.debug("SubjectCtl validate started");
 
 		boolean isValid = true;
 
@@ -67,13 +75,13 @@ public class SubjectCtl extends BaseCtl {
 			request.setAttribute("courseId", PropertyReader.getValue("error.require", "CourseName"));
 			isValid = false;
 		}
-
 		if (DataValidator.isNull(request.getParameter("description"))) {
 			request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
 			isValid = false;
 		}
-		return isValid;
 
+		log.debug("SubjectCtl validate ended");
+		return isValid;
 	}
 
 	/**
@@ -84,6 +92,7 @@ public class SubjectCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("SubjectCtl populateBean started");
 
 		SubjectBean bean = new SubjectBean();
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
@@ -92,8 +101,9 @@ public class SubjectCtl extends BaseCtl {
 		bean.setDescription(DataUtility.getString(request.getParameter("description")));
 
 		populateDTO(bean, request);
-		return bean;
 
+		log.debug("SubjectCtl populateBean ended");
+		return bean;
 	}
 
 	/**
@@ -107,6 +117,7 @@ public class SubjectCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("SubjectCtl doGet started");
 
 		String op = DataUtility.getStringData(request.getParameter("operation"));
 		long id = DataUtility.getLong(request.getParameter("id"));
@@ -114,20 +125,16 @@ public class SubjectCtl extends BaseCtl {
 		SubjectModel model = new SubjectModel();
 
 		if (id > 0 || op != null) {
-
-			SubjectBean bean;
 			try {
-
-				bean = model.findByPk(id);
-
+				SubjectBean bean = model.findByPk(id);
 				ServletUtility.setBean(bean, request);
-
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
+				log.error("Exception in doGet", e);
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("SubjectCtl doGet ended");
 	}
 
 	/**
@@ -141,57 +148,57 @@ public class SubjectCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("SubjectCtl doPost started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 		SubjectModel model = new SubjectModel();
 
 		if (OP_SAVE.equalsIgnoreCase(op)) {
-
 			SubjectBean bean = (SubjectBean) populateBean(request);
 			try {
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Data Successfully saved", request);
+				log.info("Subject saved successfully with ID = " + pk);
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in Save", e);
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Subject  already exists", request);
+				ServletUtility.setErrorMessage("Subject already exists", request);
+				log.error("Duplicate subject found", e);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Exception in Save", e);
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
-
 			SubjectBean bean = (SubjectBean) populateBean(request);
 			try {
-
 				if (bean.getId() > 0) {
+					model.update(bean);
+					ServletUtility.setBean(bean, request);
+					ServletUtility.setSuccessMessage("Data Successfully Updated", request);
+					log.info("Subject updated successfully with ID = " + bean.getId());
 				}
-				model.update(bean);
-				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data Successfully Update", request);
-
 			} catch (ApplicationException e) {
-				e.printStackTrace();
-
+				log.error("ApplicationException in Update", e);
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Subject Already exists", request);
-				e.printStackTrace();
-
+				ServletUtility.setErrorMessage("Subject already exists", request);
+				log.error("Duplicate subject found during update", e);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Exception in Update", e);
 			}
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.SUBJECT_LIS_CTL, request, response);
+			log.debug("Operation Cancelled - Redirect to Subject List");
 			return;
-
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.SUBJECT_CTL, request, response);
+			log.debug("Operation Reset - Redirect to Subject Form");
 			return;
-
 		}
+
 		ServletUtility.forward(getView(), request, response);
+		log.debug("SubjectCtl doPost ended");
 	}
 
 	/**

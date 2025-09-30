@@ -24,6 +24,7 @@
 		<h2 align="Center">
 			<a style="color: maroon" href="#">Click here to see your
 				Marksheet </a>
+			
 		</h2>
 
 		<%

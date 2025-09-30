@@ -10,6 +10,12 @@ public interface ORSView {
 	public String WELCOME_VIEW = PAGE_FOLDER + "/WelcomeView.jsp";
 	public String WELCOME_CTL = APP_CONTEXT + "/WelcomeCtl";
 
+	public String EMPLOYEE_VIEW = PAGE_FOLDER + "/EmployeeView.jsp";
+	public String EMPLOYEE_CTL = APP_CONTEXT + "/ctl/EmployeeCtl";
+
+	public String EMPLOYEE_LIS_CTL = APP_CONTEXT + "/ctl/EmployeeListCtl";
+	public String EMPLOYEE_LIST_VIEW = PAGE_FOLDER + "/EmployeeListView.jsp";
+
 	public String MY_PROFILE_VIEW = PAGE_FOLDER + "/MyProfileView.jsp";
 	public String MY_PROFILE_CTL = APP_CONTEXT + "/ctl/MyProfileCtl";
 

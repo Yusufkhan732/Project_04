@@ -346,9 +346,22 @@ public class CollegeModel {
 		ArrayList list = new ArrayList();
 
 		try {
-			conn = JDBCDataSource.getConnection();
-			StringBuffer sql = new StringBuffer("select * from st_college");
 
+			conn = JDBCDataSource.getConnection();
+			StringBuffer sql = new StringBuffer("select * from st_college where 1=1");
+			if (bean != null) {
+				if (bean.getId() > 0) {
+					sql.append(" and id = " + bean.getId());
+				}
+
+				if (bean.getName() != null && bean.getName().length() > 0) {
+					sql.append(" and name like '" + bean.getName() + "%'");
+
+				}
+				if (bean.getCity() != null && bean.getCity().length() > 0) {
+					sql.append(" and city like '" + bean.getCity() + "%'");
+				}
+			}
 			if (pageSize > 0) {
 				pageNo = (pageNo - 1) * pageSize;
 				sql.append(" limit " + pageNo + "," + pageSize);

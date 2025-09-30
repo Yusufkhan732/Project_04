@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CourseBean;
 import in.co.rays.model.CourseModel;
@@ -24,6 +26,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "CourseListCtl", urlPatterns = { "/ctl/CourseListCtl" })
 public class CourseListCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(CourseListCtl.class);
+
 	/**
 	 * Preloads course data to be used in dropdowns or forms.
 	 *
@@ -31,13 +36,15 @@ public class CourseListCtl extends BaseCtl {
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("CourseListCtl preload started");
 		CourseModel model = new CourseModel();
 		try {
 			List courseList = model.list();
 			request.setAttribute("courseList", courseList);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error in preload", e);
 		}
+		log.debug("CourseListCtl preload ended");
 	}
 
 	/**
@@ -48,9 +55,13 @@ public class CourseListCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		
+		log.debug("CourseListCtl populateBean started");
 		CourseBean bean = new CourseBean();
+		
 		bean.setName(DataUtility.getString(request.getParameter("name")));
 		bean.setId(DataUtility.getLong(request.getParameter("courseId")));
+		log.debug("CourseListCtl populateBean ended");
 		return bean;
 	}
 
@@ -63,6 +74,8 @@ public class CourseListCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("CourseListCtl doGet started");
 
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(request.getParameter("page.size"));
@@ -85,11 +98,12 @@ public class CourseListCtl extends BaseCtl {
 			request.setAttribute("nextListSize", next.size());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error in doGet", e);
 			return;
 		}
 
 		ServletUtility.forward(getView(), request, response);
+		log.debug("CourseListCtl doGet ended");
 	}
 
 	/**
@@ -102,6 +116,8 @@ public class CourseListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("CourseListCtl doPost started");
 
 		List list = null;
 		List next = null;
@@ -161,7 +177,6 @@ public class CourseListCtl extends BaseCtl {
 
 			if (!OP_DELETE.equalsIgnoreCase(op)) {
 				if (list == null && list.size() == 0) {
-
 					ServletUtility.setErrorMessage("No record found", request);
 				}
 			}
@@ -175,8 +190,9 @@ public class CourseListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error in doPost", e);
 		}
+		log.debug("CourseListCtl doPost ended");
 	}
 
 	/**

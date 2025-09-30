@@ -17,7 +17,7 @@ public class TestCourseModel {
 		// testDelete();
 		// testfindByPk();
 		// testfindByName();
-		// testsearch();
+		 testsearch();
 	}
 
 	private static void testNextPK() throws Exception {
@@ -99,7 +99,7 @@ public class TestCourseModel {
 
 		CourseModel model = new CourseModel();
 
-		List list = model.search(bean, 1, 10);
+		List list = model.search(bean, 0, 10);
 
 		Iterator it = list.iterator();
 

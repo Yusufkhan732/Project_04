@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.RoleBean;
 import in.co.rays.bean.UserBean;
@@ -33,6 +35,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "RoleListCtl", urlPatterns = { "/ctl/RoleListCtl" })
 public class RoleListCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(RoleListCtl.class);
+
 	/**
 	 * Loads the list of roles to be used in dropdowns or other UI components before
 	 * rendering the page.
@@ -42,14 +47,18 @@ public class RoleListCtl extends BaseCtl {
 	@Override
 	protected void preload(HttpServletRequest request) {
 
+		log.debug("RoleListCtl preload started");
+
 		RoleModel model = new RoleModel();
 
 		try {
 			List rolelist = model.list();
 			request.setAttribute("rolelist", rolelist);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception in preload: ", e);
 		}
+
+		log.debug("RoleListCtl preload ended");
 	}
 
 	/**
@@ -61,10 +70,13 @@ public class RoleListCtl extends BaseCtl {
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
+		log.debug("RoleListCtl populateBean started");
+
 		RoleBean bean = new RoleBean();
 		bean.setName(DataUtility.getString(request.getParameter("name")));
 		bean.setId(DataUtility.getLong(request.getParameter("roleId")));
 
+		log.debug("RoleListCtl populateBean ended");
 		return bean;
 	}
 
@@ -77,6 +89,8 @@ public class RoleListCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("RoleListCtl doGet started");
 
 		int pageNo = 1;
 
@@ -91,9 +105,7 @@ public class RoleListCtl extends BaseCtl {
 			List next = model.search(bean, pageNo + 1, pageSize);
 
 			if (list == null || list.isEmpty()) {
-
 				ServletUtility.setErrorMessage("no record found", request);
-
 			}
 			ServletUtility.setList(list, request);
 			ServletUtility.setBean(bean, request);
@@ -103,10 +115,10 @@ public class RoleListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+			log.error("Exception in doGet: ", e);
 		}
 
+		log.debug("RoleListCtl doGet ended");
 	}
 
 	/**
@@ -119,6 +131,8 @@ public class RoleListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("RoleListCtl doPost started");
 
 		List list = null;
 		List next = null;
@@ -140,11 +154,9 @@ public class RoleListCtl extends BaseCtl {
 			if (OP_SEARCH.equalsIgnoreCase(op) || OP_NEXT.equalsIgnoreCase(op) || OP_PREVIOUS.equalsIgnoreCase(op)) {
 
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
-
 					pageNo = 1;
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
 					pageNo++;
-
 				} else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
 					pageNo--;
 				}
@@ -161,24 +173,20 @@ public class RoleListCtl extends BaseCtl {
 
 					UserBean deletebean = new UserBean();
 					for (String id : ids) {
-
 						deletebean.setId(DataUtility.getInt(id));
 						model.delete(bean);
 						ServletUtility.setSuccessMessage("Data is deleted successfully", request);
 					}
 
 				} else {
-
 					ServletUtility.setErrorMessage("Select at least one record", request);
 				}
 
 			} else if (OP_RESET.equalsIgnoreCase(op)) {
-
 				ServletUtility.redirect(ORSView.ROLE_LIST_CTL, request, response);
 				return;
 
 			} else if (OP_BACK.equalsIgnoreCase(op)) {
-
 				ServletUtility.redirect(ORSView.ROLE_LIST_CTL, request, response);
 				return;
 			}
@@ -186,11 +194,8 @@ public class RoleListCtl extends BaseCtl {
 			list = model.search(bean, pageNo, pageSize);
 			next = model.search(bean, pageNo + 1, pageSize);
 
-			if (!OP_DELETE.equalsIgnoreCase(op)) {
-
-				if (list == null || list.size() == 0) {
-					ServletUtility.setErrorMessage("No record found ", request);
-				}
+			if (list == null || list.size() == 0) {
+				ServletUtility.setErrorMessage("No record found ", request);
 			}
 
 			ServletUtility.setList(list, request);
@@ -200,10 +205,12 @@ public class RoleListCtl extends BaseCtl {
 			request.setAttribute("nextListSize", next.size());
 
 			ServletUtility.forward(getView(), request, response);
+
 		} catch (ApplicationException e) {
-			e.printStackTrace();
-			return;
+			log.error("ApplicationException in doPost: ", e);
 		}
+
+		log.debug("RoleListCtl doPost ended");
 	}
 
 	/**
@@ -213,7 +220,6 @@ public class RoleListCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-
 		return ORSView.ROLE_LIST_VIEW;
 	}
 }

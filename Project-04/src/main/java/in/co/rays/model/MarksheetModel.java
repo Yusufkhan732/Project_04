@@ -318,21 +318,38 @@ public class MarksheetModel {
 	 */
 	public List search(MarksheetBean bean, int pageNo, int pageSize) throws ApplicationException {
 		log.debug("MarksheetModel.search() START");
+
+		StringBuffer sql = new StringBuffer("select * from st_marksheet where 1=1");
+
+		if (bean != null) {
+			if (bean.getId() > 0) {
+				sql.append(" and id = " + bean.getId());
+			}
+			if (bean.getRollNo() != null && bean.getRollNo().length() > 0) {
+				sql.append(" and roll_no like '" + bean.getRollNo() + "%'");
+			}
+			if (bean.getName() != null && bean.getName().length() > 0) {
+				sql.append(" and name like '" + bean.getName() + "%'");
+			}
+			if (bean.getPhysics() != null && bean.getPhysics() > 0) {
+				sql.append(" and physics = " + bean.getPhysics());
+			}
+			if (bean.getChemistry() != null && bean.getChemistry() > 0) {
+				sql.append(" and chemistry = " + bean.getChemistry());
+			}
+			if (bean.getMaths() != null && bean.getMaths() > 0) {
+				sql.append(" and maths = '" + bean.getMaths());
+			}
+		}
+
+		if (pageSize > 0) {
+			pageNo = (pageNo - 1) * pageSize;
+			sql.append(" limit " + pageNo + ", " + pageSize);
+		}
+		ArrayList<MarksheetBean> list = new ArrayList<MarksheetBean>();
 		Connection conn = null;
-		List list = new ArrayList();
 		try {
 			conn = JDBCDataSource.getConnection();
-			StringBuffer sql = new StringBuffer("select * from st_marksheet where 1=1");
-			if (bean != null) {
-				if (bean.getName() != null && bean.getName().length() > 0) {
-					sql.append(" and name like '" + bean.getName() + "%'");
-				}
-			}
-			if (pageSize > 0) {
-				pageNo = (pageNo - 1) * pageSize;
-				sql.append(" limit " + pageNo + ", " + pageSize);
-			}
-			log.debug("SQL in MarksheetModel.search(): " + sql.toString());
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {

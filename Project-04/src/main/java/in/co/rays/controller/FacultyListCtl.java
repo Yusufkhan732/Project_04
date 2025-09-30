@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.FacultyBean;
 import in.co.rays.model.FacultyModel;
@@ -23,6 +25,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "FacultyListCtl", urlPatterns = { "/ctl/FacultyListCtl" })
 public class FacultyListCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(FacultyListCtl.class);
+
 	/**
 	 * Populates the FacultyBean from request parameters.
 	 *
@@ -31,11 +36,14 @@ public class FacultyListCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("FacultyListCtl populateBean method start");
 		FacultyBean bean = new FacultyBean();
 
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
 		bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
 		bean.setEmail(DataUtility.getString(request.getParameter("email")));
+
+		log.debug("FacultyListCtl populateBean method end");
 		return bean;
 	}
 
@@ -51,19 +59,19 @@ public class FacultyListCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("FacultyListCtl doGet method start");
 
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 
 		FacultyModel model = new FacultyModel();
-
 		FacultyBean bean = (FacultyBean) populateBean(request);
-		try {
 
+		try {
 			List list = model.search(bean, pageNo, pageSize);
 			List next = model.search(bean, pageNo + 1, pageSize);
 
-			if (list == null && list.isEmpty()) {
+			if (list == null || list.isEmpty()) {
 				ServletUtility.setErrorMessage("No record found", request);
 			}
 			ServletUtility.setBean(bean, request);
@@ -72,10 +80,11 @@ public class FacultyListCtl extends BaseCtl {
 			ServletUtility.setPageSize(pageSize, request);
 			request.setAttribute("nextListSize", next.size());
 		} catch (Exception e) {
-			e.printStackTrace();
-
+			log.error("Exception in FacultyListCtl doGet", e);
 		}
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("FacultyListCtl doGet method end");
 	}
 
 	/**
@@ -90,6 +99,7 @@ public class FacultyListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("FacultyListCtl doPost method start");
 
 		List list = null;
 		List next = null;
@@ -104,7 +114,6 @@ public class FacultyListCtl extends BaseCtl {
 		String[] ids = request.getParameterValues("ids");
 
 		FacultyModel model = new FacultyModel();
-
 		FacultyBean bean = (FacultyBean) populateBean(request);
 
 		try {
@@ -150,7 +159,7 @@ public class FacultyListCtl extends BaseCtl {
 			list = model.search(bean, pageNo, pageSize);
 			next = model.search(bean, pageNo + 1, pageSize);
 
-			if (list == null && list.size() > 0) {
+			if (list == null || list.isEmpty()) {
 				ServletUtility.setErrorMessage("No record found", request);
 			}
 			ServletUtility.setBean(bean, request);
@@ -160,10 +169,11 @@ public class FacultyListCtl extends BaseCtl {
 			request.setAttribute("nextListSize", next.size());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception in FacultyListCtl doPost", e);
 		}
 		ServletUtility.forward(getView(), request, response);
 
+		log.debug("FacultyListCtl doPost method end");
 	}
 
 	/**
@@ -173,7 +183,6 @@ public class FacultyListCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-		// TODO Auto-generated method stub
 		return ORSView.FACULTY_LIST_VIEW;
 	}
 }

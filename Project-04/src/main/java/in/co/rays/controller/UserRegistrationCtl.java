@@ -6,6 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.RoleBean;
 import in.co.rays.bean.UserBean;
@@ -33,6 +36,8 @@ public class UserRegistrationCtl extends BaseCtl {
 
 	public static final String OP_SIGN_UP = "Signup";
 
+	private static Logger log = Logger.getLogger(UserRegistrationCtl.class);
+
 	/**
 	 * Validates input parameters from the user registration form.
 	 * 
@@ -41,6 +46,7 @@ public class UserRegistrationCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+		log.debug("UserRegistrationCtl validate started");
 		boolean pass = true;
 
 		if (DataValidator.isNull(request.getParameter("firstName"))) {
@@ -112,6 +118,8 @@ public class UserRegistrationCtl extends BaseCtl {
 			request.setAttribute("mobileNo", "Invalid Mobile No");
 			pass = false;
 		}
+
+		log.debug("UserRegistrationCtl validate End, result = " + pass);
 		return pass;
 	}
 
@@ -123,30 +131,24 @@ public class UserRegistrationCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("UserRegistrationCtl populateBean started");
 
 		UserBean bean = new UserBean();
 		bean.setRoleId(RoleBean.STUDENT);
 
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
-
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
-
 		bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
-
 		bean.setLogin(DataUtility.getString(request.getParameter("login")));
-
 		bean.setPassword(DataUtility.getString(request.getParameter("password")));
-
 		bean.setConfirmPassword(DataUtility.getString(request.getParameter("confirmPassword")));
-
 		bean.setGender(DataUtility.getString(request.getParameter("gender")));
-
 		bean.setDob(DataUtility.getDate(request.getParameter("dob")));
-
 		bean.setMobileNo(DataUtility.getString(request.getParameter("mobileNo")));
 
 		populateDTO(bean, request);
 
+		log.debug("UserRegistrationCtl populateBean End");
 		return bean;
 	}
 
@@ -162,8 +164,9 @@ public class UserRegistrationCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("Do Get");
+		log.debug("UserRegistrationCtl doGet Started");
 		ServletUtility.forward(getView(), request, response);
+		log.debug("UserRegistrationCtl doGet End");
 	}
 
 	/**
@@ -177,36 +180,38 @@ public class UserRegistrationCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String op = DataUtility.getString(request.getParameter("operation"));
+		log.debug("UserRegistrationCtl doPost Started");
 
+		String op = DataUtility.getString(request.getParameter("operation"));
 		UserModel model = new UserModel();
 
 		if (OP_SIGN_UP.equalsIgnoreCase(op)) {
-
 			UserBean bean = (UserBean) populateBean(request);
 
 			try {
-
+				
 				model.registerUser(bean);
-
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Registration successfull!", request);
 				ServletUtility.forward(getView(), request, response);
 				return;
 
 			} catch (DuplicateRecordException e) {
-
+				log.error("Duplicate login id", e);
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Login id already exists", request);
+				ServletUtility.setErrorMessage("Login id already exists..", request);
 				ServletUtility.forward(getView(), request, response);
+
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in UserRegistrationCtl doPost", e);
+				throw new ServletException(e);
 			}
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
-
 			ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);
 			return;
 		}
+
+		log.debug("UserRegistrationCtl doPost End");
 	}
 
 	/**
@@ -216,15 +221,6 @@ public class UserRegistrationCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-
 		return ORSView.USER_REGISTRATION_VIEW;
 	}
 }
-
-/*
- * 1. User browser se request bhejta hai (GET ya POST) 2. BaseCtl.service()
- * method call hota hai | --> validate(request) call hoti hai (agar op Signup ho
- * to) | --> Validation pass → to doPost() 3. doPost() → operation check 4.
- * populateBean(request) → UserBean bana 5. model.add(bean) → DB me insert 6.
- * Success ya Error Message set 7. Page forward (JSP view show)
- */

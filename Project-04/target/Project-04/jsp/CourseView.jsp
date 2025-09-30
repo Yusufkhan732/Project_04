@@ -10,9 +10,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
+<title>Course</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 <body>
 	<form action="<%=ORSView.COURSE_CTL%>" method="POST">
 		<%@ include file="Header.jsp"%>
@@ -78,14 +77,8 @@
 					<th align="left">Description<span style="color: red">*</span></th>
 					<td align="center"><textarea
 							style="width: 173px; resize: none;" name="description" rows="3"
-							placeholder="Enter Short description">
-							<%
-								if (bean != null && bean.getId() > 0) {
-							%><%=DataUtility.getStringData(bean.getDescription())%>
-							<%
-								}
-							%>
-						</textarea></td>
+							placeholder="Enter Short description"><%=DataUtility.getStringData(bean.getDescription())%></textarea>
+					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("description", request)%></font></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("description", request)%></font></td>
 				</tr>
 				<tr>
@@ -113,6 +106,12 @@
 			</table>
 		</div>
 	</form>
+	</br>
+     </br>
+     </br>
+     </br>
+     </br>
+	<%@ include file="Footer.jsp" %>
 </body>
 </html>
->
+

@@ -10,9 +10,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
+<title>Course</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 <body>
 	<form action="<%=ORSView.COURSE_CTL%>" method="POST">
 		<%@ include file="Header.jsp"%>

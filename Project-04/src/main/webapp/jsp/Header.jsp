@@ -8,7 +8,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>Header</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Include jQuery UI -->
@@ -65,6 +66,8 @@
     <a href="<%=ORSView.TIMETABLE_LIST_CTL%>"><b>Timetable List</b></a> <b>|</b>
     <a href="<%=ORSView.FACULTY_CTL%>"><b>Add Faculty</b></a> <b>|</b>
     <a href="<%=ORSView.FACULTY_LIST_CTL%>"><b>Faculty List</b></a> <b>|</b>
+    <a href="<%=ORSView.EMPLOYEE_CTL%>"><b>Add Employee</b></a> <b>|</b>
+    <a href="<%=ORSView.EMPLOYEE_LIS_CTL%>"><b>Employee List</b></a> <b>|</b>
     <a href="<%=ORSView.JAVA_DOC_VIEW%>" target="blank"><b>Java Doc</b></a> <b>|</b>
 
 <%

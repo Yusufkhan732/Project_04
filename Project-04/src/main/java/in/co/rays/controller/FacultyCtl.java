@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.FacultyBean;
 import in.co.rays.exception.ApplicationException;
@@ -34,11 +36,14 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "FacultyCtl", urlPatterns = { "/ctl/FacultyCtl" })
 public class FacultyCtl extends BaseCtl {
 
+	private static Logger log = Logger.getLogger(FacultyCtl.class);
+
 	/**
 	 * Loads College, Subject, and Course lists for form dropdowns.
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("FacultyCtl preload started");
 
 		CollegeModel collegeModel = new CollegeModel();
 		SubjectModel subjectModel = new SubjectModel();
@@ -55,9 +60,9 @@ public class FacultyCtl extends BaseCtl {
 			request.setAttribute("courseList", courseList);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+			log.error("Error in preload of FacultyCtl", e);
 		}
+		log.debug("FacultyCtl preload ended");
 	}
 
 	/**
@@ -65,6 +70,7 @@ public class FacultyCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+		log.debug("FacultyCtl validate started");
 
 		boolean pass = true;
 
@@ -123,6 +129,7 @@ public class FacultyCtl extends BaseCtl {
 			pass = false;
 		}
 
+		log.debug("FacultyCtl validate ended with status: " + pass);
 		return pass;
 	}
 
@@ -131,31 +138,24 @@ public class FacultyCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("FacultyCtl populateBean started");
 
 		FacultyBean bean = new FacultyBean();
 
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
-
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
-
 		bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
-
 		bean.setGender(DataUtility.getString(request.getParameter("gender")));
-
 		bean.setDob(DataUtility.getDate(request.getParameter("dob")));
-
 		bean.setMobileNo(DataUtility.getString(request.getParameter("mobileNo")));
-
 		bean.setEmail(DataUtility.getString(request.getParameter("email")));
-
 		bean.setCollegeId(DataUtility.getLong(request.getParameter("collegeId")));
-
 		bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
-
 		bean.setSubjectId(DataUtility.getLong(request.getParameter("subjectId")));
 
 		populateDTO(bean, request);
 
+		log.debug("FacultyCtl populateBean ended");
 		return bean;
 	}
 
@@ -164,6 +164,7 @@ public class FacultyCtl extends BaseCtl {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("FacultyCtl doGet started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 		long id = DataUtility.getLong(request.getParameter("id"));
@@ -176,11 +177,12 @@ public class FacultyCtl extends BaseCtl {
 				bean = model.findByPk(id);
 				ServletUtility.setBean(bean, request);
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("Error in doGet FacultyCtl", e);
 				return;
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
+		log.debug("FacultyCtl doGet ended");
 	}
 
 	/**
@@ -188,6 +190,7 @@ public class FacultyCtl extends BaseCtl {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("FacultyCtl doPost started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 
@@ -197,47 +200,56 @@ public class FacultyCtl extends BaseCtl {
 			FacultyBean bean = (FacultyBean) populateBean(request);
 
 			try {
-
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Faculty added successfully", request);
+				log.info("Faculty added successfully with ID: " + pk);
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				
+				log.error("ApplicationException in FacultyCtl doPost Save", e);
 				return;
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
+				
 				ServletUtility.setErrorMessage("Email already exists", request);
+				log.warn("Duplicate Faculty email in Save operation");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Unexpected error in FacultyCtl doPost Save", e);
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 			FacultyBean bean = (FacultyBean) populateBean(request);
 			try {
+				
 				if (bean.getId() > 0) {
 					model.update(bean);
 				}
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Faculty updated successfully", request);
+				log.info("Faculty updated successfully with ID: " + bean.getId());
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in FacultyCtl doPost Update", e);
 				return;
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
+				
 				ServletUtility.setErrorMessage("Email already exists", request);
+				log.warn("Duplicate Faculty email in Update operation");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				log.error("Unexpected error in FacultyCtl doPost Update", e);
 			}
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
+			log.debug("FacultyCtl doPost Cancel operation");
 			ServletUtility.redirect(ORSView.FACULTY_LIST_CTL, request, response);
 			return;
 
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
+			log.debug("FacultyCtl doPost Reset operation");
 			ServletUtility.redirect(ORSView.FACULTY_CTL, request, response);
 			return;
 		}
 		ServletUtility.forward(getView(), request, response);
+		log.debug("FacultyCtl doPost ended");
 	}
 
 	/**
@@ -247,5 +259,4 @@ public class FacultyCtl extends BaseCtl {
 	protected String getView() {
 		return ORSView.FACULTY_VIEW;
 	}
-
 }

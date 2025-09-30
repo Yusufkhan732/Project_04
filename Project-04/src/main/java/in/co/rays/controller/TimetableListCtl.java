@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.TimetableBean;
 import in.co.rays.exception.ApplicationException;
@@ -30,6 +32,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "TimetableListCtl", urlPatterns = { "/ctl/TimetableListCtl" })
 public class TimetableListCtl extends BaseCtl {
 
+	/** The Constant log. */
+	private static Logger log = Logger.getLogger(TimetableListCtl.class);
+
 	/**
 	 * Preloads course and subject lists before rendering the timetable list view.
 	 * 
@@ -37,6 +42,7 @@ public class TimetableListCtl extends BaseCtl {
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("TimetableListCtl preload started");
 
 		SubjectModel subjectModel = new SubjectModel();
 		CourseModel courseModel = new CourseModel();
@@ -49,9 +55,10 @@ public class TimetableListCtl extends BaseCtl {
 			request.setAttribute("courseList", courseList);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+			log.error("Exception in preload of TimetableListCtl", e);
 		}
+
+		log.debug("TimetableListCtl preload ended");
 	}
 
 	/**
@@ -62,6 +69,7 @@ public class TimetableListCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("TimetableListCtl populateBean started");
 
 		TimetableBean bean = new TimetableBean();
 
@@ -69,6 +77,7 @@ public class TimetableListCtl extends BaseCtl {
 		bean.setSubjectId(DataUtility.getLong(request.getParameter("subjectId")));
 		bean.setExamDate(DataUtility.getDate(request.getParameter("examDate")));
 
+		log.debug("TimetableListCtl populateBean ended");
 		return bean;
 	}
 
@@ -82,6 +91,8 @@ public class TimetableListCtl extends BaseCtl {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("TimetableListCtl doGet started");
 
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
@@ -106,8 +117,10 @@ public class TimetableListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (ApplicationException e) {
-			e.printStackTrace();
+			log.error("ApplicationException in doGet of TimetableListCtl", e);
 		}
+
+		log.debug("TimetableListCtl doGet ended");
 	}
 
 	/**
@@ -122,6 +135,8 @@ public class TimetableListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("TimetableListCtl doPost started");
 
 		List list = null;
 		List next = null;
@@ -193,9 +208,10 @@ public class TimetableListCtl extends BaseCtl {
 
 			ServletUtility.forward(getView(), request, response);
 		} catch (ApplicationException e) {
-			e.printStackTrace();
-			return;
+			log.error("ApplicationException in doPost of TimetableListCtl", e);
 		}
+
+		log.debug("TimetableListCtl doPost ended");
 	}
 
 	/**

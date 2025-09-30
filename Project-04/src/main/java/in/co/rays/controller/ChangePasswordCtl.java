@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
@@ -28,14 +30,19 @@ public class ChangePasswordCtl extends BaseCtl {
 
 	public static final String OP_CHANGE_MY_PROFILE = "Change My Profile";
 
+	private static Logger log = Logger.getLogger(ChangePasswordCtl.class);
+
 	/**
 	 * Validates input data for changing password.
 	 *
 	 * @param request HttpServletRequest
 	 * @return boolean true if data is valid, false otherwise
+	 * 
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+
+		log.debug("ChangePasswordCtl validate started");
 
 		boolean pass = true;
 
@@ -75,6 +82,8 @@ public class ChangePasswordCtl extends BaseCtl {
 			pass = false;
 		}
 
+		log.debug("ChangePasswordCtl validate Ended with result = " + pass);
+
 		return pass;
 	}
 
@@ -84,9 +93,10 @@ public class ChangePasswordCtl extends BaseCtl {
 	 * @param request HttpServletRequest
 	 * @return populated UserBean
 	 */
-
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+
+		log.debug("ChangePasswordCtl populateBean started");
 
 		UserBean bean = new UserBean();
 
@@ -94,6 +104,8 @@ public class ChangePasswordCtl extends BaseCtl {
 		bean.setConfirmPassword(DataUtility.getString(request.getParameter("confirmPassword")));
 
 		populateDTO(bean, request);
+
+		log.debug("ChangePasswordCtl populateBean Ended");
 
 		return bean;
 	}
@@ -106,7 +118,12 @@ public class ChangePasswordCtl extends BaseCtl {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("ChangePasswordCtl doGet started");
+
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("ChangePasswordCtl doGet Ended");
 	}
 
 	/**
@@ -117,6 +134,8 @@ public class ChangePasswordCtl extends BaseCtl {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("ChangePasswordCtl doPost started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 		String newPassword = (String) request.getParameter("newPassword");
@@ -136,19 +155,24 @@ public class ChangePasswordCtl extends BaseCtl {
 					session.setAttribute("user", bean);
 					ServletUtility.setBean(bean, request);
 					ServletUtility.setSuccessMessage("Password has been changed Successfully", request);
+					log.info("Password changed successfully for userId: " + id);
 				}
 			} catch (RecordNotFoundException e) {
+				log.error("Invalid Old Password for userId: " + id, e);
 				ServletUtility.setErrorMessage("Old Password is Invalid", request);
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in ChangePasswordCtl", e);
 				ServletUtility.handleException(e, request, response);
 				return;
 			}
 		} else if (OP_CHANGE_MY_PROFILE.equalsIgnoreCase(op)) {
+			log.debug("Redirecting to MyProfileCtl from ChangePasswordCtl");
 			ServletUtility.redirect(ORSView.MY_PROFILE_CTL, request, response);
 			return;
 		}
 		ServletUtility.forward(ORSView.CHANGE_PASSWORD_VIEW, request, response);
+
+		log.debug("ChangePasswordCtl doPost Ended");
 	}
 
 	/**

@@ -14,8 +14,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
 <title>User List</title>
+<link rel="icon" type="image/png" href="<%=ORSView.APP_CONTEXT%>/img/logo.png" sizes="16x16"/></head>
 </head>
 <body>
      <%@include file="Header.jsp"%>
@@ -41,6 +41,7 @@
                 Iterator<UserBean> it = list.iterator();
 
                 if (list.size() != 0) {
+                	
             %>
 	           
 	           <input type="hidden"name="pageNo"value="<%=pageNo%>">
@@ -92,7 +93,7 @@
 
                 <tr>
                     <td style="text-align: center;">
-                        <input type="checkbox" name="ids" value="<%=bean.getId()%>"
+                        <input type="checkbox" class="case" name="ids" value="<%=bean.getId()%>"
                             <%= (user.getId() == bean.getId() || bean.getRoleId() == RoleBean.ADMIN) ? "disabled" : "" %>>
                     </td>
                     <td style="text-align: center;"><%=index++%></td>
@@ -148,11 +149,10 @@
             %>
         </form>
     </div>
-    </br>
-     </br>
-     </br>
-     </br>
-     </br>
+     <br>
+     <br>
+     <br>
+     <br>
     <%@ include file="Footer.jsp" %>
 </body>
 </html>

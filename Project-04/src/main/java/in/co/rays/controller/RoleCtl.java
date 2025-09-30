@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.RoleBean;
 import in.co.rays.exception.ApplicationException;
@@ -29,6 +31,8 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "RoleCtl", urlPatterns = { "/ctl/RoleCtl" })
 public class RoleCtl extends BaseCtl {
 
+	private static Logger log = Logger.getLogger(RoleCtl.class);
+
 	/**
 	 * Validates Role input fields.
 	 * 
@@ -37,24 +41,28 @@ public class RoleCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+		log.debug("RoleCtl validate method start");
 
 		boolean isValid = true;
 
 		if (DataValidator.isNull(request.getParameter("name"))) {
 			request.setAttribute("name", PropertyReader.getValue("error.require", "Name"));
 			isValid = false;
+			log.error("Validation failed: Name is required");
 
 		} else if (!DataValidator.isName(request.getParameter("name"))) {
 			request.setAttribute("name", "Invalid name");
 			isValid = false;
+			log.error("Validation failed: Invalid Name format");
 		}
 		if (DataValidator.isNull(request.getParameter("description"))) {
 			request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
 			isValid = false;
+			log.error("Validation failed: Description is required");
 
 		}
+		log.debug("RoleCtl validate method end");
 		return isValid;
-
 	}
 
 	/**
@@ -65,6 +73,8 @@ public class RoleCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("RoleCtl populateBean method start");
+
 		RoleBean bean = new RoleBean();
 
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
@@ -72,6 +82,7 @@ public class RoleCtl extends BaseCtl {
 		bean.setDescription(DataUtility.getString(request.getParameter("description")));
 
 		populateDTO(bean, request);
+		log.debug("RoleCtl populateBean method end");
 		return bean;
 	}
 
@@ -86,25 +97,26 @@ public class RoleCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String op = DataUtility.getString(request.getParameter("operation"));
+		log.debug("RoleCtl doGet method start");
 
 		RoleModel model = new RoleModel();
 
 		long id = DataUtility.getLong(request.getParameter("id"));
 
-		if (id > 0 && op != null) {
+		if (id > 0) {
 
 			RoleBean bean;
 			try {
-
 				bean = model.findByPk(id);
 				ServletUtility.setBean(bean, request);
 			} catch (Exception e) {
+				log.error("Exception in RoleCtl doGet", e);
 				e.printStackTrace();
 				return;
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
+		log.debug("RoleCtl doGet method end");
 	}
 
 	/**
@@ -117,6 +129,8 @@ public class RoleCtl extends BaseCtl {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("RoleCtl doPost method start");
+
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		long id = DataUtility.getLong(request.getParameter("id"));
@@ -127,21 +141,20 @@ public class RoleCtl extends BaseCtl {
 			RoleBean bean = (RoleBean) populateBean(request);
 
 			try {
-
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Data Successfully saved", request);
+				log.info("Role added successfully with ID: " + pk);
 
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in RoleCtl doPost Save", e);
 				ServletUtility.handleException(e, request, response);
-
 				return;
 
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-
-				ServletUtility.setErrorMessage("Role alredy exists", request);
+				ServletUtility.setErrorMessage("Role already exists", request);
+				log.error("Duplicate Role found while adding");
 				return;
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
@@ -150,30 +163,34 @@ public class RoleCtl extends BaseCtl {
 
 			try {
 				if (id > 0) {
-
 					model.update(bean);
 					ServletUtility.setBean(bean, request);
-					ServletUtility.setSuccessMessage("Data is Successfuly Update", request);
+					ServletUtility.setSuccessMessage("Data is Successfully Updated", request);
+					log.info("Role updated successfully with ID: " + bean.getId());
 				}
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in RoleCtl doPost Update", e);
 				return;
 
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Role alredy exists", request);
+				ServletUtility.setErrorMessage("Role already exists", request);
+				log.error("Duplicate Role found while updating");
 			}
 
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.ROLE_LIST_CTL, request, response);
+			log.debug("Operation Cancel - Redirecting to Role List");
 			return;
 
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.ROLE_CTL, request, response);
+			log.debug("Operation Reset - Redirecting to RoleCtl");
 			return;
 		}
 
 		ServletUtility.forward(getView(), request, response);
+		log.debug("RoleCtl doPost method end");
 	}
 
 	/**
@@ -183,7 +200,6 @@ public class RoleCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-
 		return ORSView.ROLE_VIEW;
 	}
 

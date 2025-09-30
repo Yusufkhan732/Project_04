@@ -9,9 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import in.co.rays.bean.CourseBean;
 import in.co.rays.bean.RoleBean;
-import in.co.rays.bean.UserBean;
 import in.co.rays.exception.ApplicationException;
 import in.co.rays.exception.DatabaseException;
 import in.co.rays.exception.DuplicateRecordException;

@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CollegeBean;
 import in.co.rays.exception.ApplicationException;
@@ -26,6 +28,8 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "CollegeListCtl", urlPatterns = { "/ctl/CollegeListCtl" })
 public class CollegeListCtl extends BaseCtl {
 
+	private static Logger log = Logger.getLogger(CollegeListCtl.class);
+
 	/**
 	 * Loads the list of colleges from the model and sets it as a request attribute.
 	 * This method is called before main request processing to preload dropdowns or
@@ -35,16 +39,17 @@ public class CollegeListCtl extends BaseCtl {
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("CollegeListCtl preload started");
 		CollegeModel collegeModel = new CollegeModel();
 
 		try {
 			List collegeList = collegeModel.list();
 			request.setAttribute("collegeList", collegeList);
-
 		} catch (ApplicationException e) {
-			e.printStackTrace();
+			log.error("ApplicationException in preload", e);
 			return;
 		}
+		log.debug("CollegeListCtl preload ended");
 	}
 
 	/**
@@ -56,6 +61,7 @@ public class CollegeListCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("CollegeListCtl populateBean started");
 
 		CollegeBean bean = new CollegeBean();
 
@@ -63,6 +69,7 @@ public class CollegeListCtl extends BaseCtl {
 		bean.setCity(DataUtility.getString(request.getParameter("city")));
 		bean.setId(DataUtility.getLong(request.getParameter("collegeId")));
 
+		log.debug("CollegeListCtl populateBean ended");
 		return bean;
 	}
 
@@ -78,6 +85,8 @@ public class CollegeListCtl extends BaseCtl {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("CollegeListCtl doGet started");
 
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
@@ -102,8 +111,10 @@ public class CollegeListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (ApplicationException e) {
-			e.printStackTrace();
+			log.error("ApplicationException in doGet", e);
 		}
+
+		log.debug("CollegeListCtl doGet ended");
 	}
 
 	/**
@@ -119,6 +130,8 @@ public class CollegeListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("CollegeListCtl doPost started");
 
 		List list = null;
 		List next = null;
@@ -193,9 +206,11 @@ public class CollegeListCtl extends BaseCtl {
 
 			ServletUtility.forward(getView(), request, response);
 		} catch (ApplicationException e) {
-			e.printStackTrace();
+			log.error("ApplicationException in doPost", e);
 			return;
 		}
+
+		log.debug("CollegeListCtl doPost ended");
 	}
 
 	/**
@@ -207,5 +222,4 @@ public class CollegeListCtl extends BaseCtl {
 	protected String getView() {
 		return ORSView.COLLEGE_LIST_VIEW;
 	}
-
 }

@@ -5,6 +5,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CourseBean;
 import in.co.rays.exception.ApplicationException;
@@ -25,6 +28,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "CourseCtl", urlPatterns = { "/ctl/CourseCtl" })
 public class CourseCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(CourseCtl.class);
+
 	/**
 	 * Validates the request parameters for Course form. Checks for required fields
 	 * and valid formats.
@@ -35,12 +41,13 @@ public class CourseCtl extends BaseCtl {
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
+		log.debug("CourseCtl validate started");
+
 		boolean isValid = true;
 		if (DataValidator.isNull(request.getParameter("name"))) {
 			request.setAttribute("name", PropertyReader.getValue("error.require", "Name"));
 			isValid = false;
-		}
-		if (!DataValidator.isName(request.getParameter("name"))) {
+		} else if (!DataValidator.isName(request.getParameter("name"))) {
 			request.setAttribute("name", "Invalid Course Name");
 			isValid = false;
 		}
@@ -52,6 +59,8 @@ public class CourseCtl extends BaseCtl {
 			request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
 			isValid = false;
 		}
+
+		log.debug("CourseCtl validate Ended with status: " + isValid);
 		return isValid;
 	}
 
@@ -64,6 +73,8 @@ public class CourseCtl extends BaseCtl {
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
+		log.debug("CourseCtl populateBean started");
+
 		CourseBean bean = new CourseBean();
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
 		bean.setName(DataUtility.getString(request.getParameter("name")));
@@ -72,6 +83,7 @@ public class CourseCtl extends BaseCtl {
 
 		populateDTO(bean, request);
 
+		log.debug("CourseCtl populateBean ended with bean: " + bean);
 		return bean;
 	}
 
@@ -88,24 +100,27 @@ public class CourseCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("CourseCtl doGet started");
+
 		String op = DataUtility.getString(request.getParameter("operation"));
-		System.out.println("Do get" + op + "null");
 		long id = DataUtility.getLong(request.getParameter("id"));
 
 		CourseModel model = new CourseModel();
 		if (id > 0 || op != null) {
-
-			CourseBean bean;
 			try {
-
-				bean = model.findByPk(id);
-				ServletUtility.setBean(bean, request);
-
+				
+				CourseBean bean = model.findByPk(id);
+				if (bean != null) {
+					
+					ServletUtility.setBean(bean, request);
+				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("CourseCtl doGet Exception", e);
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("CourseCtl doGet Ended");
 	}
 
 	/**
@@ -121,6 +136,8 @@ public class CourseCtl extends BaseCtl {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		log.debug("CourseCtl doPost started");
+
 		String op = DataUtility.getString(request.getParameter("operation"));
 		CourseModel model = new CourseModel();
 
@@ -128,49 +145,61 @@ public class CourseCtl extends BaseCtl {
 
 			CourseBean bean = (CourseBean) populateBean(request);
 			try {
+				
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Data Successfully saved", request);
+				log.info("Course added successfully with ID: " + pk);
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				
+				log.error("ApplicationException in CourseCtl doPost Save", e);
 			} catch (DuplicateRecordException e) {
+				
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Course  already exists", request);
+				ServletUtility.setErrorMessage("Course already exists", request);
+				log.error("DuplicateRecordException in CourseCtl doPost Save", e);
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 
 			CourseBean bean = (CourseBean) populateBean(request);
 			try {
-
 				if (bean.getId() > 0) {
+					model.update(bean);
+					ServletUtility.setBean(bean, request);
+					ServletUtility.setSuccessMessage("Data Successfully Updated", request);
+					log.info("Course updated successfully with ID: " + bean.getId());
 				}
-				model.update(bean);
-				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Data Successfully Update", request);
-
 			} catch (ApplicationException e) {
-				e.printStackTrace();
-
+				
+				log.error("ApplicationException in CourseCtl doPost Update", e);
 			} catch (DuplicateRecordException e) {
+				
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setErrorMessage("Course Already exists", request);
-				e.printStackTrace();
-
+				log.error("DuplicateRecordException in CourseCtl doPost Update", e);
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.COURSE_LIS_CTL, request, response);
+			log.debug("CourseCtl doPost Cancel Operation");
 			return;
 
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
+			
 			ServletUtility.redirect(ORSView.COURSE_CTL, request, response);
+			log.debug("CourseCtl doPost Reset Operation");
 			return;
-
 		}
 		ServletUtility.forward(getView(), request, response);
+
+		log.debug("CourseCtl doPost Ended");
 	}
 
 	/**
@@ -180,7 +209,6 @@ public class CourseCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-
 		return ORSView.COURSE_VIEW;
 	}
 }

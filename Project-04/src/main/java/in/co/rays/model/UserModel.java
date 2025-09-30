@@ -1,3 +1,4 @@
+
 package in.co.rays.model;
 
 import java.sql.Connection;
@@ -406,7 +407,7 @@ public class UserModel {
 	 * @param pageNo   the page number to retrieve (for pagination)
 	 * @param pageSize the number of records per page (for pagination)
 	 * @return List of UserBean objects matching the search criteria
-	 * @throws ApplicationException if an unexpected error occurs during the
+	 * @throws ApplicationException if an unexpe cted error occurs during the
 	 *                              operation
 	 */
 
@@ -424,6 +425,7 @@ public class UserModel {
 			if (bean.getDob() != null && bean.getDob().getTime() > 0) {
 				sql.append(" and dob like '" + new java.sql.Date(bean.getDob().getTime()) + "%'");
 			}
+
 			if (bean.getRoleId() > 0) {
 				sql.append(" and role_id = " + bean.getRoleId());
 			}

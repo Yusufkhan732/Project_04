@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.StudentBean;
 import in.co.rays.exception.ApplicationException;
@@ -26,6 +28,9 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "StudentListCtl", urlPatterns = { "/ctl/StudentListCtl" })
 public class StudentListCtl extends BaseCtl {
 
+	/** The log. */
+	private static Logger log = Logger.getLogger(StudentListCtl.class);
+
 	/**
 	 * Populates a StudentBean instance from HTTP request parameters.
 	 * 
@@ -35,12 +40,15 @@ public class StudentListCtl extends BaseCtl {
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
+		log.debug("StudentListCtl populateBean Started");
+
 		StudentBean bean = new StudentBean();
 
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
 		bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
 		bean.setEmail(DataUtility.getString(request.getParameter("email")));
 
+		log.debug("StudentListCtl populateBean End");
 		return bean;
 	}
 
@@ -55,6 +63,8 @@ public class StudentListCtl extends BaseCtl {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("StudentListCtl doGet Started");
 
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
@@ -79,8 +89,11 @@ public class StudentListCtl extends BaseCtl {
 			ServletUtility.forward(getView(), request, response);
 
 		} catch (ApplicationException e) {
+			log.error("ApplicationException in doGet", e);
 			e.printStackTrace();
 		}
+
+		log.debug("StudentListCtl doGet End");
 	}
 
 	/**
@@ -95,6 +108,8 @@ public class StudentListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		log.debug("StudentListCtl doPost Started");
 
 		List list = null;
 		List next = null;
@@ -169,9 +184,12 @@ public class StudentListCtl extends BaseCtl {
 
 			ServletUtility.forward(getView(), request, response);
 		} catch (ApplicationException e) {
+			log.error("ApplicationException in doPost", e);
 			e.printStackTrace();
 			return;
 		}
+
+		log.debug("StudentListCtl doPost End");
 	}
 
 	/**

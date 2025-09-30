@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import in.co.rays.bean.BaseBean;
 import in.co.rays.bean.CollegeBean;
 import in.co.rays.bean.StudentBean;
@@ -30,6 +32,8 @@ import in.co.rays.util.ServletUtility;
 @WebServlet(name = "StudentCtl", urlPatterns = { "/ctl/StudentCtl" })
 public class StudentCtl extends BaseCtl {
 
+	private static Logger log = Logger.getLogger(StudentCtl.class);
+
 	/**
 	 * Loads the list of colleges for populating the dropdown before displaying the
 	 * student form.
@@ -38,19 +42,18 @@ public class StudentCtl extends BaseCtl {
 	 */
 	@Override
 	protected void preload(HttpServletRequest request) {
+		log.debug("StudentCtl preload started");
 		CollegeModel model = new CollegeModel();
 		try {
-
 			List<CollegeBean> list = model.list();
 			request.setAttribute("list", list);
 			if (list == null) {
-				System.out.println("null");
-
+				log.warn("College list is null in preload");
 			}
 		} catch (ApplicationException e) {
-			e.printStackTrace();
-			return;
+			log.error("ApplicationException in preload", e);
 		}
+		log.debug("StudentCtl preload ended");
 	}
 
 	/**
@@ -63,6 +66,7 @@ public class StudentCtl extends BaseCtl {
 	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
+		log.debug("StudentCtl validate started");
 
 		boolean pass = true;
 
@@ -119,6 +123,7 @@ public class StudentCtl extends BaseCtl {
 			pass = false;
 		}
 
+		log.debug("StudentCtl validate ended with result: " + pass);
 		return pass;
 	}
 
@@ -131,6 +136,7 @@ public class StudentCtl extends BaseCtl {
 	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
+		log.debug("StudentCtl populateBean started");
 
 		StudentBean bean = new StudentBean();
 
@@ -145,6 +151,7 @@ public class StudentCtl extends BaseCtl {
 
 		populateDTO(bean, request);
 
+		log.debug("StudentCtl populateBean ended");
 		return bean;
 	}
 
@@ -159,6 +166,7 @@ public class StudentCtl extends BaseCtl {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("StudentCtl doGet started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 		long id = DataUtility.getLong(request.getParameter("id"));
@@ -169,16 +177,16 @@ public class StudentCtl extends BaseCtl {
 
 			StudentBean bean;
 			try {
-
 				bean = model.findByPk(id);
 				ServletUtility.setBean(bean, request);
 
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in doGet", e);
 				return;
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
+		log.debug("StudentCtl doGet ended");
 	}
 
 	/**
@@ -192,6 +200,7 @@ public class StudentCtl extends BaseCtl {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		log.debug("StudentCtl doPost started");
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 
@@ -201,18 +210,19 @@ public class StudentCtl extends BaseCtl {
 
 			StudentBean bean = (StudentBean) populateBean(request);
 			try {
-
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Student added successfully", request);
+				log.info("Student added successfully, ID: " + pk);
 
 			} catch (ApplicationException e) {
-				e.printStackTrace();
+				log.error("ApplicationException in doPost - Save", e);
 				return;
 
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setErrorMessage("Email already exists", request);
+				log.warn("Duplicate email found while saving student: " + bean.getEmail());
 			}
 		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
 
@@ -220,28 +230,29 @@ public class StudentCtl extends BaseCtl {
 			try {
 				if (bean.getId() > 0) {
 					model.update(bean);
+					log.info("Student updated successfully, ID: " + bean.getId());
 				}
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setSuccessMessage("Student updated successfully", request);
 			} catch (ApplicationException e) {
-
-				e.printStackTrace();
+				log.error("ApplicationException in doPost - Update", e);
 				return;
 			} catch (DuplicateRecordException e) {
-
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setErrorMessage("Email already exists", request);
+				log.warn("Duplicate email found while updating student: " + bean.getEmail());
 			}
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
-
+			log.debug("Operation Cancel invoked");
 			ServletUtility.redirect(ORSView.STUDENT_LIST_CTL, request, response);
 			return;
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
-
+			log.debug("Operation Reset invoked");
 			ServletUtility.redirect(ORSView.STUDENT_CTL, request, response);
 			return;
 		}
 		ServletUtility.forward(getView(), request, response);
+		log.debug("StudentCtl doPost ended");
 	}
 
 	/**
@@ -251,7 +262,6 @@ public class StudentCtl extends BaseCtl {
 	 */
 	@Override
 	protected String getView() {
-
 		return ORSView.STUDENT_VIEW;
 	}
 }
